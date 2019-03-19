@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Pokebook.api.Models
 {
-    public class Message
+    public class Message : EntityBase
     {
-        public Guid Id { get; set; }
+        //public Guid Id { get; set; }
         public Guid ChatId { get; set; }
         public Guid SenderId { get; set; }
 

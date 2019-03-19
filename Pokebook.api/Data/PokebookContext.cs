@@ -14,7 +14,7 @@ namespace Pokebook.api.Data
 
         }
 
-        public DbSet<User> AspNetUsers { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Chat> Chats { get; set; }
         public DbSet<UserChat> UserChats { get; set; }
         public DbSet<Message> Messages { get; set; }
@@ -41,6 +41,8 @@ namespace Pokebook.api.Data
                 .HasOne(m => m.Chat)
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ChatId);
+
+            DataSeeder.Seed(modelBuilder);
         }
     }
 }
