@@ -41,6 +41,8 @@ namespace Pokebook.api.Data
                 .HasOne(m => m.Chat)
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ChatId);
+
+            DataSeeder.Seed(modelBuilder);
         }
     }
 }

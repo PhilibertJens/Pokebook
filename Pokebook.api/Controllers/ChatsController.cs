@@ -27,10 +27,10 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Chats/Id
         [HttpGet]
-        [Route("{Id}")]
+        [Route("{Id:Guid}")]
         public IActionResult GetChat(Guid Id)
         {
-            return Ok(repository.GetById(Id));
+            return Ok(repository.GetById(Id));//werkt nog niet!
         }
     }
 }
