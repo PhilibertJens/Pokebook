@@ -27,18 +27,26 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Chats/Id
         [HttpGet]
-        [Route("{Id:Guid}")]
+        [Route("{Id}")]
         public async Task<IActionResult> GetChat(Guid Id)
         {
             return Ok(await repository.GetById(Id));
         }
 
-        // GET: api/Chats/User/Id
+        // GET: api/Chats/UserId/Id
         [HttpGet]
-        [Route("User/{Id}")]
+        [Route("UserId/{Id}")]
         public async Task<IActionResult> GetChatsForUser(Guid Id)
         {
             return Ok(await repository.GetChatsForUser(Id));
+        }
+
+        // GET: api/Chats/Username/Username
+        [HttpGet]
+        [Route("Username/{userName}")]
+        public async Task<IActionResult> GetChatsForUser(string userName)
+        {
+            return Ok(await repository.GetChatsForUser(userName));
         }
     }
 }
