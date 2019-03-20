@@ -28,9 +28,9 @@ namespace Pokebook.api.Controllers
         // GET: api/Chats/Id
         [HttpGet]
         [Route("{Id:Guid}")]
-        public IActionResult GetChat(Guid Id)
+        public async Task<IActionResult> GetChat(Guid Id)
         {
-            return Ok(repository.GetById(Id));//werkt nog niet!
+            return Ok(await repository.GetById(Id));
         }
     }
 }
