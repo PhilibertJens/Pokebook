@@ -32,5 +32,13 @@ namespace Pokebook.api.Controllers
         {
             return Ok(await repository.GetById(Id));
         }
+
+        // GET: api/Chats/User/Id
+        [HttpGet]
+        [Route("User/{Id}")]
+        public async Task<IActionResult> GetChatsForUser(Guid Id)
+        {
+            return Ok(await repository.GetChatsForUser(Id));
+        }
     }
 }
