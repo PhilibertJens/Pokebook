@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Pokebook.api.Models;
+using Pokebook.web.Models;
 
 namespace Pokebook.web.Controllers
 {
@@ -18,6 +19,10 @@ namespace Pokebook.web.Controllers
                         "]";
 
             List<Chat> chatListForUser = JsonConvert.DeserializeObject <List<Chat>>(jsonString);
+            ChatIndexVM vm = new ChatIndexVM
+            {
+                AllUserChatsForUser = chatListForUser
+            };
 
             return View();
         }
