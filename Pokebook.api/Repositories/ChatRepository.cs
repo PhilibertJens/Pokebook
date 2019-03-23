@@ -33,9 +33,15 @@ namespace Pokebook.api.Repositories
 
         public async Task<List<Chat>> GetChatsForUser(Guid Id)
         {
-            var userChats = await GetUserChats();
-            return userChats.Where(uc => uc.User.Id == Id)
-                            .Select(uc => uc.Chat).ToList();
+            return await db.UserChats
+                .Include(uc => uc.Chat).ThenInclude(c => c.UserChats)
+                .Include(uc => uc.User).ThenInclude(u => u.UserChats)
+                .Where(uc => uc.User.Id == Id)
+                .Select(x => x.Chat).ToListAsync();
+
+            //var userChats = await GetUserChats();
+            //return userChats.Where(uc => uc.User.Id == Id)
+            //                .Select(uc => uc.Chat).ToList();
         }
 
         public async Task<List<Chat>> GetChatsForUser(string username)
