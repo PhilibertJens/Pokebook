@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pokebook.api.Data;
 using Pokebook.api.Models;
+using Pokebook.api.Repositories.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +10,11 @@ using System.Threading.Tasks;
 
 namespace Pokebook.api.Repositories
 {
-    public class ChatRepository : Repository<Chat>
+    public class ChatRepository : MappingRepository<Chat>
     {
-        private PokebookContext db;
-        public ChatRepository(PokebookContext context) : base(context)
+        public ChatRepository(PokebookContext context, IMapper mapper) : 
+            base(context, mapper)
         {
-            db = context;
         }
 
         public async Task<List<UserChat>> GetUserChats()
