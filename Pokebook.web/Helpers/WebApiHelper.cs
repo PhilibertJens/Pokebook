@@ -9,7 +9,7 @@ namespace Pokebook.web.Helpers
 {
     public class WebApiHelper
     {
-        public T GetApiResult<T>(string uri)
+        public static T GetApiResult<T>(string uri)
         {
             using (HttpClient httpClient = new HttpClient())
             {
