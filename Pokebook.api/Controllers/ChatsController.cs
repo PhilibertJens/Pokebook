@@ -50,5 +50,13 @@ namespace Pokebook.api.Controllers
         {
             return Ok(await repository.GetChatsForUser(userName));
         }
+
+        //POST: api/Chats/New
+        [HttpPost]
+        [Route("New")]
+        public async Task<IActionResult> AddNewChat()
+        {
+            return Ok(await repository.AddNewChat(new Chat()));
+        }
     }
 }

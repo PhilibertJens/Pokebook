@@ -56,5 +56,16 @@ namespace Pokebook.api.Repositories
             List<Chat> chatList = await GetChatsForUser(Id);
             return chatList.Select(x => x.Id).ToList();
         }
+
+        public async Task<Chat> AddNewChat(Chat newChat)
+        {
+            Chat addedChat = await Add(newChat);//new chat
+            UserChat userChat = new UserChat();//new userchat linked to sender and chat
+            Message message = new Message();//first message linked to chat
+            db.Add(userChat);
+            db.Add(message);
+            //await db.SaveChangesAsync();
+            return addedChat;
+        }
     }
 }
