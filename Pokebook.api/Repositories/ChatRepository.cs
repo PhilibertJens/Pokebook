@@ -10,10 +10,8 @@ namespace Pokebook.api.Repositories
 {
     public class ChatRepository : Repository<Chat>
     {
-        private PokebookContext db;
         public ChatRepository(PokebookContext context) : base(context)
         {
-            db = context;
         }
 
         public async Task<List<UserChat>> GetUserChats()
@@ -34,20 +32,23 @@ namespace Pokebook.api.Repositories
         {
             var userChats = await GetUserChats();
             return userChats.Where(uc => uc.User.Id == Id)
-                            .Select(uc => uc.Chat).ToList();
+                            .Select(uc => uc.Chat)
+                            .ToList();
         }
 
         public async Task<List<Chat>> GetChatsForUser(string username)
         {
             var userChats = await GetUserChats();
             return userChats.Where(uc => uc.User.UserName == username)
-                            .Select(uc => uc.Chat).ToList();
+                            .Select(uc => uc.Chat)
+                            .ToList();
         }
 
         public async Task<List<Guid>> GetChatIdForUser(Guid Id)
         {
             List<Chat> chatList = await GetChatsForUser(Id);
-            return chatList.Select(x => x.Id).ToList();
+            return chatList.Select(x => x.Id)
+                           .ToList();
         }
     }
 }
