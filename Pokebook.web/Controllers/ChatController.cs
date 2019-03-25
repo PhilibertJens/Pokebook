@@ -66,5 +66,23 @@ namespace Pokebook.web.Controllers
             };
             return View(vm);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
+        {
+            Chat chat = new Chat
+            {
+                Name = "new chat",
+                CreatorId = Guid.Parse("00000000-0000-0000-0000-000000000001"), //vm.SenderId
+                CreateDate = DateTime.Now,
+                LastMessage = vm.Text,
+                NumberOfUsers = 2, //minimum
+                NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
+            };
+            string uri = $"{baseuri}/New";
+            Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
+            return new RedirectToActionResult("Index", "Chat", null);
+        }
     }
 }
