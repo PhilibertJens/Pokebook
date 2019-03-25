@@ -26,15 +26,30 @@ namespace Pokebook.web.Controllers
             Guid userId = Guid.Parse("00000000-0000-0000-0000-000000000001");//wordt via session opgehaald
             string uri = $"{baseuri}/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
+            List<User> userList = new List<User>//moet opgehaald worden via de api
+            {
+                new User
+                {
+                    Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                    UserName = "otherUser"
+                }
+            };
 
             ChatIndexVM vm = new ChatIndexVM
             {
                 AllUserChatsForUser = chatListForUser,
                 User = new User { UserName = "UserWithNoName" },
-                AllUsers = new SelectList(new List<User>(), "Id", "UserName")
+                AllUsers = new SelectList(userList, "Id", "UserName")
             };
 
             return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(ChatIndexVM userdata)
+        {
+            return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
     }
 }
