@@ -80,8 +80,13 @@ namespace Pokebook.web.Controllers
                 NumberOfUsers = 2, //minimum
                 NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
             };
+
             string uri = $"{baseuri}/New";
             Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
+            //zal nog niet werken
+            //UserChat createdUserChatSender = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
+            //UserChat createdUserChatReceiver = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
+            //Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
             return new RedirectToActionResult("Index", "Chat", null);
         }
     }
