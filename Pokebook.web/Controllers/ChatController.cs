@@ -49,7 +49,22 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ChatIndexVM userdata)
         {
+            //ontvanger id moet in een session bijgehouden worden
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
+        }
+
+        public IActionResult SendFirstMessage()
+        {
+            ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
+            {
+                //ophaling van ontvanger id uit session
+                Receiver = new User
+                {
+                    Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                    UserName = "otherUser"
+                }
+            };
+            return View(vm);
         }
     }
 }
