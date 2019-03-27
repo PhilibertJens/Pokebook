@@ -41,6 +41,7 @@ namespace Pokebook.api
             services.AddDbContext<PokebookContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PokebookDb")));
             services.AddScoped<ChatRepository>();
+            services.AddScoped<MessageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

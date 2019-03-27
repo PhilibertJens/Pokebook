@@ -25,12 +25,6 @@ namespace Pokebook.api.Repositories
                 .ToListAsync();
         }
 
-        //return await db.UserChats
-        //    .Include(uc => uc.Chat).ThenInclude(c => c.UserChats)
-        //    .Include(uc => uc.User).ThenInclude(u => u.UserChats)
-        //    .Where(uc => uc.User.Id == Id)
-        //    .Select(x => x.Chat).ToListAsync();
-
         public async Task<List<Chat>> GetChatsForUser(Guid Id)
         {
             return await db.UserChats
@@ -73,23 +67,10 @@ namespace Pokebook.api.Repositories
                 UserId = Guid.Parse("00000000-0000-0000-0000-000000000004")
             };
 
-            //Message message = new Message
-            //{
-            //    Text = newChat.LastMessage,
-            //    Chat = newChat,
-            //    ChatId = newChat.Id,
-            //    SenderId = newChat.CreatorId,
-            //    SendDate = DateTime.Now,
-            //    Id = Guid.Parse("00000000-0000-0000-0000-000000000004")
-            //};
-
-            //Chat addedChat = await Add(newChat);//new chat
-            //UserChat userChat = new UserChat();//new userchat linked to sender and chat
-            //Message message = new Message();//first message linked to chat
             Chat addedChat = await Add(newChat);
-            db.Add(senderData);
-            db.Add(receiverData);
-            //db.Add(message);
+
+            //db.Add(senderData);
+            //db.Add(receiverData);
             //await db.SaveChangesAsync(); --> Dit is niet mogelijk
             return addedChat;
         }
