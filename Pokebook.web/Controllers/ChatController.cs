@@ -74,7 +74,7 @@ namespace Pokebook.web.Controllers
             Chat chat = new Chat
             {
                 Name = "new chat",
-                CreatorId = Guid.Parse("00000000-0000-0000-0000-000000000001"), //vm.SenderId
+                CreatorId = Guid.Parse("00000000-0000-0000-0000-000000000002"), //vm.SenderId
                 CreateDate = DateTime.Now,
                 LastMessage = vm.Text,
                 NumberOfUsers = 2, //minimum
@@ -87,7 +87,7 @@ namespace Pokebook.web.Controllers
             Message message = new Message
             {
                 Text = createdChat.LastMessage,
-                //Chat = createdChat,
+                //Chat = createdChat,--> Navigation properties geven een error bij post request
                 ChatId = createdChat.Id,
                 SenderId = createdChat.CreatorId,
                 SendDate = DateTime.Now
@@ -95,10 +95,15 @@ namespace Pokebook.web.Controllers
             uri = "https://localhost:44321/api/messages";
             Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
 
-            //zal nog niet werken
-            //UserChat createdUserChatSender = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
-            //UserChat createdUserChatReceiver = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
-            //Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
+            UserChat senderData = new UserChat
+            {
+                //Chat = createdChat,
+                ChatId = createdChat.Id,
+                UserId = createdChat.CreatorId
+            };
+            uri = "https://localhost:44321/api/userchats";
+            UserChat uc1 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
+
             return new RedirectToActionResult("Index", "Chat", null);
         }
     }

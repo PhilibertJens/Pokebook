@@ -53,25 +53,7 @@ namespace Pokebook.api.Repositories
 
         public async Task<Chat> AddNewChat(Chat newChat)
         {
-            UserChat senderData = new UserChat
-            {
-                Chat = newChat,
-                ChatId = newChat.Id,
-                UserId = newChat.CreatorId
-            };
-
-            UserChat receiverData = new UserChat
-            {
-                Chat = newChat,
-                ChatId = newChat.Id,
-                UserId = Guid.Parse("00000000-0000-0000-0000-000000000004")
-            };
-
             Chat addedChat = await Add(newChat);
-
-            //db.Add(senderData);
-            //db.Add(receiverData);
-            //await db.SaveChangesAsync(); --> Dit is niet mogelijk
             return addedChat;
         }
     }
