@@ -83,6 +83,19 @@ namespace Pokebook.web.Controllers
 
             string uri = $"{baseuri}/New";
             Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
+
+            Message message = new Message
+            {
+                Text = createdChat.LastMessage,
+                Chat = createdChat,
+                ChatId = createdChat.Id,
+                SenderId = createdChat.CreatorId,
+                SendDate = DateTime.Now,
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000004")
+            };
+            uri = "https://localhost:44321/api/messages";
+            Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
+
             //zal nog niet werken
             //UserChat createdUserChatSender = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
             //UserChat createdUserChatReceiver = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);

@@ -73,15 +73,15 @@ namespace Pokebook.api.Repositories
                 UserId = Guid.Parse("00000000-0000-0000-0000-000000000004")
             };
 
-            Message message = new Message
-            {
-                Text = newChat.LastMessage,
-                Chat = newChat,
-                ChatId = newChat.Id,
-                SenderId = newChat.CreatorId,
-                SendDate = DateTime.Now,
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000004")
-            };
+            //Message message = new Message
+            //{
+            //    Text = newChat.LastMessage,
+            //    Chat = newChat,
+            //    ChatId = newChat.Id,
+            //    SenderId = newChat.CreatorId,
+            //    SendDate = DateTime.Now,
+            //    Id = Guid.Parse("00000000-0000-0000-0000-000000000004")
+            //};
 
             //Chat addedChat = await Add(newChat);//new chat
             //UserChat userChat = new UserChat();//new userchat linked to sender and chat
@@ -89,7 +89,7 @@ namespace Pokebook.api.Repositories
             Chat addedChat = await Add(newChat);
             db.Add(senderData);
             db.Add(receiverData);
-            db.Add(message);
+            //db.Add(message);
             //await db.SaveChangesAsync(); --> Dit is niet mogelijk
             return addedChat;
         }
