@@ -8,6 +8,6 @@ namespace Pokebook.core.Models
 {
     public abstract class EntityBase
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
     }
 }
