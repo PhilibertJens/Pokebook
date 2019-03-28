@@ -2,7 +2,6 @@
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using Pokebook.core.Repositories;
-using Pokebook.core.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Pokebook.api.Repositories
 {
-    public class ChatRepository : GenericRepository<Chat>, IChatRepository
+    public class ChatRepository : GenericRepository<Chat>, ICanCreateEntity<Chat>
     {
         public ChatRepository(PokebookContext context) : base(context)
         {

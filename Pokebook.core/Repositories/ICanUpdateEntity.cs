@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokebook.core.Repositories.Interfaces
+namespace Pokebook.core.Repositories
 {
-    public interface ICanCreateEntity<T> where T : EntityBase
+    public interface ICanUpdateEntity<T> where T : EntityBase
     {
-        Task<T> AddAsync(T entity);
+        Task<T> UpdateAsync(T entity);
     }
 }

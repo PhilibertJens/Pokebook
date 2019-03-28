@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
-using Pokebook.core.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories
 {
-    public abstract class GenericRepository<T> : IBaseRepository
-        where T: EntityBase 
+    public abstract class GenericRepository<T> : IRepository<T> where T : EntityBase
     {
         protected readonly PokebookContext db; //Look into implementation for Identity DbContext
         public GenericRepository(PokebookContext context)
@@ -37,9 +35,50 @@ namespace Pokebook.core.Repositories
             .Where(predicate).AsNoTracking();
         }
         public async Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate) => await FindFiltered(predicate).ToListAsync();
-        public abstract Task<T> AddAsync(T entity);
-        public abstract Task<T> UpdateAsync(T entity);
-        public abstract Task<T> DeleteAsync(T entity);
-        public abstract Task<T> DeleteAsync(Guid id);
+        public virtual async Task<T> AddAsync(T entity)
+        {
+            db.Set<T>().Add(entity);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public virtual async Task<T> UpdateAsync(T entity)
+        {
+            db.Entry(entity).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public virtual async Task<T> DeleteAsync(T entity)
+        {
+            db.Set<T>().Remove(entity);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public virtual async Task<T> DeleteAsync(Guid id)
+        {
+            var entity = await FindByIdAsync(id);
+            if (entity == null) return null;
+            return await DeleteAsync(entity);
+        }
     }
 }
