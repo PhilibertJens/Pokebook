@@ -65,5 +65,9 @@ namespace Pokebook.api.Repositories
             }
             return entity;
         }
+
+        public override Task<Chat> DeleteAsync(Guid id) => throw new NotSupportedException();
+        public override Task<Chat> DeleteAsync(Chat entity) => throw new NotSupportedException();
+        public override Task<Chat> UpdateAsync(Chat entity) => throw new NotSupportedException();
     }
 }
