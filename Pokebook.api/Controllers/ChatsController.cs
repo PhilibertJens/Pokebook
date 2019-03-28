@@ -30,7 +30,7 @@ namespace Pokebook.api.Controllers
         [Route("{Id}")]
         public async Task<IActionResult> GetChat(Guid Id)
         {
-            return Ok(await repository.GetById(Id));
+            return Ok(await repository.FindByIdAsync(Id));
         }
 
         // GET: api/Chats/UserId/Id
@@ -38,7 +38,7 @@ namespace Pokebook.api.Controllers
         [Route("UserId/{Id}")]
         public async Task<IActionResult> GetChatsForUser(Guid Id)
         {
-            return Ok(await repository.GetChatsForUser(Id));
+            return Ok(await repository.FindChatsForUserAsync(Id));
         }
 
         // GET: api/Chats/Username/Username
@@ -46,7 +46,7 @@ namespace Pokebook.api.Controllers
         [Route("Username/{userName}")]
         public async Task<IActionResult> GetChatsForUser(string userName)
         {
-            return Ok(await repository.GetChatsForUser(userName));
+            return Ok(await repository.FindChatsForUserAsync(userName));
         }
     }
 }

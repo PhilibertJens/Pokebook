@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pokebook.api.Data;
-using Pokebook.api.Models;
+using Pokebook.core.Data;
+using Pokebook.core.Models;
+using Pokebook.core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Pokebook.api.Repositories
 {
-    public class ChatRepository : Repository<Chat>
+    public class ChatRepository : GenericRepository<Chat>, ICanCreateEntity<Chat>
     {
         public ChatRepository(PokebookContext context) : base(context)
         {
@@ -28,7 +29,7 @@ namespace Pokebook.api.Repositories
         //    .Where(uc => uc.User.Id == Id)
         //    .Select(x => x.Chat).ToListAsync();
 
-        public async Task<List<Chat>> GetChatsForUser(Guid Id)
+        public async Task<List<Chat>> FindChatsForUserAsync(Guid Id)
         {
             var userChats = await GetUserChats();
             return userChats.Where(uc => uc.User.Id == Id)
@@ -36,7 +37,7 @@ namespace Pokebook.api.Repositories
                             .ToList();
         }
 
-        public async Task<List<Chat>> GetChatsForUser(string username)
+        public async Task<List<Chat>> FindChatsForUserAsync(string username)
         {
             var userChats = await GetUserChats();
             return userChats.Where(uc => uc.User.UserName == username)
@@ -44,11 +45,25 @@ namespace Pokebook.api.Repositories
                             .ToList();
         }
 
-        public async Task<List<Guid>> GetChatIdForUser(Guid Id)
+        public async Task<List<Guid>> FindChatIdForUser(Guid Id)
         {
-            List<Chat> chatList = await GetChatsForUser(Id);
+            List<Chat> chatList = await FindChatsForUserAsync(Id);
             return chatList.Select(x => x.Id)
                            .ToList();
+        }
+
+        public override async Task<Chat> AddAsync(Chat entity)
+        {
+            db.Set<Chat>().Add(entity);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
         }
     }
 }

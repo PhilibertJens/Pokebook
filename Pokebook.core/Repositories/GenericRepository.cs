@@ -35,7 +35,7 @@ namespace Pokebook.core.Repositories
             .Where(predicate).AsNoTracking();
         }
         public async Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate) => await FindFiltered(predicate).ToListAsync();
-        public async Task<T> AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             db.Set<T>().Add(entity);
             try
@@ -48,7 +48,7 @@ namespace Pokebook.core.Repositories
             }
             return entity;
         }
-        public async Task<T> UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity)
         {
             db.Entry(entity).State = EntityState.Modified;
             try
@@ -61,7 +61,7 @@ namespace Pokebook.core.Repositories
             }
             return entity;
         }
-        public async Task<T> DeleteAsync(T entity)
+        public virtual async Task<T> DeleteAsync(T entity)
         {
             db.Set<T>().Remove(entity);
             try
@@ -74,7 +74,7 @@ namespace Pokebook.core.Repositories
             }
             return entity;
         }
-        public async Task<T> DeleteAsync(Guid id)
+        public virtual async Task<T> DeleteAsync(Guid id)
         {
             var entity = await FindByIdAsync(id);
             if (entity == null) return null;
