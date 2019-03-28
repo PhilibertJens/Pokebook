@@ -17,8 +17,8 @@ namespace Pokebook.core.Repositories
         IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate);
         Task<T> AddAsync(T entity);
-        Task<T> Delete(T entity);
-        Task<T> Delete(Guid id);
+        Task<T> DeleteAsync(T entity);
+        Task<T> DeleteAsync(Guid id);
         Task<T> UpdateAsync(T entity);
     }
 }

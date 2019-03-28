@@ -61,7 +61,7 @@ namespace Pokebook.core.Repositories
             }
             return entity;
         }
-        public async Task<T> Delete(T entity)
+        public async Task<T> DeleteAsync(T entity)
         {
             db.Set<T>().Remove(entity);
             try
@@ -74,11 +74,11 @@ namespace Pokebook.core.Repositories
             }
             return entity;
         }
-        public async Task<T> Delete(Guid id)
+        public async Task<T> DeleteAsync(Guid id)
         {
             var entity = await FindByIdAsync(id);
             if (entity == null) return null;
-            return await Delete(entity);
+            return await DeleteAsync(entity);
         }
     }
 }
