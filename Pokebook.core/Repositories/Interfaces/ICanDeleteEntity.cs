@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokebook.core.Repositories
+namespace Pokebook.core.Repositories.Interfaces
 {
     public interface ICanDeleteEntity<T> where T : EntityBase
     {

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokebook.core.Repositories
+namespace Pokebook.core.Repositories.Interfaces
 {
     public interface IRepository<T> : IBaseRepository //already inherits 'Count'
         where T : EntityBase
