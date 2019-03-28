@@ -1,4 +1,5 @@
-﻿using Pokebook.core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Pokebook.core.Data;
 using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,59 @@ namespace Pokebook.core.Repositories
         }
         public int Count { get; set; }
 
-        public Task<T> Add(T entity) => throw new NotImplementedException();
-        public Task<T> Delete(T entity) => throw new NotImplementedException();
-        public Task<T> Delete(Guid id) => throw new NotImplementedException();
-        public IQueryable<T> GetAll() => throw new NotImplementedException();
-        public Task<T> GetById(Guid id) => throw new NotImplementedException();
-        public IQueryable<T> GetFiltered(Expression<Func<T, bool>> predicate) => throw new NotImplementedException();
-        public Task<IEnumerable<T>> ListAll() => throw new NotImplementedException();
-        public Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate) => throw new NotImplementedException();
-        public Task<T> Update(T entity) => throw new NotImplementedException();
+        public IQueryable<T> FindAll() => db.Set<T>().AsNoTracking();
+        public async Task<T> FindByIdAsync(Guid id) => await db.Set<T>().FindAsync(id);
+        public async Task<IEnumerable<T>> ListAll() => await FindAll().ToListAsync();
+        public IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate)
+        {
+            return db.Set<T>()
+            .Where(predicate).AsNoTracking();
+        }
+        public async Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate) => await FindFiltered(predicate).ToListAsync();
+        public async Task<T> AddAsync(T entity)
+        {
+            db.Set<T>().Add(entity);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public async Task<T> UpdateAsync(T entity)
+        {
+            db.Entry(entity).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public async Task<T> Delete(T entity)
+        {
+            db.Set<T>().Remove(entity);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch
+            {
+                return null;
+            }
+            return entity;
+        }
+        public async Task<T> Delete(Guid id)
+        {
+            var entity = await FindByIdAsync(id);
+            if (entity == null) return null;
+            return await Delete(entity);
+        }
     }
 }

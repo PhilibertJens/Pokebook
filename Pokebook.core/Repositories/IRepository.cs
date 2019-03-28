@@ -11,14 +11,14 @@ namespace Pokebook.core.Repositories
     public interface IRepository<T> : IBaseRepository //already inherits 'Count'
         where T : EntityBase
     {
-        Task<T> GetById(Guid id);
-        IQueryable<T> GetAll();
+        Task<T> FindByIdAsync(Guid id);
+        IQueryable<T> FindAll();
         Task<IEnumerable<T>> ListAll();
-        IQueryable<T> GetFiltered(Expression<Func<T, bool>> predicate);
+        IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate);
         Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate);
-        Task<T> Add(T entity);
+        Task<T> AddAsync(T entity);
         Task<T> Delete(T entity);
         Task<T> Delete(Guid id);
-        Task<T> Update(T entity);
+        Task<T> UpdateAsync(T entity);
     }
 }
