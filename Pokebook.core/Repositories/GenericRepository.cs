@@ -12,73 +12,40 @@ namespace Pokebook.core.Repositories
 {
     public abstract class GenericRepository<T> : IRepository<T> where T : EntityBase
     {
-        protected readonly PokebookContext db; //Look into implementation for Identity DbContext
-        public GenericRepository(PokebookContext context)
+        protected readonly DbContext db; //Look into implementation for Identity DbContext
+        public GenericRepository(DbContext context)
         {
             db = context;
         }
-        public int Count { get; set; }
-        /// <summary>
-        /// Finds all entries in repo, ready for deferred execution
-        /// </summary>
-        public IQueryable<T> FindAll() => db.Set<T>().AsNoTracking();
-        public async Task<T> FindByIdAsync(Guid id) => await db.Set<T>().FindAsync(id);
-        public async Task<IEnumerable<T>> ListAll() => await FindAll().ToListAsync();
+        
+        public T FindById(Guid id) => db.Set<T>().Find(id);
 
-        /// <summary>
-        /// Only to use for devs, with deferred execution
-        /// </summary>
-        /// <returns>Datasource which can be queried</returns>
-        public IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate)
-        {
-            return db.Set<T>()
-            .Where(predicate).AsNoTracking();
-        }
-        public async Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate) => await FindFiltered(predicate).ToListAsync();
-        public virtual async Task<T> AddAsync(T entity)
+        private IQueryable<T> FindAll() => db.Set<T>().AsNoTracking();
+        public IEnumerable<T> ListAll() => FindAll().ToList();
+
+        private IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate) => db.Set<T>().Where(predicate).AsNoTracking();
+        public IEnumerable<T> ListFiltered(Expression<Func<T, bool>> predicate) => FindFiltered(predicate).ToList();
+
+
+
+        public virtual void Add(T entity)
         {
             db.Set<T>().Add(entity);
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch
-            {
-                return null;
-            }
-            return entity;
         }
-        public virtual async Task<T> UpdateAsync(T entity)
+
+        public virtual void AddRange(IEnumerable<T> entities)
         {
-            db.Entry(entity).State = EntityState.Modified;
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch
-            {
-                return null;
-            }
-            return entity;
+            db.Set<T>().AddRange(entities);
         }
-        public virtual async Task<T> DeleteAsync(T entity)
+
+        public virtual void Remove(T entity)
         {
             db.Set<T>().Remove(entity);
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch
-            {
-                return null;
-            }
-            return entity;
         }
-        public virtual async Task<T> DeleteAsync(Guid id)
+
+        public virtual void RemoveRange(IEnumerable<T> entities)
         {
-            var entity = await FindByIdAsync(id);
-            if (entity == null) return null;
-            return await DeleteAsync(entity);
+            db.Set<T>().RemoveRange(entities);
         }
     }
 }

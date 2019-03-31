@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using Pokebook.core.Data;
+using Pokebook.core.Repositories;
+using Pokebook.core.Repositories.Specific;
+using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Pokebook.api.Repositories;
 
 namespace Pokebook.api.Controllers
 {
@@ -12,41 +11,41 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        ChatRepository repository;
-        public ChatsController(ChatRepository chatRepository)
+        private UnitOfWork unitOfWork;
+        public ChatsController(PokebookContext context)
         {
-            repository = chatRepository;
+            unitOfWork = new UnitOfWork(context);
         }
 
         // GET: api/Chats
         [HttpGet]
-        public async Task<IActionResult> GetChats()
+        public IActionResult GetChats()
         {
-            return Ok(await repository.ListAll());//later enkel voor admin gebruikers!
+            return Ok(unitOfWork.Chats.ListAll());//later enkel voor admin gebruikers!
         }
 
         // GET: api/Chats/Id
         [HttpGet]
         [Route("{Id}")]
-        public async Task<IActionResult> GetChat(Guid Id)
+        public IActionResult GetChat(Guid id)
         {
-            return Ok(await repository.FindByIdAsync(Id));
+            return Ok(unitOfWork.Chats.FindById(id));
         }
 
         // GET: api/Chats/UserId/Id
         [HttpGet]
         [Route("UserId/{Id}")]
-        public async Task<IActionResult> GetChatsForUser(Guid Id)
+        public IActionResult GetChatsForUser(Guid id)
         {
-            return Ok(await repository.FindChatsForUserAsync(Id));
+            return Ok(unitOfWork.Chats.FindChatsForUser(id));
         }
 
         // GET: api/Chats/Username/Username
         [HttpGet]
         [Route("Username/{userName}")]
-        public async Task<IActionResult> GetChatsForUser(string userName)
+        public IActionResult GetChatsForUser(string userName)
         {
-            return Ok(await repository.FindChatsForUserAsync(userName));
+            return Ok(unitOfWork.Chats.FindChatsForUser(userName));
         }
     }
 }

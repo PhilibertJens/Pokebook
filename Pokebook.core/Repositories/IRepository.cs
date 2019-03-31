@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories
 {
-    public interface IRepository<T> : IBaseRepository //already inherits 'Count'
+    public interface IRepository<T>
         where T : EntityBase
     {
-        Task<T> FindByIdAsync(Guid id);
-        IQueryable<T> FindAll();
-        Task<IEnumerable<T>> ListAll();
-        IQueryable<T> FindFiltered(Expression<Func<T, bool>> predicate);
-        Task<IEnumerable<T>> ListFiltered(Expression<Func<T, bool>> predicate);
-        Task<T> AddAsync(T entity);
-        Task<T> DeleteAsync(T entity);
-        Task<T> DeleteAsync(Guid id);
-        Task<T> UpdateAsync(T entity);
+        T FindById(Guid id);
+        IEnumerable<T> ListAll();
+        IEnumerable<T> ListFiltered(Expression<Func<T, bool>> predicate);
+
+        void Add(T entity);
+        void AddRange(IEnumerable<T> entities);
+
+        void Remove(T entity);
+        void RemoveRange(IEnumerable<T> entities);
     }
 }
