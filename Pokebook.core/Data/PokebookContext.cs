@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pokebook.api.Models;
+using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokebook.api.Data
+namespace Pokebook.core.Data
 {
     public class PokebookContext : DbContext
     {
-        public PokebookContext(DbContextOptions<PokebookContext> options) :base(options)
+        public PokebookContext(DbContextOptions<PokebookContext> options) : base(options)
         {
 
         }

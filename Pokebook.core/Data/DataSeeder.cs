@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pokebook.api.Models;
+using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Pokebook.api.Data
+namespace Pokebook.core.Data
 {
     public class DataSeeder
     {
@@ -24,20 +25,20 @@ namespace Pokebook.api.Data
                 }
             );
 
-           modelBuilder.Entity<Chat>().HasData(
-                new Chat
-                {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                    Name = "Awesome Chat",
-                    CreateDate = DateTime.Now
-                },
-                new Chat
-                {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                    Name = "Another awesome Chat",
-                    CreateDate = DateTime.Now.AddHours(-2)
-                }
-            );
+            modelBuilder.Entity<Chat>().HasData(
+                 new Chat
+                 {
+                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                     Name = "Awesome Chat",
+                     CreateDate = DateTime.Now
+                 },
+                 new Chat
+                 {
+                     Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                     Name = "Another awesome Chat",
+                     CreateDate = DateTime.Now.AddHours(-2)
+                 }
+             );
 
             modelBuilder.Entity<UserChat>().HasData(
                 new UserChat
