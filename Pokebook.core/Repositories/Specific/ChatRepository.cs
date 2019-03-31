@@ -1,4 +1,5 @@
-﻿using Pokebook.core.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Pokebook.core.Data;
 using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;

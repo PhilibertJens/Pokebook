@@ -11,6 +11,8 @@ namespace Pokebook.core.Repositories
     {
         //add every new repo to this
         IChatRepository Chats { get; }
+        IMessageRepository Messages { get; }
+        IUserChatRepository UserChats { get; }
         int Complete();
     }
 }

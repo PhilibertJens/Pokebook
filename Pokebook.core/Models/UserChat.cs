@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Models
 {
-    public class UserChat
+    public class UserChat : EntityBase
     {
         public Guid ChatId { get; set; }
         public Guid UserId { get; set; }
