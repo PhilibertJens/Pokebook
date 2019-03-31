@@ -1,27 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Pokebook.api.Models;
-using Pokebook.api.Repositories;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pokebook.core.Data;
+using Pokebook.core.Models;
+using Pokebook.core.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pokebook.api.Controllers
 {
-    public class ControllerCrudBase<T, R> : ControllerBase
-        where T : EntityBase
-        where R : Repository<T>
+    public class ControllerCrudBase : ControllerBase //TODO: ask how to implement this all
     {
-        protected R repository;
-        public ControllerCrudBase(R r)
+        protected UnitOfWork unitOfWork;
+        public ControllerCrudBase(PokebookContext dbc, IMapper m)
         {
-            repository = r;
+            unitOfWork = new UnitOfWork(dbc, m);
         }
         // GET: api/T
         [HttpGet]
-        public virtual async Task<IActionResult> Get()
+        public virtual IActionResult Get()
         {
-            return Ok(await repository.ListAll());
+            return Ok(unitOfWork.repository.ListAll());
         }
 
         // GET: api/T/2

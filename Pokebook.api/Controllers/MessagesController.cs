@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Pokebook.api.Models;
-using Pokebook.api.Repositories;
+using Pokebook.core.Data;
+using Pokebook.core.Models;
+using Pokebook.core.Repositories.Specific;
 
 namespace Pokebook.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MessagesController : ControllerCrudBase<Message, MessageRepository>
+    public class MessagesController : ControllerCrudBase
     {
-        public MessagesController(MessageRepository messageRepository):
-            base(messageRepository)
+        public MessagesController(PokebookContext dbc, IMapper m) :
+            base(dbc,m)
         {
         }
     }

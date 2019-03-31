@@ -4,17 +4,16 @@ using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
 using System;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Pokebook.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatsController : ControllerBase
+    public class ChatsController : ControllerCrudBase
     {
-        private UnitOfWork unitOfWork;
-        public ChatsController(PokebookContext context)
+        public ChatsController(PokebookContext dbc, IMapper m) : base(dbc, m)
         {
-            unitOfWork = new UnitOfWork(context);
         }
 
         // GET: api/Chats
