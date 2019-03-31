@@ -36,7 +36,7 @@ To add a new repo to the system, please adhere to following steps:
 We're not using the repositories directly in Controllers, that's where the Unit of Work comes in.
 The UoW stands n for accessing the repositories and their methods. Also makes sure all modifications are saved to the database (see  `Complete()`).
 
-A private field is created in the Controller, which is instantiated in the constructor with a specific `DbContext` and an injected mapper.
+A private field is created in the `ControllerCrudBase`, which is instantiated in the constructor with a specific `DbContext` and an injected mapper.
 
 To access a method from a repository:
 - select the desired repository from the UoW properties
