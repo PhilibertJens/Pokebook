@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Pokebook.api.Models;
-using Pokebook.api.Repositories;
+using Pokebook.core.Data;
 
 namespace Pokebook.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserChatsController : ControllerCrudBase<UserChat, UserChatRepository>
+    public class UserChatsController : ControllerCrudBase
     {
-        public UserChatsController(UserChatRepository userChatRepository) :
-            base(userChatRepository)
+        public UserChatsController(PokebookContext dbc, IMapper m) :
+            base(dbc, m)
         {
         }
     }
