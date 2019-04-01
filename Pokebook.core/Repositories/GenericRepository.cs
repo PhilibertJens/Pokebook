@@ -28,24 +28,28 @@ namespace Pokebook.core.Repositories
 
 
 
-        public virtual void Add(T entity)
+        public virtual T Add(T entity)
         {
             db.Set<T>().Add(entity);
+            return entity;
         }
 
-        public virtual void AddRange(IEnumerable<T> entities)
+        public virtual IEnumerable<T> AddRange(IEnumerable<T> entities)
         {
             db.Set<T>().AddRange(entities);
+            return entities;
         }
 
-        public virtual void Remove(T entity)
+        public virtual T Remove(T entity)
         {
             db.Set<T>().Remove(entity);
+            return entity;
         }
 
-        public virtual void RemoveRange(IEnumerable<T> entities)
+        public virtual IEnumerable<T> RemoveRange(IEnumerable<T> entities)
         {
             db.Set<T>().RemoveRange(entities);
+            return entities;
         }
     }
 }

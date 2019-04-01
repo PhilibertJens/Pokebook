@@ -5,14 +5,15 @@ using Pokebook.core.Repositories.Specific;
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
+using Pokebook.core.Models;
 
 namespace Pokebook.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatsController : ControllerCrudBase
+    public class ChatsController : ControllerCrudBase<Chat>
     {
-        public ChatsController(PokebookContext dbc, IMapper m) : base(dbc, m)
+        public ChatsController(PokebookContext dbc, IMapper m, IRepository<Chat> repo) : base(dbc, m,repo)
         {
         }
 

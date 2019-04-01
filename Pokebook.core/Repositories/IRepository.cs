@@ -15,10 +15,10 @@ namespace Pokebook.core.Repositories
         IEnumerable<T> ListAll();
         IEnumerable<T> ListFiltered(Expression<Func<T, bool>> predicate);
 
-        void Add(T entity);
-        void AddRange(IEnumerable<T> entities);
+        T Add(T entity);
+        IEnumerable<T> AddRange(IEnumerable<T> entities);
 
-        void Remove(T entity);
-        void RemoveRange(IEnumerable<T> entities);
+        T Remove(T entity);
+        IEnumerable<T> RemoveRange(IEnumerable<T> entities);
     }
 }
