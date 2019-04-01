@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Pokebook.api.Models;
+using Pokebook.core.Models;
 using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 using System;
