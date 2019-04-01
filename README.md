@@ -9,13 +9,13 @@ $ git clone https://github.com/HBO5Informatica/1819-b03-3-ee-pokebook-team-rocke
 ```
 
 ## Using the repository pattern
-The current repository system uses a generic repository(1), in sync with a unit of work(2).
-(1): Implements `IRepository<T>`
+The current repository system uses a generic repository **(1)**, in sync with a unit of work **(2)**.
+**1**: Implements `IRepository<T>`
 - no IQueryables are returned
 - no Update functionality is provided
 - uses `DbContext` instead of specific context
 
-(2): Implements `IUnitOfWork` + `IDisposable`
+**2**: Implements `IUnitOfWork` + `IDisposable`
 - accounts for the syncing/saving to database
 - contains all repositories as properties
 - should be used to access repositories
@@ -30,7 +30,9 @@ To add a new repo to the system, please adhere to following steps:
   - inherit from `GenericRepository<T>` or `MappingRepository<T>` if needed
 3. Add the new repository interface to the IUnitOfWork interface as a readonly property
 4. Add the new concrete implementation to the IUnitOfWork interface as seen below
- ![implenting concrete repo](http://prntscr.com/n5fgxd)
+
+
+ ![implenting concrete repo](docs/screenshots/newrepoUOW.png)
 
 ### Using the Unit of Work (UoW)
 We're not using the repositories directly in Controllers, that's where the Unit of Work comes in.
@@ -41,6 +43,8 @@ A private field is created in the `ControllerCrudBase`, which is instantiated in
 To access a method from a repository:
 - select the desired repository from the UoW properties
 - select the desired method
+
+
   *Note: if the method you're calling makes any modification to the repo (changing property value, adding, deleting), use `Complete()` after finishing accessing the UoW*
 - return the value.
 
@@ -60,3 +64,6 @@ To access a method from a repository:
 * StackOverflow
 * Moshfegh Hamedani
 * Any articles used
+
+## License
+This project is licensed under MIT License. For more information, see [LICENSE.md](LICENSE.md)
