@@ -9,29 +9,32 @@ using System.Threading.Tasks;
 
 namespace Pokebook.api.Controllers
 {
-    public class ControllerCrudBase : ControllerBase //TODO: ask how to implement this all
+    public class ControllerCrudBase<T> : ControllerBase 
+        where T : EntityBase//TODO: ask how to implement this all
     {
+        public IRepository<T> Repository { get; set; }
         protected UnitOfWork unitOfWork;
-        public ControllerCrudBase(PokebookContext dbc, IMapper m)
+        public ControllerCrudBase(PokebookContext dbc, IMapper m, IRepository<T> repo)
         {
+            Repository = repo;
             unitOfWork = new UnitOfWork(dbc, m);
         }
         // GET: api/T
         [HttpGet]
         public virtual IActionResult Get()
         {
-            return Ok(unitOfWork.repository.ListAll());
+            return Ok(Repository.ListAll());
         }
 
         // GET: api/T/2
         [HttpGet("{id}")]
-        public virtual async Task<IActionResult> Get(Guid id)
+        public virtual IActionResult Get(Guid id)
         {
-            return Ok(await repository.GetById(id));
+            return Ok(Repository.FindById(id));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] T entity)
+        public IActionResult Put([FromRoute] Guid id, [FromBody] T entity)
         {
             if (!ModelState.IsValid)
             {
@@ -42,23 +45,23 @@ namespace Pokebook.api.Controllers
                 return BadRequest();
             }
 
-            T e = await repository.Update(entity);
-            if (e == null)
+            int dbChanges = unitOfWork.Complete();
+            if (dbChanges == 0)
             {
                 return NotFound();
             }
-            return Ok(e);
+            return Ok(entity);
         }
 
         // POST: api/T
         [HttpPost]
-        public async Task<IActionResult> PostPublisher([FromBody] T entity)
+        public IActionResult PostPublisher([FromBody] T entity)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            T e = await repository.Add(entity);
+            T e = Repository.Add(entity);
             if (e == null)
             {
                 return NotFound();
@@ -68,13 +71,14 @@ namespace Pokebook.api.Controllers
 
         // DELETE: api/T/3
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public IActionResult Delete([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var entity = await repository.Delete(id);
+            var toremove = Repository.FindById(id);
+            var entity = Repository.Remove(toremove);
             if (entity == null)
             {
                 return NotFound();

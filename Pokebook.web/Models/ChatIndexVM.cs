@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Pokebook.api.Models;
+using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +11,7 @@ namespace Pokebook.web.Models
     public class ChatIndexVM
     {
         public User User { get; set; }
-        public ICollection<Chat> AllUserChatsForUser { get; set; }
+        public List<Chat> AllUserChatsForUser { get; set; }
 
         [Required]
         public Guid SelectedUserId { get; set; }
