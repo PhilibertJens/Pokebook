@@ -29,7 +29,7 @@ namespace Pokebook.api
             );
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<PokebookContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PokebookDb")));
             services.AddScoped<ChatRepository>();
