@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,9 @@ namespace Pokebook.core.Models
         public string LastMessage { get; set; }
 
         /*Navigation properties*/
+        [JsonIgnore]
         public ICollection<UserChat> UserChats { get; set; }
+        [JsonIgnore]
         public ICollection<Message> Messages { get; set; }
     }
 }

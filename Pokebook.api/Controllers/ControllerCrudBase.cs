@@ -14,7 +14,7 @@ namespace Pokebook.api.Controllers
     {
         public IRepository<T> Repository { get; set; }
         protected UnitOfWork unitOfWork;
-        public ControllerCrudBase(PokebookContext dbc, IMapper m, IRepository<T> repo)
+        public ControllerCrudBase(PokebookContext dbc, IMapper m, GenericRepository<T> repo)
         {
             Repository = repo;
             unitOfWork = new UnitOfWork(dbc, m);

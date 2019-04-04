@@ -11,9 +11,16 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class MessagesController : ControllerCrudBase<Message>
     {
-        public MessagesController(PokebookContext dbc, IMapper m, IRepository<Message> repo) :
+        public MessagesController(PokebookContext dbc, IMapper m, MessageRepository repo) :
             base(dbc,m,repo)
         {
+        }
+
+        //api/Messages
+        [HttpGet]
+        public override IActionResult Get()
+        {
+            return Ok(unitOfWork.Messages.ListAll());
         }
     }
 }

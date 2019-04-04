@@ -13,13 +13,13 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class ChatsController : ControllerCrudBase<Chat>
     {
-        public ChatsController(PokebookContext dbc, IMapper m, IRepository<Chat> repo) : base(dbc, m,repo)
+        public ChatsController(PokebookContext dbc, IMapper m, ChatRepository repo) : base(dbc, m,repo)
         {
         }
 
         // GET: api/Chats
         [HttpGet]
-        public IActionResult GetChats()
+        public override IActionResult Get()
         {
             return Ok(unitOfWork.Chats.ListAll());//later enkel voor admin gebruikers!
         }
