@@ -55,13 +55,14 @@ namespace Pokebook.api.Controllers
 
         // POST: api/T
         [HttpPost]
-        public IActionResult PostPublisher([FromBody] T entity)
+        public IActionResult Post([FromBody] T entity)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             T e = Repository.Add(entity);
+            int dbChanges = unitOfWork.Complete();
             if (e == null)
             {
                 return NotFound();
@@ -79,6 +80,7 @@ namespace Pokebook.api.Controllers
             }
             var toremove = Repository.FindById(id);
             var entity = Repository.Remove(toremove);
+            int dbChanges = unitOfWork.Complete();
             if (entity == null)
             {
                 return NotFound();
