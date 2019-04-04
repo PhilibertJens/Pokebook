@@ -34,7 +34,7 @@ namespace Pokebook.core.Data
         public T CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<T>();
-            builder.UseSqlServer(Configuration.GetConnectionString(ConfigKey));
+            builder.UseSqlServer("Server =.\\SQLEXPRESS; Database = PokebookDb; Integrated Security = true;");
             return CreateDbContext(builder.Options);
         }
 
