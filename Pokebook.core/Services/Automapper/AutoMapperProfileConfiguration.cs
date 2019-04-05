@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,11 @@ namespace Pokebook.core.Services.Automapper
         protected AutoMapperProfileConfiguration(string profileName) :
             base(profileName)
         {
-            //CreateMap<>();
+            CreateMap<Chat, ChatSimpleDTO>()
+                .ForMember(
+                dest => dest.MessageCount,
+                opts => opts.MapFrom(
+                    src => src.Messages.Count));
         }
     }
 }

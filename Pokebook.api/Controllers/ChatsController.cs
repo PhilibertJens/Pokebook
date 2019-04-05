@@ -47,5 +47,13 @@ namespace Pokebook.api.Controllers
         {
             return Ok(unitOfWork.Chats.FindChatsForUser(userName));
         }
+
+        //GET: api/Chats/simple
+        [HttpGet]
+        [Route("simple")]
+        public IActionResult GetSimpleChats()
+        {
+            return Ok(unitOfWork.Chats.GetChatSimples());
+        }
     }
 }

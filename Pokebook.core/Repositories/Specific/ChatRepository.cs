@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
-    public class ChatRepository : GenericRepository<Chat>, IChatRepository
+    public class ChatRepository : MappingRepository<Chat>, IChatRepository
     {
-        public ChatRepository(PokebookContext context) : base(context)
+        public ChatRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
         }
 
@@ -22,12 +25,10 @@ namespace Pokebook.core.Repositories.Specific
                 .Include(uc => uc.User).ThenInclude(u => u.UserChats)
                 .ToList();
         }
-
-        //return await db.UserChats
-        //    .Include(uc => uc.Chat).ThenInclude(c => c.UserChats)
-        //    .Include(uc => uc.User).ThenInclude(u => u.UserChats)
-        //    .Where(uc => uc.User.Id == Id)
-        //    .Select(x => x.Chat).ToListAsync();
+        public IEnumerable<ChatSimpleDTO> GetChatSimples()
+        {
+            return PokebookContext.Chats.ProjectTo<ChatSimpleDTO>(mapper.ConfigurationProvider).ToList();
+        }
 
         public IEnumerable<Chat> FindChatsForUser(Guid Id)
         {

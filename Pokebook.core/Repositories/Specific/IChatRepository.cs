@@ -1,4 +1,5 @@
 ﻿using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Pokebook.core.Repositories.Specific
         IEnumerable<Chat> FindChatsForUser(string username);
 
         IEnumerable<string> FindChatNamesForUser(Guid id);
+
+        IEnumerable<ChatSimpleDTO> GetChatSimples();
     }
 }
