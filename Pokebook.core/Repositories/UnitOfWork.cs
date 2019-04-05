@@ -16,7 +16,7 @@ namespace Pokebook.core.Repositories
         public UnitOfWork(PokebookContext _context, IMapper mapper)
         {
             context = _context;
-            Chats = new ChatRepository(context);
+            Chats = new ChatRepository(context,mapper);
             Messages = new MessageRepository(context, mapper);
             UserChats = new UserChatRepository(context, mapper);
         }

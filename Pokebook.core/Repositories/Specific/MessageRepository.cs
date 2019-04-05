@@ -15,7 +15,6 @@ namespace Pokebook.core.Repositories.Specific
         {
 
         }
-
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

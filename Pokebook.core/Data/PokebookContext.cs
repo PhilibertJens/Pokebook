@@ -30,6 +30,11 @@ namespace Pokebook.core.Data
                 .HasMany(c => c.Messages)
                 .WithOne(m => m.Chat);
 
+            modelBuilder.Entity<Chat>()
+                .Property(p => p.Created)
+                    .HasDefaultValueSql("GETDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
+
             modelBuilder.Entity<UserChat>()
                 .HasKey(uc => new { uc.ChatId, uc.UserId });
 
@@ -42,6 +47,11 @@ namespace Pokebook.core.Data
                 .HasOne(m => m.Chat)
                 .WithMany(c => c.Messages)
                 .HasForeignKey(m => m.ChatId);
+
+            modelBuilder.Entity<Message>()
+                .Property(p => p.Created)
+                    .HasDefaultValueSql("GETDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
 
             DataSeeder.Seed(modelBuilder);
         }
