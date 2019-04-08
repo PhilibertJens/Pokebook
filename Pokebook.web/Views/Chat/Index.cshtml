@@ -4,7 +4,9 @@
 }
 
 <div class="row chat">
-    <vc:chat-list></vc:chat-list>
+    <div class="col-md-4 chatList">
+        <vc:chat-list></vc:chat-list>
+    </div>
     <div class="col-md-8">
         <h1>Hey @(Model.User.UserName). Start a new chat here</h1>
         @{
