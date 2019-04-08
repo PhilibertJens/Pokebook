@@ -41,7 +41,7 @@ body {
     overflow-y: scroll;
 }
 
-#pokeTimeLine h2{
+#pokeTimeLine h2, h3{
     text-align: center;
 }
 

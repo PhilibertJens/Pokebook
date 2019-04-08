@@ -14,14 +14,19 @@
         <h2>Pokebook timeline here</h2>
         <div id="posts">
             @*Hier komen alle time line posts via Vue.js*@
-            
-                @{ 
-                    List<string> testPostList = new List<string> { "Post 1", "Post 2", "Post 3"};
-                    foreach(var post in testPostList)
-                    {
-                        <div>@post</div>
-                    }
+            <h3>{{ loadingMessage }}</h3>
+            @{
+                List<string> testPostList = new List<string> { "Post 1", "Post 2", "Post 3" };
+                foreach (var post in testPostList)
+                {
+                    <div>@post</div>
                 }
+            }
         </div>
     </main>
 </div>
+
+@section scripts{
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/timeLine.js"></script>
+}
