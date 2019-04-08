@@ -81,6 +81,15 @@ namespace Pokebook.core.Data
                     Text = "This is a chat with myself. Is this even possible?"
                 }
             );
+
+            //modelBuilder.Entity<FriendConnection>().HasData(
+            //    new FriendConnection
+            //    {
+            //        IdRequester = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            //        IdApprover = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            //        Accepted = true
+            //    }
+            //);
         }
     }
 }
