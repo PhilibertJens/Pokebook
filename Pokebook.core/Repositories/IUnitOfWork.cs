@@ -13,6 +13,7 @@ namespace Pokebook.core.Repositories
         IChatRepository Chats { get; }
         IMessageRepository Messages { get; }
         IUserChatRepository UserChats { get; }
+        IUserRepository Users { get; }
         int Complete();
     }
 }
