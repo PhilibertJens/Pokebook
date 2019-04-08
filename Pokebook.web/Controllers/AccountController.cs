@@ -50,6 +50,38 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        //register postmethod here
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registration(AccountRegisterVM userData)
+        {
+            if (ModelState.IsValid)
+            {
+                string uri = $"{baseuri}/users/{userData.UserName}";
+                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+                if (currentUser == null)//user bestaat nog niet
+                {
+                    User newUser = new User()
+                    {
+                        FirstName = userData.FirstName,
+                        LastName = userData.LastName,
+                        UserName = userData.UserName,
+                        PasswordHash = userData.Password//is momenteel nog niet gehasht
+                    };
+
+                    uri = $"{baseuri}/users/{newUser}";
+                    User AddedUser = await WebApiHelper.PostCallAPI<User, User>(uri, newUser);
+
+                    HttpContext.Session.SetString("UserId", newUser.Id.ToString());
+                    return new RedirectToActionResult("Index", "Home", null);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "A trainer with that username already exists");
+                    return View(userData);
+                }
+
+            }
+            else return View(userData);
+        }
     }
 }
