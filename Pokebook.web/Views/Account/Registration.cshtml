@@ -1,0 +1,45 @@
+﻿@model Pokebook.web.Models.AccountRegisterVM
+@{
+    ViewData["Title"] = "Registration";
+}
+
+<h2>Sign up here</h2>
+<h3>Hey trainer. You're about to start your journey!</h3>
+<p>Already have an account? Perfect! <a asp-action="Login">Sign in here</a></p>
+<div asp-validation-summary="ModelOnly"></div>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control">
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control">
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control">
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RepeatPassword"></label>
+        <input asp-for="RepeatPassword" class="form-control">
+        <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+    </div>
+    <button type="submit" class="noLayout" title="Sign me up">
+        <div class="box"></div>
+    </button>
+</form>
+
