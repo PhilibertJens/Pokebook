@@ -83,5 +83,10 @@ namespace Pokebook.web.Controllers
             }
             else return View(userData);
         }
+
+        public IActionResult RegisterSuccess()
+        {
+            return View();
+        }
     }
 }
