@@ -72,7 +72,7 @@ namespace Pokebook.web.Controllers
                     User AddedUser = await WebApiHelper.PostCallAPI<User, User>(uri, newUser);
 
                     HttpContext.Session.SetString("UserId", newUser.Id.ToString());
-                    return new RedirectToActionResult("Index", "Home", null);
+                    return new RedirectToActionResult("RegisterSuccess", "Account", null);
                 }
                 else
                 {
