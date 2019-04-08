@@ -1,0 +1,15 @@
+﻿body {
+    background-image: url("/images/LoginBackground.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    background-color: ghostwhite;
+    padding-bottom: 1em;
+    width: 40%;
+}
+
+.title {
+    width: 100%;
+}
