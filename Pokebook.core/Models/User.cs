@@ -29,10 +29,14 @@ namespace Pokebook.core.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
 
+        public int NumberOfFriends { get; set; }
+
         /*Navigation properties*/
         [JsonIgnore]
         public ICollection<UserChat> UserChats { get; set; }
         [JsonIgnore]
         public ICollection<Message> Messages { get; set; }
+        [JsonIgnore]
+        public ICollection<FriendConnection> Friends { get; set; }
     }
 }
