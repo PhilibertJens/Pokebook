@@ -1,7 +1,25 @@
-﻿
+﻿@model Pokebook.web.Models.AccountLoginVM
 @{
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<h2>Sign in here</h2>
+<h3>Hey trainer. Ready to meet other trainers and hear their adventures!</h3>
+<p>No account yet? Don't panic and <a asp-action="Registration">sign up here</a>. It's free</p>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form method="post">
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control">
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control">
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
 
+    <button type="submit" class="noLayout" title="Sign me in">
+        <div class="box"></div>
+    </button>
+</form>
