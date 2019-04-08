@@ -1,16 +1,16 @@
 ﻿
 @{
     ViewData["Title"] = "RegisterSuccess";
+    Layout = "_AccountLayout";
 }
-
 <div class="row welcome">
     <div class="col-sm-12">
         <h2>Congratulations!</h2><br />
 
         <p>Your account has bees activated.</p>
         <p>Now you see other trainers adventures</p>
-        <a asp-controller="Home" asp-action="index">
-            Go to Start
+        <a asp-controller="Home" asp-action="index">Go to Start<br />
+            <img src="~/images/welcome.gif" title="Welcome trainer" alt="Welcome trainer" />
         </a>
     </div>
 </div>
