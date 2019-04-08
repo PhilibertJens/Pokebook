@@ -21,7 +21,7 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Users
         [HttpGet]
-        [Route("Users/")]
+        [Route("Users")]
         public override IActionResult Get()
         {
             return Ok(unitOfWork.Users.ListAll());

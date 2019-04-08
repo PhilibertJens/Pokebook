@@ -2,19 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Pokebook.core.Models;
+using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 
 namespace Pokebook.web.Controllers
 {
     public class AccountController : Controller
     {
+        string baseuri = "https://localhost:44321/api";
+
         public IActionResult Login()
         {
-            return View();
+            AccountLoginVM vm = new AccountLoginVM();
+            return View(vm);
         }
 
-        //login postmethod here
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(AccountLoginVM userData)
+        {
+            if (ModelState.IsValid)
+            {
+                string uri = $"{baseuri}/users/{userData.UserName}";
+                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+
+                if (currentUser != null)//paswoord hash moet ook gecheckt worden
+                {
+                    HttpContext.Session.SetString("UserId", currentUser.Id.ToString());
+                    return new RedirectToActionResult("Index", "Home", null);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Username or password is incorrect. Professor Oak can't remember you.");
+                    return View(userData);
+                }
+
+            }
+            else return View(userData);
+        }
 
         public IActionResult Registration()
         {
