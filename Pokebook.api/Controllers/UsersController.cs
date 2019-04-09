@@ -21,25 +21,34 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Users
         [HttpGet]
-        [Route("Users")]
+        [Route("")]
         public override IActionResult Get()
         {
             return Ok(unitOfWork.Users.ListAll());
         }
 
-        // GET: api/Users
+        // GET: api/Users/Id
         [HttpGet]
+        [Route("/{Id}")]
         public IActionResult GetUserWithId(Guid Id)
         {
             return Ok(unitOfWork.Users.FindById(Id));
         }
 
-        // GET: api/Users/userName
+        // GET: api/Users/userName/userName
         [HttpGet]
-        [Route("Users/{userName}")]
+        [Route("userName/{userName}")]
         public IActionResult GetUserWithUserName(string userName)
         {
-            return Ok(unitOfWork.Users);
+            return Ok(unitOfWork.Users.FindUserByUserName(userName));
+        }
+
+        [HttpPost]
+        [Route("{User}")]
+        public IActionResult AddNewUser(User user)
+        {
+            //return Ok(unitOfWork.Users.Add(user)); --> werkt niet omdat de Id al bepaald is voor de Add method wordt uitgevoerd
+            return Ok(Post(user));
         }
     }
 }

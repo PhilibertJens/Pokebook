@@ -25,6 +25,7 @@ namespace Pokebook.core.Repositories.Specific
                 .Include(uc => uc.User).ThenInclude(u => u.UserChats)
                 .ToList();
         }
+
         public IEnumerable<ChatSimpleDTO> GetChatSimples()
         {
             return PokebookContext.Chats.ProjectTo<ChatSimpleDTO>(mapper.ConfigurationProvider).ToList();

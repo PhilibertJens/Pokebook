@@ -26,7 +26,7 @@ namespace Pokebook.web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uri = $"{baseuri}/users/{userData.UserName}";
+                string uri = $"{baseuri}/users/username/{userData.UserName}";
                 User currentUser = WebApiHelper.GetApiResult<User>(uri);
 
                 if (currentUser != null)//paswoord hash moet ook gecheckt worden
@@ -56,7 +56,7 @@ namespace Pokebook.web.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uri = $"{baseuri}/users/{userData.UserName}";
+                string uri = $"{baseuri}/users/username/{userData.UserName}";
                 User currentUser = WebApiHelper.GetApiResult<User>(uri);
                 if (currentUser == null)//user bestaat nog niet
                 {
@@ -71,7 +71,7 @@ namespace Pokebook.web.Controllers
                     uri = $"{baseuri}/users/{newUser}";
                     User AddedUser = await WebApiHelper.PostCallAPI<User, User>(uri, newUser);
 
-                    HttpContext.Session.SetString("UserId", newUser.Id.ToString());
+                    HttpContext.Session.SetString("UserId", AddedUser.Id.ToString());
                     return new RedirectToActionResult("RegisterSuccess", "Account", null);
                 }
                 else
