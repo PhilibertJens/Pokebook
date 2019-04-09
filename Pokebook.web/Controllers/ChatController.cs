@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pokebook.core.Models;
 using Pokebook.web.Helpers;
@@ -12,7 +13,6 @@ namespace Pokebook.web.Controllers
     public class ChatController : Controller
     {
         string baseuri = "https://localhost:44321/api";//poortnummer aanpassen!
-        Guid userIdFromSession = Guid.Parse("00000000-0000-0000-0000-000000000001");//wordt via session opgehaald
 
         public IActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace Pokebook.web.Controllers
             //            "]";
             //List<Chat> chatListForUser = JsonConvert.DeserializeObject <List<Chat>>(jsonString);
 
-            Guid userId = userIdFromSession;
+            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/chats/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
             List<User> userList = new List<User>//moet opgehaald worden via de api
@@ -73,7 +73,7 @@ namespace Pokebook.web.Controllers
             Chat chat = new Chat
             {
                 Name = "Newly created Chat",//moet initieel een combinatie van de gebruikersnamen worden
-                CreatorId = userIdFromSession, //vm.SenderId
+                CreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
                 CreateDate = DateTime.Now,
                 LastMessage = vm.Text,
                 NumberOfUsers = 2, //minimum
