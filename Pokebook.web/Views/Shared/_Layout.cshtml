@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -37,7 +39,7 @@
                 </ul>
                 @*<partial name="_LoginPartial" /> --> Identity wordt niet langer gebruikt*@
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a asp-controller="Account" asp-action="Login">Login</a></li>
+                    <vc:show-username></vc:show-username>
                     <li><a asp-controller="Account" asp-action="Registration">Register</a></li>
                 </ul>
             </div>

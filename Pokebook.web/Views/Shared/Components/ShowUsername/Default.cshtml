@@ -1,0 +1,16 @@
+﻿@model Pokebook.core.Models.User
+@{
+    ViewData["Title"] = "Default";
+}
+
+@{
+    if (Model != null)
+    {
+        <li><a asp-area="" asp-controller="Home" asp-action="Index">Hey @Model.UserName</a></li>
+    }
+    else
+    {
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+    }
+}
+
