@@ -29,6 +29,7 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Route("Users/{Id}")]
         public IActionResult GetUserWithId(Guid Id)
         {
             return Ok(unitOfWork.Users.FindById(Id));
