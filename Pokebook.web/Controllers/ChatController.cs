@@ -6,6 +6,7 @@ using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pokebook.web.Controllers
@@ -14,34 +15,49 @@ namespace Pokebook.web.Controllers
     {
         string baseuri = "https://localhost:44321/api";//poortnummer aanpassen!
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //var jsonString = "[" +
-            //            "{'name': 'Awesome Chat','image': null,'theme': null,'creatorId': '00000000-0000-0000-0000-000000000000','createDate': '2019-03-19T11:51:57.857','numberOfMessages': 0,'numberOfUsers': 0,'lastMessage': null,'userChats': null,'messages': null,'id': '00000000-0000-0000-0000-000000000001'}," +
-            //            "{'name': 'Another awesome Chat','image': null,'theme': null,'creatorId': '00000000-0000-0000-0000-000000000000','createDate': '2019-03-19T09:51:57.859','numberOfMessages': 0,'numberOfUsers': 0,'lastMessage': null,'userChats': null,'messages': null,'id': '00000000-0000-0000-0000-000000000002'}" +
-            //            "]";
-            //List<Chat> chatListForUser = JsonConvert.DeserializeObject <List<Chat>>(jsonString);
-
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/chats/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
-            List<User> userList = new List<User>//moet opgehaald worden via de api
-            {
-                new User
-                {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
-                    UserName = "otherUser"
-                }
-            };
+
+            uri = $"{baseuri}/users/{userId}";
+            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+
+            uri = $"{baseuri}/users";
+            var allUsers = WebApiHelper.GetApiResult<List<User>>(uri);
+            allUsers = await FilterUserList(allUsers, userId);
 
             ChatIndexVM vm = new ChatIndexVM
             {
-                AllUserChatsForUser = chatListForUser,
-                User = new User { UserName = "UserWithNoName" },
-                AllUsers = new SelectList(userList, "Id", "UserName")
+                //AllUserChatsForUser = chatListForUser,
+                User = currentUser,
+                AllUsers = new SelectList(allUsers, "Id", "UserName")
             };
 
             return View(vm);
+        }
+
+        private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
+        {
+            allUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
+
+            string uri = $"{baseuri}/UserChats/id/{userId}";
+            List<UserChat> allUserChatsWithIncludes = WebApiHelper.GetApiResult<List<UserChat>>(uri);
+
+            var usersToRemove = new List<User>();//bepalen met welke andere gebruikers je al een chat hebt
+            foreach (var userchat in allUserChatsWithIncludes)
+            {
+                var chat = userchat.Chat;
+                foreach (var uc in chat.UserChats)
+                {
+                    if (uc.User.Id == userId) continue;
+                    else usersToRemove.Add(uc.User);
+                }
+            }
+
+            foreach (var user in usersToRemove) allUsers.Remove(user);
+            return allUsers;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
         }
 
         [HttpPost]
