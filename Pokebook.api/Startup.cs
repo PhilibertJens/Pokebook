@@ -37,8 +37,9 @@ namespace Pokebook.api
             services.AddScoped<ChatRepository>();
             services.AddScoped<MessageRepository>();
             services.AddScoped<UserChatRepository>();
-            services.AddScoped<UnitOfWork>();
             services.AddScoped<UserRepository>();
+            services.AddScoped<UnitOfWork>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
