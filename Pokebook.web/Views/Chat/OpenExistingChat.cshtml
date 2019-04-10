@@ -1,0 +1,33 @@
+﻿@model OpenExistingChatVM
+@{
+    ViewData["Title"] = "OpenExistingChat";
+}
+
+<div class="row chat">
+    <vc:chat-list></vc:chat-list>
+    <div class="col-md-8">
+        <h2>@Model.Chat.Name</h2>
+        <ul id='speech-bubbles'>
+            @{
+                foreach (var message in Model.Chat.Messages)
+                {
+                    if (message.Sender.UserName == Model.Me.UserName)
+                    {
+                        <li>
+                            <p>@message.Text</p>
+                            <span class="time">@message.SendDate</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <span class='eersteLetter'>@message.Sender.UserName[0]</span>
+                            <p>@message.Text</p><br />
+                            <span class="time">@message.SendDate</span>
+                        </li>
+                    }
+                }
+            }
+        </ul>
+    </div>
+</div>
