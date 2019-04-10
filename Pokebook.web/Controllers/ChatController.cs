@@ -30,7 +30,6 @@ namespace Pokebook.web.Controllers
 
             ChatIndexVM vm = new ChatIndexVM
             {
-                //AllUserChatsForUser = chatListForUser,
                 User = currentUser,
                 AllUsers = new SelectList(allUsers, "Id", "UserName")
             };
@@ -76,7 +75,6 @@ namespace Pokebook.web.Controllers
         public async Task<IActionResult> Index(ChatIndexVM userdata)
         {
             HttpContext.Session.SetString("ReceiverId", userdata.SelectedUserId.ToString());
-            //ontvanger id moet in een session bijgehouden worden
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
@@ -158,10 +156,11 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> OpenExistingChat()
+        public async Task<IActionResult> OpenExistingChat(Guid chatId)//is 000... na Redirect om de een of andere reden
         {
-            var chatId = Guid.Parse(HttpContext.Session.GetString("chatId"));
-            HttpContext.Session.Remove("chatId");
+            if(chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
+                chatId = Guid.Parse(HttpContext.Session.GetString("chatId"));
+            }
 
             string uri = $"{baseuri}/chats/{chatId}";
             Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
