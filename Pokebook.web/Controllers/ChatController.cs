@@ -34,7 +34,8 @@ namespace Pokebook.web.Controllers
                 User = currentUser,
                 AllUsers = new SelectList(allUsers, "Id", "UserName")
             };
-
+            //HttpContext.Session.SetString("chatId", "9bc5f401-9684-48a9-2ffe-08d6bd9fc1a1");
+            //return new RedirectToActionResult("OpenExistingChat", "Chat", null);
             return View(vm);
         }
 
@@ -150,9 +151,35 @@ namespace Pokebook.web.Controllers
                 };
                 UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
 
-                return new RedirectToActionResult("Index", "Chat", null);
+                HttpContext.Session.SetString("chatId", createdChat.Id.ToString());
+                return new RedirectToActionResult("OpenExistingChat", "Chat", createdChat.Id);
             }
             vm.Receiver = receiver;
+            return View(vm);
+        }
+
+        public async Task<IActionResult> OpenExistingChat()
+        {
+            var chatId = Guid.Parse(HttpContext.Session.GetString("chatId"));
+            HttpContext.Session.Remove("chatId");
+
+            string uri = $"{baseuri}/chats/{chatId}";
+            Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
+
+            uri = $"{baseuri}/messages/chatId/{chatId}";
+            List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
+            currentChat.Messages = messagesFromChat;
+
+            Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{myId}";
+            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+
+            OpenExistingChatVM vm = new OpenExistingChatVM
+            {
+                Chat = currentChat,
+                Me = currentUser
+            };
+
             return View(vm);
         }
     }
