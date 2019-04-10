@@ -40,24 +40,34 @@ namespace Pokebook.web.Controllers
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
         {
-            allUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
+            List<User> allOtherUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
 
-            string uri = $"{baseuri}/UserChats/id/{userId}";
-            List<UserChat> allUserChatsWithIncludes = WebApiHelper.GetApiResult<List<UserChat>>(uri);
+            List<Guid> IdForOtherUsers = allUsers.Where(u => u.Id != userId)
+                                                 .Select(u => u.Id).ToList();//eigen userId verwijderen uit list
 
-            var usersToRemove = new List<User>();//bepalen met welke andere gebruikers je al een chat hebt
-            foreach (var userchat in allUserChatsWithIncludes)
+            string uri = $"{baseuri}/chats/userId/{userId}";
+            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
+
+            var usersToRemoveById = new List<Guid>();
+            foreach(var chat in chatListForUser)
             {
-                var chat = userchat.Chat;
-                foreach (var uc in chat.UserChats)
+                uri = $"{baseuri}/userchats/chatId/{chat.Id}";
+                List<UserChat> userChatListForChat = WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
+                //var userchats = chat.UserChats; --> kan niet door [JsonIgnore] in Chat class
+
+                foreach (var uc in userChatListForChat)
                 {
-                    if (uc.User.Id == userId) continue;
-                    else usersToRemove.Add(uc.User);
+                    if (IdForOtherUsers.Contains(uc.UserId)) usersToRemoveById.Add(uc.UserId);//id's van te verwijderen users
                 }
             }
 
-            foreach (var user in usersToRemove) allUsers.Remove(user);
-            return allUsers;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
+            List<User> result = new List<User>();
+            foreach (var user in allOtherUsers)
+            {
+                if (!usersToRemoveById.Contains(user.Id)) result.Add(user);//wanneer de userid niet voorkomt in lijst komt hij in result
+            }
+            
+            return result;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
         }
 
         [HttpPost]
