@@ -13,14 +13,14 @@
                 {
                     if (message.Sender.UserName == Model.Me.UserName)
                     {
-                        <li>
+                        <li class="bubble-me">
                             <p>@message.Text</p>
                             <span class="time">@message.SendDate</span>
                         </li>
                     }
                     else
                     {
-                        <li>
+                        <li class="bubble-other">
                             <span class='eersteLetter'>@message.Sender.UserName[0]</span>
                             <p>@message.Text</p><br />
                             <span class="time">@message.SendDate</span>
