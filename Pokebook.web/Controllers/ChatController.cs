@@ -109,47 +109,51 @@ namespace Pokebook.web.Controllers
             uri = $"{baseuri}/users/{senderId}";
             User sender = WebApiHelper.GetApiResult<User>(uri);
 
-            Chat chat = new Chat
+            if (ModelState.IsValid)
             {
-                Name = $"{sender.UserName}, {receiver.UserName}",
-                CreatorId = sender.Id,
-                CreateDate = DateTime.Now,
-                LastMessage = vm.Text,
-                NumberOfUsers = 2, //minimum
-                NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
-            };
+                Chat chat = new Chat
+                {
+                    Name = $"{sender.UserName}, {receiver.UserName}",
+                    CreatorId = sender.Id,
+                    CreateDate = DateTime.Now,
+                    LastMessage = vm.Text,
+                    NumberOfUsers = 2, //minimum
+                    NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
+                };
 
-            uri = $"{baseuri}/chats";
-            Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
+                uri = $"{baseuri}/chats";
+                Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
 
-            Message message = new Message
-            {
-                Text = createdChat.LastMessage,
-                //Chat = createdChat,--> Navigation properties geven een error bij post request
-                ChatId = createdChat.Id,
-                SenderId = createdChat.CreatorId,
-                SendDate = DateTime.Now
-            };
-            uri = $"{baseuri}/messages";
-            Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
+                Message message = new Message
+                {
+                    Text = createdChat.LastMessage,
+                    //Chat = createdChat,--> Navigation properties geven een error bij post request
+                    ChatId = createdChat.Id,
+                    SenderId = createdChat.CreatorId,
+                    SendDate = DateTime.Now
+                };
+                uri = $"{baseuri}/messages";
+                Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
 
-            UserChat senderData = new UserChat
-            {
-                //Chat = createdChat,
-                ChatId = createdChat.Id,
-                UserId = createdChat.CreatorId
-            };
-            uri = $"{baseuri}/userchats";
-            UserChat uc1 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
+                UserChat senderData = new UserChat
+                {
+                    ChatId = createdChat.Id,
+                    UserId = createdChat.CreatorId
+                };
+                uri = $"{baseuri}/userchats";
+                UserChat uc1 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
 
-            UserChat receiverData = new UserChat
-            {
-                ChatId = createdChat.Id,
-                UserId = receiver.Id
-            };
-            UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
+                UserChat receiverData = new UserChat
+                {
+                    ChatId = createdChat.Id,
+                    UserId = receiver.Id
+                };
+                UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
 
-            return new RedirectToActionResult("Index", "Chat", null);
+                return new RedirectToActionResult("Index", "Chat", null);
+            }
+            vm.Receiver = receiver;
+            return View(vm);
         }
     }
 }
