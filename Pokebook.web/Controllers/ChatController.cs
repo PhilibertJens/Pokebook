@@ -74,20 +74,25 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ChatIndexVM userdata)
         {
+            HttpContext.Session.SetString("ReceiverId", userdata.SelectedUserId.ToString());
             //ontvanger id moet in een session bijgehouden worden
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
         public IActionResult SendFirstMessage()
         {
+            Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
+            string uri = $"{baseuri}/users/{receiverId}";
+            User receiver = WebApiHelper.GetApiResult<User>(uri);
+
+            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{receiverId}";
+            User sender = WebApiHelper.GetApiResult<User>(uri);
+
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
-                //ophaling van ontvanger id uit session
-                Receiver = new User
-                {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
-                    UserName = "otherUser"
-                }
+                Receiver = receiver,
+                Sender = sender
             };
             return View(vm);
         }
@@ -96,17 +101,25 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
+            Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
+            string uri = $"{baseuri}/users/{receiverId}";
+            User receiver = WebApiHelper.GetApiResult<User>(uri);
+
+            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{senderId}";
+            User sender = WebApiHelper.GetApiResult<User>(uri);
+
             Chat chat = new Chat
             {
-                Name = "Newly created Chat",//moet initieel een combinatie van de gebruikersnamen worden
-                CreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
+                Name = $"{sender.UserName}, {receiver.UserName}",
+                CreatorId = sender.Id,
                 CreateDate = DateTime.Now,
                 LastMessage = vm.Text,
                 NumberOfUsers = 2, //minimum
                 NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
             };
 
-            string uri = $"{baseuri}/chats";
+            uri = $"{baseuri}/chats";
             Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
 
             Message message = new Message
@@ -132,7 +145,7 @@ namespace Pokebook.web.Controllers
             UserChat receiverData = new UserChat
             {
                 ChatId = createdChat.Id,
-                UserId = Guid.Parse("00000000-0000-0000-0000-000000000003")
+                UserId = receiver.Id
             };
             UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
 
