@@ -10,5 +10,6 @@ namespace Pokebook.core.Repositories.Specific
     public interface IUserChatRepository : IRepository<UserChat>
     {
         IEnumerable<UserChat> GetUserChatsForUser(Guid id);
+        IEnumerable<UserChat> GetUserChatsForChat(Guid id);
     }
 }

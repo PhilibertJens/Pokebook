@@ -17,12 +17,20 @@ namespace Pokebook.api.Controllers
         {
         }
 
-        //GET: api/UserChats/Id/Id
+        //GET: api/UserChats/UserId/Id
         [HttpGet]
-        [Route("Id/{Id}")]
+        [Route("UserId/{Id}")]
         public IActionResult GetUserChatsForUser(Guid Id)
         {
             return Ok(unitOfWork.UserChats.GetUserChatsForUser(Id));
+        }
+
+        //GET: api/UserChats/ChatId/Id
+        [HttpGet]
+        [Route("ChatId/{Id}")]
+        public IActionResult GetUserChatsForChat(Guid Id)
+        {
+            return Ok(unitOfWork.UserChats.GetUserChatsForChat(Id));
         }
     }
 }
