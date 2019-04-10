@@ -24,14 +24,6 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Chats.ListAll());//later enkel voor admin gebruikers!
         }
 
-        // GET: api/Chats/Id
-        [HttpGet]
-        [Route("{Id}")]
-        public IActionResult GetChat(Guid id)
-        {
-            return Ok(unitOfWork.Chats.FindById(id));
-        }
-
         // GET: api/Chats/UserId/Id
         [HttpGet]
         [Route("UserId/{Id}")]

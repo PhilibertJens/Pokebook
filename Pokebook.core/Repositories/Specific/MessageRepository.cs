@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using System;
@@ -15,6 +16,17 @@ namespace Pokebook.core.Repositories.Specific
         {
 
         }
+
+        public List<Message> GetByChatId(Guid chatId)
+        {
+            var test = PokebookContext.Messages
+                        .Include(m => m.Sender)
+                        .Where(m => m.ChatId.Equals(chatId))
+                        .ToList();
+
+            return test;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

@@ -25,6 +25,12 @@ namespace Pokebook.core.Repositories.Specific
                 .Where(uc => uc.User.Id == Id).ToList();
         }
 
+        public IEnumerable<UserChat> GetUserChatsForChat(Guid Id)
+        {
+            return PokebookContext.UserChats
+                .Where(uc => uc.ChatId.Equals(Id)).ToList();
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

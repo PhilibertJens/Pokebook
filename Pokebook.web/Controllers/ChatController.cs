@@ -30,54 +30,68 @@ namespace Pokebook.web.Controllers
 
             ChatIndexVM vm = new ChatIndexVM
             {
-                //AllUserChatsForUser = chatListForUser,
                 User = currentUser,
                 AllUsers = new SelectList(allUsers, "Id", "UserName")
             };
-
+            //HttpContext.Session.SetString("chatId", "9bc5f401-9684-48a9-2ffe-08d6bd9fc1a1");
+            //return new RedirectToActionResult("OpenExistingChat", "Chat", null);
             return View(vm);
         }
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
         {
-            allUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
+            List<User> allOtherUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
 
-            string uri = $"{baseuri}/UserChats/id/{userId}";
-            List<UserChat> allUserChatsWithIncludes = WebApiHelper.GetApiResult<List<UserChat>>(uri);
+            List<Guid> IdForOtherUsers = allUsers.Where(u => u.Id != userId)
+                                                 .Select(u => u.Id).ToList();//eigen userId verwijderen uit list
 
-            var usersToRemove = new List<User>();//bepalen met welke andere gebruikers je al een chat hebt
-            foreach (var userchat in allUserChatsWithIncludes)
+            string uri = $"{baseuri}/chats/userId/{userId}";
+            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
+
+            var usersToRemoveById = new List<Guid>();
+            foreach(var chat in chatListForUser)
             {
-                var chat = userchat.Chat;
-                foreach (var uc in chat.UserChats)
+                uri = $"{baseuri}/userchats/chatId/{chat.Id}";
+                List<UserChat> userChatListForChat = WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
+                //var userchats = chat.UserChats; --> kan niet door [JsonIgnore] in Chat class
+
+                foreach (var uc in userChatListForChat)
                 {
-                    if (uc.User.Id == userId) continue;
-                    else usersToRemove.Add(uc.User);
+                    if (IdForOtherUsers.Contains(uc.UserId)) usersToRemoveById.Add(uc.UserId);//id's van te verwijderen users
                 }
             }
 
-            foreach (var user in usersToRemove) allUsers.Remove(user);
-            return allUsers;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
+            List<User> result = new List<User>();
+            foreach (var user in allOtherUsers)
+            {
+                if (!usersToRemoveById.Contains(user.Id)) result.Add(user);//wanneer de userid niet voorkomt in lijst komt hij in result
+            }
+            
+            return result;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ChatIndexVM userdata)
         {
-            //ontvanger id moet in een session bijgehouden worden
+            HttpContext.Session.SetString("ReceiverId", userdata.SelectedUserId.ToString());
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
         public IActionResult SendFirstMessage()
         {
+            Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
+            string uri = $"{baseuri}/users/{receiverId}";
+            User receiver = WebApiHelper.GetApiResult<User>(uri);
+
+            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{receiverId}";
+            User sender = WebApiHelper.GetApiResult<User>(uri);
+
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
-                //ophaling van ontvanger id uit session
-                Receiver = new User
-                {
-                    Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
-                    UserName = "otherUser"
-                }
+                Receiver = receiver,
+                Sender = sender
             };
             return View(vm);
         }
@@ -86,47 +100,86 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
-            Chat chat = new Chat
+            Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
+            string uri = $"{baseuri}/users/{receiverId}";
+            User receiver = WebApiHelper.GetApiResult<User>(uri);
+
+            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{senderId}";
+            User sender = WebApiHelper.GetApiResult<User>(uri);
+
+            if (ModelState.IsValid)
             {
-                Name = "Newly created Chat",//moet initieel een combinatie van de gebruikersnamen worden
-                CreatorId = Guid.Parse(HttpContext.Session.GetString("UserId")),
-                CreateDate = DateTime.Now,
-                LastMessage = vm.Text,
-                NumberOfUsers = 2, //minimum
-                NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
+                Chat chat = new Chat
+                {
+                    Name = $"{sender.UserName}, {receiver.UserName}",
+                    CreatorId = sender.Id,
+                    CreateDate = DateTime.Now,
+                    LastMessage = vm.Text,
+                    NumberOfUsers = 2, //minimum
+                    NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
+                };
+
+                uri = $"{baseuri}/chats";
+                Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
+
+                Message message = new Message
+                {
+                    Text = createdChat.LastMessage,
+                    //Chat = createdChat,--> Navigation properties geven een error bij post request
+                    ChatId = createdChat.Id,
+                    SenderId = createdChat.CreatorId,
+                    SendDate = DateTime.Now
+                };
+                uri = $"{baseuri}/messages";
+                Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
+
+                UserChat senderData = new UserChat
+                {
+                    ChatId = createdChat.Id,
+                    UserId = createdChat.CreatorId
+                };
+                uri = $"{baseuri}/userchats";
+                UserChat uc1 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
+
+                UserChat receiverData = new UserChat
+                {
+                    ChatId = createdChat.Id,
+                    UserId = receiver.Id
+                };
+                UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
+
+                HttpContext.Session.SetString("chatId", createdChat.Id.ToString());
+                return new RedirectToActionResult("OpenExistingChat", "Chat", createdChat.Id);
+            }
+            vm.Receiver = receiver;
+            return View(vm);
+        }
+
+        public async Task<IActionResult> OpenExistingChat(Guid chatId)//is 000... na Redirect om de een of andere reden
+        {
+            if(chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
+                chatId = Guid.Parse(HttpContext.Session.GetString("chatId"));
+            }
+
+            string uri = $"{baseuri}/chats/{chatId}";
+            Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
+
+            uri = $"{baseuri}/messages/chatId/{chatId}";
+            List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
+            currentChat.Messages = messagesFromChat;
+
+            Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            uri = $"{baseuri}/users/{myId}";
+            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+
+            OpenExistingChatVM vm = new OpenExistingChatVM
+            {
+                Chat = currentChat,
+                Me = currentUser
             };
 
-            string uri = $"{baseuri}/chats";
-            Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
-
-            Message message = new Message
-            {
-                Text = createdChat.LastMessage,
-                //Chat = createdChat,--> Navigation properties geven een error bij post request
-                ChatId = createdChat.Id,
-                SenderId = createdChat.CreatorId,
-                SendDate = DateTime.Now
-            };
-            uri = $"{baseuri}/messages";
-            Message createdMessage = await WebApiHelper.PostCallAPI<Message, Message>(uri, message);
-
-            UserChat senderData = new UserChat
-            {
-                //Chat = createdChat,
-                ChatId = createdChat.Id,
-                UserId = createdChat.CreatorId
-            };
-            uri = $"{baseuri}/userchats";
-            UserChat uc1 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, senderData);
-
-            UserChat receiverData = new UserChat
-            {
-                ChatId = createdChat.Id,
-                UserId = Guid.Parse("00000000-0000-0000-0000-000000000003")
-            };
-            UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
-
-            return new RedirectToActionResult("Index", "Chat", null);
+            return View(vm);
         }
     }
 }

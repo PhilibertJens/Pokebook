@@ -9,6 +9,6 @@ namespace Pokebook.core.Repositories.Specific
 {
     public interface IMessageRepository : IRepository<Message>
     {
-        
+        List<Message> GetByChatId(Guid chatId);
     }
 }

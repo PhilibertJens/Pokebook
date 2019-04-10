@@ -4,6 +4,7 @@ using Pokebook.core.Data;
 using Pokebook.core.Models;
 using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
+using System;
 
 namespace Pokebook.api.Controllers
 {
@@ -21,6 +22,14 @@ namespace Pokebook.api.Controllers
         public override IActionResult Get()
         {
             return Ok(unitOfWork.Messages.ListAll());
+        }
+
+        //GET: api/Messages/chatId/id
+        [HttpGet]
+        [Route("chatId/{chatId}")]
+        public IActionResult GetByChatId(Guid chatId)
+        {
+            return Ok(unitOfWork.Messages.GetByChatId(chatId));
         }
     }
 }

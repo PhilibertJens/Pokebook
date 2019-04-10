@@ -101,6 +101,7 @@ namespace Pokebook.web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
+                    //template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
