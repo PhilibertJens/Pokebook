@@ -3,8 +3,10 @@
     ViewData["Title"] = "OpenExistingChat";
 }
 
-<div class="row chat">
-    <vc:chat-list></vc:chat-list>
+<div class="row chat" id="chat">
+    <div class="col-md-4">
+        <vc:chat-list></vc:chat-list>
+    </div>
     <div class="col-md-8">
         <h2>@Model.Chat.Name</h2>
         <ul id='speech-bubbles'>
@@ -29,5 +31,13 @@
                 }
             }
         </ul>
+        <ul>
+            <li>{{ loadingMessage }}</li>
+        </ul>
     </div>
 </div>
+
+@section scripts{
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/chat.js"></script>
+}

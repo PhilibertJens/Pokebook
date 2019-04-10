@@ -56,13 +56,14 @@ body {
 }
 
 /*----Chat----*/
+#chat li {
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
 #speech-bubbles .time {
     font-size: 10px;
     font-style: italic;
-}
-
-#speech-bubbles li{
-    list-style-type: none;
 }
 
 #speech-bubbles .eersteLetter {
