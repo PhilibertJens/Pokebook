@@ -21,8 +21,7 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/chats/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
 
-            uri = $"{baseuri}/users/{userId}";
-            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+            User currentUser = await GetUserWithId(userId);
 
             uri = $"{baseuri}/users";
             var allUsers = WebApiHelper.GetApiResult<List<User>>(uri);
@@ -36,6 +35,12 @@ namespace Pokebook.web.Controllers
             //HttpContext.Session.SetString("chatId", "9bc5f401-9684-48a9-2ffe-08d6bd9fc1a1");
             //return new RedirectToActionResult("OpenExistingChat", "Chat", null);
             return View(vm);
+        }
+
+        public async Task<User> GetUserWithId(Guid userId)
+        {
+            string uri = $"{baseuri}/users/{userId}";
+            return WebApiHelper.GetApiResult<User>(uri);
         }
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
@@ -78,15 +83,13 @@ namespace Pokebook.web.Controllers
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
-        public IActionResult SendFirstMessage()
+        public async Task<IActionResult> SendFirstMessage()
         {
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
-            string uri = $"{baseuri}/users/{receiverId}";
-            User receiver = WebApiHelper.GetApiResult<User>(uri);
+            User receiver = await GetUserWithId(receiverId);
 
             Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            uri = $"{baseuri}/users/{receiverId}";
-            User sender = WebApiHelper.GetApiResult<User>(uri);
+            User sender = await GetUserWithId(senderId);
 
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
@@ -101,12 +104,10 @@ namespace Pokebook.web.Controllers
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
-            string uri = $"{baseuri}/users/{receiverId}";
-            User receiver = WebApiHelper.GetApiResult<User>(uri);
+            User receiver = await GetUserWithId(receiverId);
 
             Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            uri = $"{baseuri}/users/{senderId}";
-            User sender = WebApiHelper.GetApiResult<User>(uri);
+            User sender = await GetUserWithId(senderId);
 
             if (ModelState.IsValid)
             {
@@ -120,7 +121,7 @@ namespace Pokebook.web.Controllers
                     NumberOfMessages = 1 //bij het maken van de chat is er steeds 1 message aan gekoppeld
                 };
 
-                uri = $"{baseuri}/chats";
+                string uri = $"{baseuri}/chats";
                 Chat createdChat = await WebApiHelper.PostCallAPI<Chat, Chat>(uri, chat);
 
                 Message message = new Message
@@ -149,7 +150,7 @@ namespace Pokebook.web.Controllers
                 };
                 UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
 
-                HttpContext.Session.SetString("chatId", createdChat.Id.ToString());
+                HttpContext.Session.SetString("ChatId", createdChat.Id.ToString());
                 return new RedirectToActionResult("OpenExistingChat", "Chat", createdChat.Id);
             }
             vm.Receiver = receiver;
@@ -159,7 +160,7 @@ namespace Pokebook.web.Controllers
         public async Task<IActionResult> OpenExistingChat(Guid chatId)//is 000... na Redirect om de een of andere reden
         {
             if(chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
-                chatId = Guid.Parse(HttpContext.Session.GetString("chatId"));
+                chatId = Guid.Parse(HttpContext.Session.GetString("ChatId"));
             }
 
             string uri = $"{baseuri}/chats/{chatId}";
@@ -167,11 +168,10 @@ namespace Pokebook.web.Controllers
 
             uri = $"{baseuri}/messages/chatId/{chatId}";
             List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
-            currentChat.Messages = messagesFromChat;
+            currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
             Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            uri = $"{baseuri}/users/{myId}";
-            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+            User currentUser = await GetUserWithId(myId);
 
             OpenExistingChatVM vm = new OpenExistingChatVM
             {
