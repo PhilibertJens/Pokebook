@@ -94,6 +94,10 @@ body {
     margin-bottom: 10px;
 }
 
+.bubble-other p {
+    display: inline-block;
+}
+
 .bubble-me {
     background: lightskyblue;
     text-align: right;
@@ -122,4 +126,51 @@ body {
     border-left-color: lightskyblue;
     border-right: 0;
     margin-right: -34px;
+}
+
+.speechForm {
+    margin-bottom: 20px;
+    margin-left: 12%;
+}
+
+.speechForm textarea {
+    border-radius: 20px;
+    resize: vertical;
+    display: inline-block;
+}
+
+.chat .relative {
+    position: relative;
+}
+
+.speechForm button {
+    background-color: lightskyblue;
+    border: none;
+    border-radius: 20px;
+    display: inline-block;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+}
+
+.speechForm button img {
+    width: 3em;
+}
+
+.chat .form-control {
+    width: 80%;
+}
+
+@media screen and (max-width: 650px) { /* voor gsm in breedte*/
+
+    .speechForm button {
+        right: 5%;
+    }
+}
+
+@media screen and (max-width: 360px) { /* voor gsm in breedte*/
+
+    .speechForm button {
+        right: 0;
+    }
 }
