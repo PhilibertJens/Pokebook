@@ -1,0 +1,8 @@
+﻿@model ProfileIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<img src="~/images/CoverPictures/@(Model.myProfile.CoverPicture)" alt="@Model.myProfile.CoverPicture"/>
+<h2>@Model.me.UserName</h2>
+<img src="~/images/ProfilePictures/@(Model.myProfile.ProfilePicture)" alt="@Model.myProfile.ProfilePicture"/>
