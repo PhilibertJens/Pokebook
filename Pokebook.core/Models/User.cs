@@ -37,6 +37,6 @@ namespace Pokebook.core.Models
         [JsonIgnore]
         public ICollection<Message> Messages { get; set; }
         [JsonIgnore]
-        public ICollection<FriendConnection> Friends { get; set; }
+        public ICollection<Friendship> Friendships { get; set; }
     }
 }

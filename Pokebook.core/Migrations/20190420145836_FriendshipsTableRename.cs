@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Pokebook.core.Migrations
 {
-    public partial class AddedFriendConnectionsTable : Migration
+    public partial class FriendshipsTableRename : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,49 +39,60 @@ namespace Pokebook.core.Migrations
                 defaultValue: 0);
 
             migrationBuilder.CreateTable(
-                name: "FriendConnections",
+                name: "Friendships",
                 columns: table => new
                 {
-                    IdRequester = table.Column<Guid>(nullable: false),
-                    IdApprover = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
                     Created = table.Column<DateTime>(nullable: true, defaultValueSql: "GETDATE()"),
-                    Accepted = table.Column<bool>(nullable: false)
+                    IdRequester = table.Column<Guid>(nullable: false),
+                    IdApprover = table.Column<Guid>(nullable: false),
+                    Accepted = table.Column<bool>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendConnections", x => new { x.IdRequester, x.IdApprover });
+                    table.PrimaryKey("PK_Friendships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FriendConnections_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Friendships_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Chats",
                 columns: new[] { "Id", "CreateDate", "CreatorId", "Image", "LastMessage", "Name", "NumberOfMessages", "NumberOfUsers", "Theme" },
-                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), new DateTime(2019, 4, 8, 17, 18, 21, 543, DateTimeKind.Local).AddTicks(5472), new Guid("00000000-0000-0000-0000-000000000000"), null, null, "Awesome Chat", 0, 0, null });
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), new DateTime(2019, 4, 20, 16, 58, 35, 984, DateTimeKind.Local).AddTicks(5876), new Guid("00000000-0000-0000-0000-000000000000"), null, null, "Awesome Chat", 0, 0, null });
 
             migrationBuilder.InsertData(
                 table: "Chats",
                 columns: new[] { "Id", "CreateDate", "CreatorId", "Image", "LastMessage", "Name", "NumberOfMessages", "NumberOfUsers", "Theme" },
-                values: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), new DateTime(2019, 4, 8, 15, 18, 21, 545, DateTimeKind.Local).AddTicks(2409), new Guid("00000000-0000-0000-0000-000000000000"), null, null, "Another awesome Chat", 0, 0, null });
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), new DateTime(2019, 4, 20, 14, 58, 35, 987, DateTimeKind.Local).AddTicks(7489), new Guid("00000000-0000-0000-0000-000000000000"), null, null, "Another awesome Chat", 0, 0, null });
+
+            migrationBuilder.InsertData(
+                table: "Friendships",
+                columns: new[] { "Id", "Accepted", "IdApprover", "IdRequester", "UserId" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), true, new Guid("00000000-0000-0000-0000-000000000002"), new Guid("00000000-0000-0000-0000-000000000001"), null });
+
+            migrationBuilder.InsertData(
+                table: "Friendships",
+                columns: new[] { "Id", "Accepted", "IdApprover", "IdRequester", "UserId" },
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), false, new Guid("63ed99a2-e0dc-46d5-4c0c-08d6bce3eda7"), new Guid("00000000-0000-0000-0000-000000000001"), null });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("00000000-0000-0000-0000-000000000001"),
                 column: "Created",
-                value: new DateTime(2019, 4, 8, 17, 18, 22, 29, DateTimeKind.Local).AddTicks(4038));
+                value: new DateTime(2019, 4, 20, 16, 58, 36, 472, DateTimeKind.Local).AddTicks(1641));
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("00000000-0000-0000-0000-000000000002"),
                 column: "Created",
-                value: new DateTime(2019, 4, 8, 17, 18, 22, 29, DateTimeKind.Local).AddTicks(4202));
+                value: new DateTime(2019, 4, 20, 16, 58, 36, 472, DateTimeKind.Local).AddTicks(1787));
 
             migrationBuilder.InsertData(
                 table: "Messages",
@@ -103,32 +114,32 @@ namespace Pokebook.core.Migrations
                 keyColumns: new[] { "ChatId", "UserId" },
                 keyValues: new object[] { new Guid("00000000-0000-0000-0000-000000000001"), new Guid("00000000-0000-0000-0000-000000000001") },
                 column: "Created",
-                value: new DateTime(2019, 4, 8, 17, 18, 22, 46, DateTimeKind.Local).AddTicks(3211));
+                value: new DateTime(2019, 4, 20, 16, 58, 36, 487, DateTimeKind.Local).AddTicks(8629));
 
             migrationBuilder.UpdateData(
                 table: "UserChats",
                 keyColumns: new[] { "ChatId", "UserId" },
                 keyValues: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), new Guid("00000000-0000-0000-0000-000000000001") },
                 column: "Created",
-                value: new DateTime(2019, 4, 8, 17, 18, 22, 46, DateTimeKind.Local).AddTicks(3380));
+                value: new DateTime(2019, 4, 20, 16, 58, 36, 487, DateTimeKind.Local).AddTicks(8759));
 
             migrationBuilder.UpdateData(
                 table: "UserChats",
                 keyColumns: new[] { "ChatId", "UserId" },
                 keyValues: new object[] { new Guid("00000000-0000-0000-0000-000000000002"), new Guid("00000000-0000-0000-0000-000000000002") },
                 column: "Created",
-                value: new DateTime(2019, 4, 8, 17, 18, 22, 46, DateTimeKind.Local).AddTicks(3290));
+                value: new DateTime(2019, 4, 20, 16, 58, 36, 487, DateTimeKind.Local).AddTicks(8709));
 
             migrationBuilder.CreateIndex(
-                name: "IX_FriendConnections_Id",
-                table: "FriendConnections",
-                column: "Id");
+                name: "IX_Friendships_UserId",
+                table: "Friendships",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FriendConnections");
+                name: "Friendships");
 
             migrationBuilder.DeleteData(
                 table: "Messages",

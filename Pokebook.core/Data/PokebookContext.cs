@@ -19,7 +19,7 @@ namespace Pokebook.core.Data
         public DbSet<Chat> Chats { get; set; }
         public DbSet<UserChat> UserChats { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<FriendConnection> FriendConnections { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,10 +54,10 @@ namespace Pokebook.core.Data
                     .HasDefaultValueSql("GETDATE()")
                     .ValueGeneratedOnAddOrUpdate();
 
-            modelBuilder.Entity<FriendConnection>()
-                .HasKey(fc => new { fc.IdRequester, fc.IdApprover });
+            //modelBuilder.Entity<Friendship>()
+            //    .HasKey(fc => new { fc.IdRequester, fc.IdApprover });
 
-            modelBuilder.Entity<FriendConnection>()
+            modelBuilder.Entity<Friendship>()
                 .Property(f => f.Created)
                     .HasDefaultValueSql("GETDATE()")
                     .ValueGeneratedOnAddOrUpdate();

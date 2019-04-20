@@ -82,14 +82,22 @@ namespace Pokebook.core.Data
                 }
             );
 
-            //modelBuilder.Entity<FriendConnection>().HasData(
-            //    new FriendConnection
-            //    {
-            //        IdRequester = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            //        IdApprover = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-            //        Accepted = true
-            //    }
-            //);
+            modelBuilder.Entity<Friendship>().HasData(
+                new Friendship
+                {
+                    Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    IdRequester = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    IdApprover = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                    Accepted = true
+                },
+                new Friendship
+                {
+                    Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                    IdRequester = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    IdApprover = Guid.Parse("63ED99A2-E0DC-46D5-4C0C-08D6BCE3EDA7"),
+                    Accepted = false
+                }
+            );
         }
     }
 }
