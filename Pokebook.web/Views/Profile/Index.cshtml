@@ -3,6 +3,21 @@
     ViewData["Title"] = "Index";
 }
 
-<img src="~/images/CoverPictures/@(Model.myProfile.CoverPicture)" alt="@Model.myProfile.CoverPicture"/>
-<h2>@Model.me.UserName</h2>
-<img src="~/images/ProfilePictures/@(Model.myProfile.ProfilePicture)" alt="@Model.myProfile.ProfilePicture"/>
+<div>
+    <header id='coverPicture' style='background-image: url(@Url.Content($"~/images/CoverPictures/{Model.myProfile.CoverPicture}"))'>
+        <section class='inner'>
+            <img src="~/images/ProfilePictures/@(Model.myProfile.ProfilePicture)" alt="@Model.myProfile.ProfilePicture"
+                 id="profilePicture" />
+            <h2>@Model.me.UserName</h2>
+        </section>
+    </header>
+</div>
+
+<ul>
+    @{
+        for (int i = 0; i < 50; i++)
+        {
+            <li>@i</li>
+        }
+    }
+</ul>
