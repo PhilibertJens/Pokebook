@@ -28,6 +28,7 @@ namespace Pokebook.api
                 cfg.AddProfile(new AutoMapperProfileConfiguration());
             }
             );
+            services.AddCors();
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
             services.AddMvc()
@@ -55,6 +56,11 @@ namespace Pokebook.api
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(builder => 
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
             app.UseMvc();
         }
     }
