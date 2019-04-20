@@ -9,7 +9,8 @@
     </div>
     <div class="col-md-8">
         <h2>@Model.Chat.Name</h2>
-        <ul id='speech-bubbles'>
+        <input type="hidden" id="user" value="@(Model.Me.UserName)"/>
+        <ul class='speech-bubbles'>
             @{
                 foreach (var message in Model.Chat.Messages)
                 {
@@ -31,15 +32,15 @@
                 }
             }
         </ul>
-        <ul>
-            <li>{{ loadingMessage }}</li>
+        <ul id="messagesList" class='speech-bubbles'>
+            @*<li>{{ loadingMessage }}</li>*@
         </ul>
         <form method="post" class="speechForm" id="speech">
             <div asp-validation-summary="ModelOnly"></div>
             <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
             <div class="form-group relative">
-                <textarea type="text" name="Text" id="Text" class="form-control" required></textarea>
-                <button type="submit"><img src="~/images/send.png" /></button><br />
+                <textarea type="text" name="Text" id="messageInput" class="form-control" required></textarea>
+                <button type="submit" id="sendButton"><img src="~/images/send.png" /></button><br />
                 <span asp-validation-for="Text" class="text-danger"></span>
             </div>
         </form>
@@ -48,5 +49,7 @@
 
 @section scripts{
     <script src="~/js/vue.js"></script>
+    <script src="~/js/vueChat.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js"></script>
 }

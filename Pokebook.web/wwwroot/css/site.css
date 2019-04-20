@@ -61,12 +61,12 @@ body {
     margin-bottom: 10px;
 }
 
-#speech-bubbles .time {
+.speech-bubbles .time {
     font-size: 10px;
     font-style: italic;
 }
 
-#speech-bubbles .eersteLetter {
+.speech-bubbles .eersteLetter {
     border: 1px solid black;
     border-radius: 50%;
     display: inline-block;
