@@ -13,16 +13,14 @@ var app = new Vue(
                 var message = document.getElementById("messageInput").value;
                 var userId = document.getElementById("userId").value;
                 var chatId = document.getElementById("chatId").value;
-                var jsonString = self.createJSONstring(chatId, userId, message);
+                var jsonObject = self.createJSONobject(chatId, userId, message);
 
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
-                var test = JSON.parse(jsonString);
-                console.log(test);
                 var ajaxConfig = {
                     method: 'POST',
-                    body: JSON.stringify(test),
+                    body: JSON.stringify(jsonObject),
                     //body: jsonString,
                     headers: ajaxHeaders
                 };
@@ -32,11 +30,11 @@ var app = new Vue(
                     .then(res => res.json())
                     .catch(err => console.error('Fout: ' + err));
             },
-            createJSONstring: function (chatId, userId, message) {
+            createJSONobject: function (chatId, userId, message) {
                 var self = this;
                 var jsonString = '{"chatId": "' + chatId + '","senderId": "' + userId + '","text": "'
                     + message + '","imageName": null,"sendDate": "' + self.getTime() + '","chat": null,"sender": null}';
-                return jsonString;
+                return JSON.parse(jsonString);
             },
             getTime: function () {
                 var today = new Date();

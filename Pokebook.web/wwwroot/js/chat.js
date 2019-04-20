@@ -1,37 +1,39 @@
 ﻿"use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
-connection.on("ReceiveMessage", function (user, message) {
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g,
-        "&gt;");
-    var me = document.getElementById("user").value;
-    var newMessage = "";
+connection.on("ReceiveMessage", function (user, message, chatId) {
+    var myChatId = document.getElementById("chatId").value;
+    if (myChatId === chatId) {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g,
+            "&gt;");
+        var me = document.getElementById("user").value;
 
-    //aanmaak nodige HTML elementen
-    var li = document.createElement("li");
-    var p = document.createElement("p");
-    var spanTime = document.createElement("span");
-    var spanLetter = document.createElement("span");
-    var br = document.createElement("br");
+        //aanmaak nodige HTML elementen
+        var li = document.createElement("li");
+        var p = document.createElement("p");
+        var spanTime = document.createElement("span");
+        var spanLetter = document.createElement("span");
+        var br = document.createElement("br");
 
-    //inhoud van HTML elementen
-    p.textContent = msg;
-    spanLetter.textContent = user.charAt(0);
-    spanTime.textContent = GetTime();
+        //inhoud van HTML elementen
+        p.textContent = msg;
+        spanLetter.textContent = user.charAt(0);
+        spanTime.textContent = GetTime();
 
-    //li opvullen met andere HTML elementen
-    if (user !== me) li.appendChild(spanLetter);
-    li.appendChild(p);
-    if (user !== me) li.appendChild(br);
-    li.appendChild(spanTime);
+        //li opvullen met andere HTML elementen
+        if (user !== me) li.appendChild(spanLetter);
+        li.appendChild(p);
+        if (user !== me) li.appendChild(br);
+        li.appendChild(spanTime);
 
-    //classes geven aan HTML elementen en toevoegen aan messagesList
-    spanLetter.setAttribute("class", "eersteLetter");
-    spanTime.setAttribute("class", "time");
+        //classes geven aan HTML elementen en toevoegen aan messagesList
+        spanLetter.setAttribute("class", "eersteLetter");
+        spanTime.setAttribute("class", "time");
 
-    if (user === me) li.setAttribute("class", "bubble-me");
-    else li.setAttribute("class", "bubble-other");
-    document.getElementById("messagesList").appendChild(li);
+        if (user === me) li.setAttribute("class", "bubble-me");
+        else li.setAttribute("class", "bubble-other");
+        document.getElementById("messagesList").appendChild(li);
+    }
 });
 
 connection.start().catch(function (err) {
@@ -42,8 +44,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     //var user = document.getElementById("userInput").value;
     var user = document.getElementById("user").value;
     var message = document.getElementById("messageInput").value;
+    var chatId = document.getElementById("chatId").value;
     document.getElementById("messageInput").value = "";
-    connection.invoke("SendMessage", user, message).catch(function (err) {
+    connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
         return console.error(err.toString());
     });
     event.preventDefault();
