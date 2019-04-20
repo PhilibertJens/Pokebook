@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Pokebook.web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pokebook.web.Hubs;
 
 namespace Pokebook.web
 {
@@ -73,6 +74,7 @@ namespace Pokebook.web
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.HttpOnly = true;
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,7 +97,10 @@ namespace Pokebook.web
             app.UseSession();
 
             app.UseAuthentication();
-
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
