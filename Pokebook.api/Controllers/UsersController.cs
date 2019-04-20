@@ -43,12 +43,12 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Users.FindUserByUserName(userName));
         }
 
-        [HttpPost]
-        [Route("{User}")]
-        public IActionResult AddNewUser(User user)
-        {
-            //return Ok(unitOfWork.Users.Add(user)); --> werkt niet omdat de Id al bepaald is voor de Add method wordt uitgevoerd
-            return Ok(Post(user));
-        }
+        //[HttpPost]
+        //[Route("{User}")]
+        //public IActionResult AddNewUser(User user)
+        //{
+        //    //return Ok(unitOfWork.Users.Add(user)); --> werkt niet omdat de Id al bepaald is voor de Add method wordt uitgevoerd
+        //    return Ok(Post(user));
+        //}
     }
 }

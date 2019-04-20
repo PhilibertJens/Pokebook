@@ -68,7 +68,7 @@ namespace Pokebook.web.Controllers
                         PasswordHash = userData.Password//is momenteel nog niet gehasht
                     };
 
-                    uri = $"{baseuri}/users/{newUser}";
+                    uri = $"{baseuri}/users";
                     User AddedUser = await WebApiHelper.PostCallAPI<User, User>(uri, newUser);
 
                     HttpContext.Session.SetString("UserId", AddedUser.Id.ToString());
