@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -67,9 +68,39 @@ namespace Pokebook.api.Controllers
             return PhysicalFile(image, "image/jpeg");
         }
 
+        // POST: api/Users/ProfilePicture/
+        [HttpPost]
+        [Route("ProfilePicture")]
+        public async Task<IActionResult> ProfilePicture([FromForm(Name = "file")] IFormFile formFile)
+        {
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ProfilePictures", formFile.FileName);
+            if (formFile.Length > 0)
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+            return Ok(new { count = 1, formFile.Length });
+        }
+
+        // POST: api/Users/CoverPicture/
+        [HttpPost]
+        [Route("CoverPicture")]
+        public async Task<IActionResult> CoverPicture(IFormFile formFile)
+        {
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/CoverPictures", formFile.FileName);
+            if (formFile.Length > 0)
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+            return Ok(new { count = 1, formFile.Length });
+        }
+
         
-
-
 
         //[HttpPost]
         //[Route("{User}")]
