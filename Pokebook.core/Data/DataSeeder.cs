@@ -16,12 +16,16 @@ namespace Pokebook.core.Data
                 new User
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                    UserName = "Tyrion Lannister"
+                    UserName = "TyrionLannister",
+                    ProfilePicture = "Pikachu.png",
+                    CoverPicture = "Mt._Molteau.png"
                 },
                 new User
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                    UserName = "Jon Snow"
+                    UserName = "JonSnow",
+                    ProfilePicture = "Magikarp.png",
+                    CoverPicture = "mountain.jpg"
                 }
             );
 

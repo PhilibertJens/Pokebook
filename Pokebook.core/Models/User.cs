@@ -31,6 +31,11 @@ namespace Pokebook.core.Models
 
         public int NumberOfFriends { get; set; }
 
+        /*Userprofile data*/
+        public string ProfilePicture { get; set; }
+        public string CoverPicture { get; set; }
+        //public List<string> StatusInfo { get; set; }
+
         /*Navigation properties*/
         [JsonIgnore]
         public ICollection<UserChat> UserChats { get; set; }

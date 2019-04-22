@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pokebook.core.Data;
 
 namespace Pokebook.core.Migrations
 {
     [DbContext(typeof(PokebookContext))]
-    partial class PokebookContextModelSnapshot : ModelSnapshot
+    [Migration("20190422081007_AddColumnsToUsersTable")]
+    partial class AddColumnsToUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +55,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             CreateDate = new DateTime(2019, 4, 22, 10, 10, 6, 641, DateTimeKind.Local).AddTicks(934),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(4729),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 509, DateTimeKind.Local).AddTicks(3531),
                             CreatorId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Awesome Chat",
                             NumberOfMessages = 0,
@@ -63,7 +65,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             CreateDate = new DateTime(2019, 4, 22, 8, 10, 6, 643, DateTimeKind.Local).AddTicks(3115),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(4833),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 509, DateTimeKind.Local).AddTicks(3658),
                             CreatorId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Another awesome Chat",
                             NumberOfMessages = 0,
@@ -99,7 +101,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Accepted = true,
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(5836),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 511, DateTimeKind.Local).AddTicks(7911),
                             IdApprover = new Guid("00000000-0000-0000-0000-000000000002"),
                             IdRequester = new Guid("00000000-0000-0000-0000-000000000001")
                         },
@@ -107,7 +109,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             Accepted = false,
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(5894),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 511, DateTimeKind.Local).AddTicks(7992),
                             IdApprover = new Guid("63ed99a2-e0dc-46d5-4c0c-08d6bce3eda7"),
                             IdRequester = new Guid("00000000-0000-0000-0000-000000000001")
                         });
@@ -145,7 +147,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(6762),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 511, DateTimeKind.Local).AddTicks(9282),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000001"),
                             Text = "Hello Jon. This is Tyrion"
@@ -154,7 +156,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(6831),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 511, DateTimeKind.Local).AddTicks(9363),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000002"),
                             Text = "Hello Tyrion. I'm Jon"
@@ -163,7 +165,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000003"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(6893),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 511, DateTimeKind.Local).AddTicks(9626),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000001"),
                             Text = "This is a chat with myself. Is this even possible?"
@@ -223,7 +225,7 @@ namespace Pokebook.core.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             AccessFailedCount = 0,
                             CoverPicture = "Mt._Molteau.png",
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(8916),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 512, DateTimeKind.Local).AddTicks(2020),
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             LockoutEnd = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -238,7 +240,7 @@ namespace Pokebook.core.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             AccessFailedCount = 0,
                             CoverPicture = "mountain.jpg",
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 520, DateTimeKind.Local).AddTicks(9088),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 512, DateTimeKind.Local).AddTicks(2167),
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             LockoutEnd = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -271,21 +273,21 @@ namespace Pokebook.core.Migrations
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000001"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 521, DateTimeKind.Local).AddTicks(327),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 512, DateTimeKind.Local).AddTicks(3101),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 521, DateTimeKind.Local).AddTicks(383),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 512, DateTimeKind.Local).AddTicks(3157),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 521, DateTimeKind.Local).AddTicks(428),
+                            Created = new DateTime(2019, 4, 22, 10, 10, 7, 512, DateTimeKind.Local).AddTicks(3202),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
