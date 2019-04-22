@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
@@ -15,8 +17,12 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class UsersController : ControllerCrudBase<User>
     {
-        public UsersController(PokebookContext dbc, IMapper m, UserRepository repo) : base(dbc, m, repo)
+        private IHostingEnvironment _hostingEnvironment;
+
+        public UsersController(PokebookContext dbc, IMapper m, UserRepository repo, IHostingEnvironment hostingEnvironment) 
+            : base(dbc, m, repo)
         {
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Users
@@ -42,6 +48,28 @@ namespace Pokebook.api.Controllers
         {
             return Ok(unitOfWork.Users.FindUserByUserName(userName));
         }
+
+        // GET: api/Users/ProfilePicture/name
+        [HttpGet]
+        [Route("ProfilePicture/{filename}")]
+        public IActionResult ProfilePicture(string filename)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, "images/ProfilePictures", filename);
+            return PhysicalFile(image, "image/png");
+        }
+
+        // GET: api/Users/CoverPicture/name
+        [HttpGet]
+        [Route("CoverPicture/{filename}")]
+        public IActionResult CoverPicture(string filename)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, "images/CoverPictures", filename);
+            return PhysicalFile(image, "image/jpeg");
+        }
+
+        
+
+
 
         //[HttpPost]
         //[Route("{User}")]

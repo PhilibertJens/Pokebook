@@ -4,10 +4,12 @@
 }
 
 <div>
-    <header id='coverPicture' style='background-image: url(@Url.Content($"~/images/CoverPictures/{Model.myProfile.CoverPicture}"))'>
+    <header id='coverPicture' 
+            style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.me.CoverPicture}")),
+                                     url(/images/default.jpg)'>
         <section class='inner'>
-            <img src="~/images/ProfilePictures/@(Model.myProfile.ProfilePicture)" alt="@Model.myProfile.ProfilePicture"
-                 id="profilePicture" />
+            <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
+                onerror="this.src='/images/default.png'" id="profilePicture" />
             <h2>@Model.me.UserName</h2>
         </section>
     </header>
