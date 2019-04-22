@@ -100,7 +100,12 @@ namespace Pokebook.api.Controllers
             return Ok(new { count = 1, formFile.Length });
         }
 
-        
+        [HttpPut]
+        [Route("Update")]
+        public async Task<IActionResult> Update(User user)
+        {
+            return Ok(unitOfWork.Users.UpdateUser(user));
+        }
 
         //[HttpPost]
         //[Route("{User}")]

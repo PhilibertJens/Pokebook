@@ -9,5 +9,6 @@ namespace Pokebook.core.Repositories
     {
         User FindUserById(Guid Id);
         User FindUserByUserName(string userName);
+        User UpdateUser(User user);
     }
 }

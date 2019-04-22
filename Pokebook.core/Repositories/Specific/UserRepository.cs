@@ -24,6 +24,13 @@ namespace Pokebook.core.Repositories.Specific
             return PokebookContext.Users.Where(u => u.UserName.Equals(userName)).FirstOrDefault();
         }
 
+        public User UpdateUser(User user)
+        {
+            PokebookContext.Users.Update(user);
+            PokebookContext.SaveChanges();
+            return user;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
