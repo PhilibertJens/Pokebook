@@ -227,3 +227,7 @@ h1 {
     background-color: white;
     margin: 10px;
 }
+
+.profilePictureForm{
+    width: 100px;
+}

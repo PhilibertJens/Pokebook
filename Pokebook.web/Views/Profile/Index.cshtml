@@ -4,22 +4,46 @@
 }
 
 <div>
-    <header id='coverPicture' 
+    <header id='coverPicture'
             style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.me.CoverPicture}")),
                                      url(/images/default.jpg)'>
         <section class='inner'>
             <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
-                onerror="this.src='/images/default.png'" id="profilePicture" />
+                 onerror="this.src='/images/default.png'" id="profilePicture" />
             <h2>@Model.me.UserName</h2>
+            <form asp-action="Change" method="post" enctype="multipart/form-data" class="profilePictureForm">
+                <div class="form-group">
+                    @*<label asp-for="UploadedImage" class="control-label">Change profile picture</label>*@
+                    <input type="file" asp-for="UploadedImage" class="form-control" />
+                    <p>
+                        <span asp-validation-for="UploadedImage" class="text-danger"></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Change" class="btn btn-default" />
+                </div>
+            </form>
         </section>
     </header>
 </div>
 
-<ul>
-    @{
-        for (int i = 0; i < 50; i++)
-        {
-            <li>@i</li>
-        }
-    }
-</ul>
+
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer venenatis sit amet risus nec ornare. Sed auctor sed odio vitae viverra. Morbi consectetur sem at nisl vehicula imperdiet. Morbi et libero non arcu euismod aliquet vitae eget elit. Nunc faucibus imperdiet nunc, at facilisis velit consectetur dapibus. Curabitur gravida nisi non eros ultrices, aliquam lobortis risus hendrerit. Nam quis dictum augue, eget pretium mauris.
+</p>
+<p>
+    Cras suscipit, leo nec dictum consectetur, diam risus ultrices magna, rhoncus commodo turpis lacus at justo. Duis in lorem placerat, tristique ipsum ac, semper dolor. In hac habitasse platea dictumst. Sed id tortor faucibus, suscipit eros ac, placerat sem. Maecenas aliquam diam ex, sit amet aliquam quam porttitor non. Praesent tincidunt facilisis quam eget rutrum. Vivamus in lorem at metus consequat lobortis quis ut sapien. Nulla mattis sapien nec felis tincidunt, ac tempus est semper. Maecenas porta auctor fermentum. Praesent mauris mi, mattis et mattis fermentum, volutpat eget quam. Mauris eu nisl dolor. Ut aliquam molestie eros.
+</p>
+<p>
+    Morbi eget nulla elit. Donec auctor felis ut pellentesque sagittis. Suspendisse pretium lacus ultrices, fringilla dui vel, porta elit. Donec sit amet mi a nibh sollicitudin aliquet a non purus. Suspendisse congue ex sed est ultrices, a rhoncus turpis consequat. Nulla non metus mollis, lacinia mauris vel, venenatis erat. Nulla sed dolor urna. Mauris at nunc rhoncus, aliquam nunc ut, iaculis dui. Proin rutrum, mauris at lobortis posuere, nulla lorem pellentesque velit, id ornare odio quam ac urna. Aenean rutrum pretium commodo. Sed ac eleifend nibh, in egestas augue. In sit amet justo non tellus dictum rhoncus. Maecenas orci enim, convallis mattis imperdiet sit amet, accumsan et felis.
+</p>
+
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer venenatis sit amet risus nec ornare. Sed auctor sed odio vitae viverra. Morbi consectetur sem at nisl vehicula imperdiet. Morbi et libero non arcu euismod aliquet vitae eget elit. Nunc faucibus imperdiet nunc, at facilisis velit consectetur dapibus. Curabitur gravida nisi non eros ultrices, aliquam lobortis risus hendrerit. Nam quis dictum augue, eget pretium mauris.
+</p>
+<p>
+    Cras suscipit, leo nec dictum consectetur, diam risus ultrices magna, rhoncus commodo turpis lacus at justo. Duis in lorem placerat, tristique ipsum ac, semper dolor. In hac habitasse platea dictumst. Sed id tortor faucibus, suscipit eros ac, placerat sem. Maecenas aliquam diam ex, sit amet aliquam quam porttitor non. Praesent tincidunt facilisis quam eget rutrum. Vivamus in lorem at metus consequat lobortis quis ut sapien. Nulla mattis sapien nec felis tincidunt, ac tempus est semper. Maecenas porta auctor fermentum. Praesent mauris mi, mattis et mattis fermentum, volutpat eget quam. Mauris eu nisl dolor. Ut aliquam molestie eros.
+</p>
+<p>
+    Morbi eget nulla elit. Donec auctor felis ut pellentesque sagittis. Suspendisse pretium lacus ultrices, fringilla dui vel, porta elit. Donec sit amet mi a nibh sollicitudin aliquet a non purus. Suspendisse congue ex sed est ultrices, a rhoncus turpis consequat. Nulla non metus mollis, lacinia mauris vel, venenatis erat. Nulla sed dolor urna. Mauris at nunc rhoncus, aliquam nunc ut, iaculis dui. Proin rutrum, mauris at lobortis posuere, nulla lorem pellentesque velit, id ornare odio quam ac urna. Aenean rutrum pretium commodo. Sed ac eleifend nibh, in egestas augue. In sit amet justo non tellus dictum rhoncus. Maecenas orci enim, convallis mattis imperdiet sit amet, accumsan et felis.
+</p>
