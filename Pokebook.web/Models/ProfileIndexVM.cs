@@ -9,6 +9,5 @@ namespace Pokebook.web.Models
     public class ProfileIndexVM
     {
         public User me { get; set; }
-        public UserProfile myProfile { get; set; }
     }
 }

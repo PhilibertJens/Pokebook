@@ -21,12 +21,7 @@ namespace Pokebook.web.Controllers
             User user = WebApiHelper.GetApiResult<User>(uri);
             ProfileIndexVM vm = new ProfileIndexVM()
             {
-                me = user,
-                myProfile = new UserProfile
-                {
-                    ProfilePicture = "Pikachu.png",
-                    CoverPicture = "Mt._Molteau.png"
-                }
+                me = user
             };
             return View(vm);
         }
