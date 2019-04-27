@@ -247,15 +247,33 @@ h1 {
     box-shadow: 0 0 5px rgba(0,0,0,0.7);
 }
 
-#UploadedImage {
+#UploadedProfileImage, #UploadedCoverImage {
     display: none;
 }
 
-#fileLabel {
+#fileLabel-profile, #fileLabel-cover {
     background-color: #7F9CCB;
     padding: 5px 10px;
     border-radius: 5px;
     border: 1px ridge black;
     font-size: 2rem;
     height: auto;
+}
+
+#exTab1 .tab-content {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+#exTab2 h3 {
+    color: white;
+    background-color: #428bca;
+    padding: 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+    border-radius: 0;
 }

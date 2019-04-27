@@ -9,30 +9,63 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Your account</h4>
+                    <h4 class="modal-title">Change your profile here</h4>
                 </div>
                 <div class="modal-body">
-                    <form asp-action="Change" method="post" enctype="multipart/form-data" class="profilePictureForm">
-                        <div class="form-group">
-                            <label asp-for="UploadedImage" id="fileLabel" class="control-label">
-                                Change profile picture
-                                <input type="file" asp-for="UploadedImage" class="form-control">
-                            </label>
-                            <p>
-                                <span asp-validation-for="UploadedImage" class="text-danger"></span>
-                            </p>
-                            <img id="preview" src="http://placehold.it/180" alt="your image" />
+                    <ul class="nav nav-pills">
+                        <li class="active">
+                            <a href="#1a" data-toggle="tab">Profile picture</a>
+                        </li>
+                        <li>
+                            <a href="#2a" data-toggle="tab">Cover picture</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="1a">
+                            <form asp-action="Change" method="post" enctype="multipart/form-data" class="profilePictureForm">
+                                <div class="form-group">
+                                    <label asp-for="UploadedProfileImage" id="fileLabel-profile" class="control-label">
+                                        Change profile picture
+                                        <input type="file" asp-for="UploadedProfileImage" class="form-control">
+                                    </label>
+                                    <p>
+                                        <span asp-validation-for="UploadedProfileImage" class="text-danger"></span>
+                                    </p>
+                                    <img id="preview-profile" src="http://placehold.it/180" alt="your image" />
+                                    <input type="hidden" asp-for="ProfilePicture" value="ProfilePicture"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Change" class="btn btn-default" />
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" value="Change" class="btn btn-default" />
+                        <div class="tab-pane" id="2a">
+                            <form asp-action="Change" method="post" enctype="multipart/form-data" class="profilePictureForm">
+                                <div class="form-group">
+                                    <label asp-for="UploadedCoverImage" id="fileLabel-cover" class="control-label">
+                                        Change cover picture
+                                        <input type="file" asp-for="UploadedCoverImage" class="form-control">
+                                    </label>
+                                    <p>
+                                        <span asp-validation-for="UploadedCoverImage" class="text-danger"></span>
+                                    </p>
+                                    <img id="preview-cover" src="http://placehold.it/180" alt="your image" />
+                                    <input type="hidden" asp-for="CoverPicture" value="CoverPicture"/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Change" class="btn btn-default" />
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
+                </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
-        </div>
+        @*</div>*@
     </aside>
     <header id='coverPicture'
             style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.me.CoverPicture}")),
