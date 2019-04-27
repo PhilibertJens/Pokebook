@@ -28,7 +28,12 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-
+        public bool Validate(ProfileIndexVM userdata)
+        {
+            if (userdata.ProfilePicture == null && userdata.UploadedCoverImage == null) return false;
+            if (userdata.CoverPicture == null && userdata.UploadedProfileImage == null) return false;
+            return true;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -39,9 +44,8 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
             string input = "";
-
-            if (ModelState.IsValid)
-            {
+            if (Validate(userdata)){
+            //if (ModelState.IsValid){ --> vervangen door eigen Validate method
                 if(userdata.ProfilePicture == null) uri = $"{baseuri}/users/CoverPicture";
                 else uri = $"{baseuri}/users/ProfilePicture";
                 using (HttpClient httpClient = new HttpClient())
