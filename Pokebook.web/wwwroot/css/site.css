@@ -231,3 +231,8 @@ h1 {
 .profilePictureForm{
     width: 100px;
 }
+
+#wheel{
+    position: relative;
+    top: 25px;
+}
