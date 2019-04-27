@@ -28,6 +28,8 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Consumes("multipart/form-data")]
@@ -37,17 +39,32 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
             string input = "";
+
             if (ModelState.IsValid)
             {
-                uri = $"{baseuri}/users/ProfilePicture";
+                if(userdata.ProfilePicture == null) uri = $"{baseuri}/users/CoverPicture";
+                else uri = $"{baseuri}/users/ProfilePicture";
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    HttpContent fileStreamContent = new StreamContent(userdata.UploadedImage.OpenReadStream());
-                    fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                    HttpContent fileStreamContent;
+                    if (userdata.ProfilePicture == null)
                     {
-                        Name = "file",
-                        FileName = userdata.UploadedImage.FileName
-                    };
+                        fileStreamContent = new StreamContent(userdata.UploadedCoverImage.OpenReadStream());
+                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = "file",
+                            FileName = userdata.UploadedCoverImage.FileName
+                        };
+                    }
+                    else
+                    {
+                        fileStreamContent = new StreamContent(userdata.UploadedProfileImage.OpenReadStream());
+                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        {
+                            Name = "file",
+                            FileName = userdata.UploadedProfileImage.FileName
+                        }; 
+                    }
                     fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
                     using (var formData = new MultipartFormDataContent())
@@ -59,7 +76,8 @@ namespace Pokebook.web.Controllers
                 }
                 if (input != "")
                 {
-                    user.ProfilePicture = userdata.UploadedImage.FileName;
+                    if (userdata.ProfilePicture == null) user.CoverPicture = userdata.UploadedCoverImage.FileName;
+                    else user.ProfilePicture = userdata.UploadedProfileImage.FileName;
                     uri = $"{baseuri}/users/update";
                     User updatedProfile = await WebApiHelper.PutCallAPI<User, User>(uri, user);
                 }

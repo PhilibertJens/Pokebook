@@ -12,7 +12,11 @@ namespace Pokebook.web.Models
     {
         public User me { get; set; }
 
-        [Required(ErrorMessage = "No image found")]
-        public IFormFile UploadedImage { get; set; }
+        //[Required(ErrorMessage = "No image found")]
+        public IFormFile UploadedProfileImage { get; set; }
+        public IFormFile UploadedCoverImage { get; set; }
+
+        public string ProfilePicture { get; set; }
+        public string CoverPicture { get; set; }
     }
 }

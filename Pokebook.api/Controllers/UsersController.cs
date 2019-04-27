@@ -87,7 +87,7 @@ namespace Pokebook.api.Controllers
         // POST: api/Users/CoverPicture/
         [HttpPost]
         [Route("CoverPicture")]
-        public async Task<IActionResult> CoverPicture(IFormFile formFile)
+        public async Task<IActionResult> CoverPicture([FromForm(Name = "file")] IFormFile formFile)
         {
             var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/CoverPictures", formFile.FileName);
             if (formFile.Length > 0)
