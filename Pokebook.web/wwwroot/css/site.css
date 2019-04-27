@@ -228,11 +228,34 @@ h1 {
     margin: 10px;
 }
 
-.profilePictureForm{
-    width: 100px;
+.profilePictureForm {
+    background: #ccc;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid black;
 }
 
-#wheel{
+#wheel {
     position: relative;
     top: 25px;
+    border: none;
+    transition: all 2s ease-in;
+}
+
+#wheel:hover {
+    transform: rotate(1000deg);
+    box-shadow: 0 0 5px rgba(0,0,0,0.7);
+}
+
+#UploadedImage {
+    display: none;
+}
+
+#fileLabel {
+    background-color: #7F9CCB;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px ridge black;
+    font-size: 2rem;
+    height: auto;
 }
