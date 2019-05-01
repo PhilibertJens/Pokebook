@@ -24,8 +24,26 @@ var app = new Vue(
                     //body: jsonString,
                     headers: ajaxHeaders
                 };
-
+                
                 let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json(), self.updateMessageCount())
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            updateMessageCount: function () {
+                var self = this;
+                var chatId = document.getElementById("chatId").value;
+                var jsonObject = JSON.parse('{"chatId": "' + chatId + '"}');
+                // opslaan - ajax configuratie
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var ajaxConfig = {
+                    method: 'PUT',
+                    body: JSON.stringify(jsonObject),
+                    //body: jsonString,
+                    headers: ajaxHeaders
+                };
+                let myRequest = new Request(`${apiURL}Chats/Addition/${chatId}`, ajaxConfig);
                 fetch(myRequest)
                     .then(res => res.json())
                     .catch(err => console.error('Fout: ' + err));
