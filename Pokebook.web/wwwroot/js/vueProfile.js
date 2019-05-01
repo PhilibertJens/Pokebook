@@ -19,7 +19,7 @@
                 document.querySelector("#friendInfo").removeAttribute("hidden");
             },
             processNavigation: function (e) {
-                items = document.querySelectorAll(".information div");
+                items = document.querySelectorAll(".information article");
                 for (i = 0; i < items.length; i++) {
                     items[i].setAttribute("hidden", true);
                 }
@@ -28,6 +28,9 @@
                     items[i].classList.remove("active");
                 }
                 e.target.classList.add("active");
+            },
+            editMode: function (e) {
+                alert("Edit");
             }
         }
     });

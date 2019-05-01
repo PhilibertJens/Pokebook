@@ -288,14 +288,14 @@ h1 {
 #profileInfo h2 {
     text-align: center;
     text-decoration: underline;
-    background: #f5f6f7;
+    margin-bottom: 1em;
 }
 
 .userInfo li {
     cursor: pointer;
 }
 
-.information div {
+.information {
     background-color: aliceblue;
 }
 
@@ -303,3 +303,11 @@ body{
     background-color: lightgray;
 }
 
+#editPencil {
+    position: relative;
+    top: 25px;
+    left: 94%;
+    border: none;
+    width: 30px;
+    cursor: pointer;
+}
