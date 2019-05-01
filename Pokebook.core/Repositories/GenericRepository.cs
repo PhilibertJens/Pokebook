@@ -40,6 +40,20 @@ namespace Pokebook.core.Repositories
             return entities;
         }
 
+        public virtual T Update(T entity)
+        {
+            db.Entry(entity).State = EntityState.Modified;
+            //try
+            //{
+            //    await db.SaveChangesAsync();
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
+            return entity;
+        }
+
         public virtual T Remove(T entity)
         {
             db.Set<T>().Remove(entity);
