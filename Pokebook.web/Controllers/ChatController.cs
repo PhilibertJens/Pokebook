@@ -14,7 +14,12 @@ namespace Pokebook.web.Controllers
 {
     public class ChatController : Controller
     {
-        string baseuri = "https://localhost:44321/api";//poortnummer aanpassen!
+        public ChatController()
+        {
+            Constants constants = new Constants();
+            baseuri = $"https://localhost:{constants.Portnumber}/api";
+        }
+        string baseuri;
 
         public async Task<IActionResult> Index()
         {

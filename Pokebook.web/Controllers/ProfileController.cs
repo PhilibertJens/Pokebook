@@ -14,7 +14,13 @@ namespace Pokebook.web.Controllers
 {
     public class ProfileController : Controller
     {
-        string baseuri = "https://localhost:44321/api";//poortnummer aanpassen!
+        public ProfileController()
+        {
+            Constants constants = new Constants();
+            baseuri = $"https://localhost:{constants.Portnumber}/api";
+        }
+        
+        string baseuri;
 
         public async Task<IActionResult> Index()
         {
