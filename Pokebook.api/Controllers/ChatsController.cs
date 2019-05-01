@@ -42,10 +42,21 @@ namespace Pokebook.api.Controllers
 
         //GET: api/Chats/simple
         [HttpGet]
-        [Route("simple")]
+        [Route("Simple")]
         public IActionResult GetSimpleChats()
         {
             return Ok(unitOfWork.Chats.GetChatSimples());
+        }
+
+        [HttpPut]
+        [Route("Addition/{chatId}")]
+        public IActionResult UpdateNumberOfMessages(Guid chatId)
+        {
+            Chat chat = unitOfWork.Chats.FindById(chatId);
+            chat.NumberOfMessages++;
+            unitOfWork.Chats.Update(chat);
+            unitOfWork.Complete();
+            return Ok();
         }
     }
 }

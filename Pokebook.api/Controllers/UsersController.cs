@@ -73,7 +73,8 @@ namespace Pokebook.api.Controllers
         [Route("ProfilePicture")]
         public async Task<IActionResult> ProfilePicture([FromForm(Name = "file")] IFormFile formFile)
         {
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ProfilePictures", formFile.FileName);
+            string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ProfilePictures", uniqueFileName);
             if (formFile.Length > 0)
             {
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -81,7 +82,7 @@ namespace Pokebook.api.Controllers
                     await formFile.CopyToAsync(stream);
                 }
             }
-            return Ok(new { count = 1, formFile.Length });
+            return Ok(uniqueFileName);
         }
 
         // POST: api/Users/CoverPicture/
@@ -89,7 +90,8 @@ namespace Pokebook.api.Controllers
         [Route("CoverPicture")]
         public async Task<IActionResult> CoverPicture([FromForm(Name = "file")] IFormFile formFile)
         {
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/CoverPictures", formFile.FileName);
+            string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
+            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/CoverPictures", uniqueFileName);
             if (formFile.Length > 0)
             {
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -97,7 +99,7 @@ namespace Pokebook.api.Controllers
                     await formFile.CopyToAsync(stream);
                 }
             }
-            return Ok(new { count = 1, formFile.Length });
+            return Ok(new { count = 1, formFile.Length, uniqueFileName });
         }
 
         [HttpPut]
@@ -105,6 +107,13 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> Update(User user)
         {
             return Ok(unitOfWork.Users.UpdateUser(user));
+        }
+
+        [HttpGet]
+        [Route("Simple/{id}")]
+        public async Task<IActionResult> GetSimpleUser(Guid id)
+        {
+            return Ok(unitOfWork.Users.GetUserSimple(id));
         }
 
         //[HttpPost]

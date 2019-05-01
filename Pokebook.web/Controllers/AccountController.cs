@@ -12,7 +12,13 @@ namespace Pokebook.web.Controllers
 {
     public class AccountController : Controller
     {
-        string baseuri = "https://localhost:44321/api";
+        public AccountController()
+        {
+            Constants constants = new Constants();
+            baseuri = $"https://localhost:{constants.Portnumber}/api";
+        }
+        
+        string baseuri;
 
         public IActionResult Login()
         {

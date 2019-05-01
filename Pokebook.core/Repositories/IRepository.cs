@@ -20,5 +20,7 @@ namespace Pokebook.core.Repositories
 
         T Remove(T entity);
         IEnumerable<T> RemoveRange(IEnumerable<T> entities);
+
+        T Update(T entity);
     }
 }

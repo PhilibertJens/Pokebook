@@ -1,4 +1,5 @@
 ﻿using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Pokebook.web.Models
         public Chat Chat { get; set; }
         public string Username { get; set; }
         public string Text { get; set; }
-        public User Me { get; set; }
+        public UserSimpleDTO Me { get; set; }
+        public Guid Id { get; set; }
     }
 }

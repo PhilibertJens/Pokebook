@@ -277,3 +277,37 @@ h1 {
 #exTab1 .nav-pills > li > a {
     border-radius: 0;
 }
+
+#profileInfo {
+    margin-top: 1em;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+}
+
+#profileInfo h2 {
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 1em;
+}
+
+.userInfo li {
+    cursor: pointer;
+}
+
+.information {
+    background-color: aliceblue;
+}
+
+body{
+    background-color: lightgray;
+}
+
+#editPencil {
+    position: relative;
+    top: 25px;
+    left: 94%;
+    border: none;
+    width: 30px;
+    cursor: pointer;
+}

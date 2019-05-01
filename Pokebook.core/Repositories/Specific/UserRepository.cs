@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,12 @@ namespace Pokebook.core.Repositories.Specific
             PokebookContext.Users.Update(user);
             PokebookContext.SaveChanges();
             return user;
+        }
+
+        public UserSimpleDTO GetUserSimple(Guid Id)
+        {
+            return PokebookContext.Users.Where(u => u.Id == Id)
+                                  .ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefault();
         }
 
         public PokebookContext PokebookContext
