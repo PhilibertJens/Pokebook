@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 using System;
@@ -21,7 +22,7 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/chats/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
 
-            User currentUser = await GetUserWithId(userId);
+            UserSimpleDTO currentUser = await GetUserWithId(userId);
 
             uri = $"{baseuri}/users";
             var allUsers = WebApiHelper.GetApiResult<List<User>>(uri);
@@ -37,10 +38,10 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        public async Task<User> GetUserWithId(Guid userId)
+        public async Task<UserSimpleDTO> GetUserWithId(Guid userId)
         {
             string uri = $"{baseuri}/users/{userId}";
-            return WebApiHelper.GetApiResult<User>(uri);
+            return WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
         }
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
@@ -86,10 +87,10 @@ namespace Pokebook.web.Controllers
         public async Task<IActionResult> SendFirstMessage()
         {
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
-            User receiver = await GetUserWithId(receiverId);
+            UserSimpleDTO receiver = await GetUserWithId(receiverId);
 
             Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            User sender = await GetUserWithId(senderId);
+            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
@@ -104,17 +105,17 @@ namespace Pokebook.web.Controllers
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
-            User receiver = await GetUserWithId(receiverId);
+            UserSimpleDTO receiver = await GetUserWithId(receiverId);
 
             Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            User sender = await GetUserWithId(senderId);
+            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             if (ModelState.IsValid)
             {
                 Chat chat = new Chat
                 {
                     Name = $"{sender.UserName}, {receiver.UserName}",
-                    CreatorId = sender.Id,
+                    CreatorId = senderId,
                     CreateDate = DateTime.Now,
                     LastMessage = vm.Text,
                     NumberOfUsers = 2, //minimum
@@ -146,7 +147,7 @@ namespace Pokebook.web.Controllers
                 UserChat receiverData = new UserChat
                 {
                     ChatId = createdChat.Id,
-                    UserId = receiver.Id
+                    UserId = receiverId
                 };
                 UserChat uc2 = await WebApiHelper.PostCallAPI<UserChat, UserChat>(uri, receiverData);
 
@@ -171,12 +172,13 @@ namespace Pokebook.web.Controllers
             currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
             Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            User currentUser = await GetUserWithId(myId);
+            UserSimpleDTO currentUser = await GetUserWithId(myId);
 
             OpenExistingChatVM vm = new OpenExistingChatVM
             {
                 Chat = currentChat,
-                Me = currentUser
+                Me = currentUser,
+                Id = myId
             };
 
             return View(vm);
