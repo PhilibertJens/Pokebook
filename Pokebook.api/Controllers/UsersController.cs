@@ -107,6 +107,13 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Users.UpdateUser(user));
         }
 
+        [HttpGet]
+        [Route("Simple/{id}")]
+        public async Task<IActionResult> GetSimpleUser(Guid id)
+        {
+            return Ok(unitOfWork.Users.GetUserSimple(id));
+        }
+
         //[HttpPost]
         //[Route("{User}")]
         //public IActionResult AddNewUser(User user)
