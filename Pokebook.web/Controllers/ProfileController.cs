@@ -49,7 +49,7 @@ namespace Pokebook.web.Controllers
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
-            string input = "";
+            string responseFileName = "";
             if (Validate(userdata)){
             //if (ModelState.IsValid){ --> vervangen door eigen Validate method
                 if(userdata.ProfilePicture == null) uri = $"{baseuri}/users/CoverPicture";
@@ -81,13 +81,13 @@ namespace Pokebook.web.Controllers
                     {
                         formData.Add(fileStreamContent);
                         HttpResponseMessage response = await httpClient.PostAsync(uri, formData);
-                        input = await response.Content.ReadAsStringAsync();
+                        responseFileName = await response.Content.ReadAsStringAsync();
                     }
                 }
-                if (input != "")
+                if (responseFileName != "")
                 {
-                    if (userdata.ProfilePicture == null) user.CoverPicture = userdata.UploadedCoverImage.FileName;
-                    else user.ProfilePicture = userdata.UploadedProfileImage.FileName;
+                    if (userdata.ProfilePicture == null) user.CoverPicture = responseFileName;
+                    else user.ProfilePicture = responseFileName;
                     uri = $"{baseuri}/users/update";
                     User updatedProfile = await WebApiHelper.PutCallAPI<User, User>(uri, user);
                 }
