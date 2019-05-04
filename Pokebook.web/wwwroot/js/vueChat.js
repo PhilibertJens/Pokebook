@@ -31,14 +31,13 @@ var app = new Vue(
             updateMessageCount: function () {
                 var self = this;
                 var chatId = document.getElementById("chatId").value;
-                var jsonObject = JSON.parse('{"chatId": "' + chatId + '"}');
+                var jsonObject = JSON.stringify({ chatId: chatId });
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
                 var ajaxConfig = {
                     method: 'PUT',
-                    body: JSON.stringify(jsonObject),
-                    //body: jsonString,
+                    body: jsonObject,
                     headers: ajaxHeaders
                 };
                 let myRequest = new Request(`${apiURL}Chats/Addition/${chatId}`, ajaxConfig);

@@ -129,6 +129,17 @@ namespace Pokebook.api.Controllers
             return await Update(user);
         }
 
+        [HttpPut]
+        [Route("UpdatePokeInfo")]
+        public async Task<IActionResult> UpdatePokeInfo(UserProfilePokeDTO userProfilePoke)
+        {
+            Guid id = userProfilePoke.Id;
+            User user = unitOfWork.Users.FindById(id);
+            if (userProfilePoke.FavoritePokemon != "") user.FavoritePokemon = userProfilePoke.FavoritePokemon;
+            if (userProfilePoke.FavoritePokemonGame != "") user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
+            return await Update(user);
+        }
+
         //[HttpPost]
         //[Route("{User}")]
         //public IActionResult AddNewUser(User user)
