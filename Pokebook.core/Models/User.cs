@@ -36,6 +36,9 @@ namespace Pokebook.core.Models
         public string CoverPicture { get; set; }
         //public List<string> StatusInfo { get; set; }
 
+        public string FavoritePokemon { get; set; }
+        public string FavoritePokemonGame { get; set; }
+
         /*Navigation properties*/
         [JsonIgnore]
         public ICollection<UserChat> UserChats { get; set; }

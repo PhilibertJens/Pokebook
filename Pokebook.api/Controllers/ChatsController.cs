@@ -56,7 +56,7 @@ namespace Pokebook.api.Controllers
             chat.NumberOfMessages++;
             unitOfWork.Chats.Update(chat);
             unitOfWork.Complete();
-            return Ok();
+            return Ok(chat);
         }
     }
 }

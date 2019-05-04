@@ -97,38 +97,56 @@
         </ul>
     </nav>
     <div class="information col-md-7">
-        <img src="~/images/editPencil.png" id="editPencil" v-on:click="editMode($event)"/>
+        <img src="~/images/editPencil.png" id="editPencil" class="editUserInfo" v-on:click="editMode($event)" />
+        <input type="hidden" id="userId" value="@Model.me.Id" />
         <article id="userInfo">
             <h3>Personal information about me</h3>
             <form>
                 <div class="form-group">
                     <label>User name</label>
-                    <input value="@Model.me.UserName" disabled class="form-control">
+                    <input value="@Model.me.UserName" name="username" disabled class="form-control" v-model="username">
                     <span class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>First name</label>
-                    <input value="@Model.me.FirstName" disabled class="form-control">
+                    <input value="@Model.me.FirstName" name="firstname" disabled class="form-control" v-model="firstname">
                     <span class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label>Last name</label>
-                    <input value="@Model.me.LastName" disabled class="form-control">
+                    <input value="@Model.me.LastName" name="lastname" disabled class="form-control" v-model="lastname">
                     <span class="text-danger"></span>
                 </div>
                 <div>
-                    <button>
-                        <span>Update user info</span>
+                    <button id="saveUserInfo" type="button" v-on:click="saveUserInfo($event)">
+                        Update user info
                     </button>
                 </div>
             </form>
         </article>
         <article id="pokeInfo" hidden>
             <h3>My Pokemon interests</h3>
-            <ul>
+            <form>
+                <div class="form-group">
+                    <label>Favorite Pokemon</label>
+                    <input value="@Model.me.FavoritePokemon" name="favPoke" disabled class="form-control" v-model="favPoke">
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Favorite Pokemongame</label>
+                    <input value="@Model.me.FavoritePokemonGame" name="favPokegame" disabled class="form-control" v-model="favPokegame">
+                    <span class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="savePokeInfo" type="button" v-on:click="savePokeInfo($event)">
+                        Update Poke info
+                    </button>
+                </div>
+            </form>
+            @*<ul>
                 <li>Favorite pokemon: Pikachu</li>
                 <li>Favorite pokemon game: Pokemon Red</li>
-            </ul>
+            </ul>*@
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>

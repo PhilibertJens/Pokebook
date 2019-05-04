@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.core.Repositories.Specific;
 
 namespace Pokebook.api.Controllers
@@ -114,6 +115,29 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetSimpleUser(Guid id)
         {
             return Ok(unitOfWork.Users.GetUserSimple(id));
+        }
+
+        [HttpPut]
+        [Route("UpdateUserInfo")]
+        public async Task<IActionResult> UpdateUserInfo(UserProfileDTO userProfile)
+        {
+            Guid id = userProfile.Id;
+            User user = unitOfWork.Users.FindById(id);
+            if(userProfile.FirstName != "") user.FirstName = userProfile.FirstName;
+            if (userProfile.LastName != "") user.LastName = userProfile.LastName;
+            if (userProfile.UserName != "") user.UserName = userProfile.UserName;
+            return await Update(user);
+        }
+
+        [HttpPut]
+        [Route("UpdatePokeInfo")]
+        public async Task<IActionResult> UpdatePokeInfo(UserProfilePokeDTO userProfilePoke)
+        {
+            Guid id = userProfilePoke.Id;
+            User user = unitOfWork.Users.FindById(id);
+            if (userProfilePoke.FavoritePokemon != "") user.FavoritePokemon = userProfilePoke.FavoritePokemon;
+            if (userProfilePoke.FavoritePokemonGame != "") user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
+            return await Update(user);
         }
 
         //[HttpPost]

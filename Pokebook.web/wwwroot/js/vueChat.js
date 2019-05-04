@@ -5,23 +5,21 @@ var app = new Vue(
         el: '#chat',
         data: {
             loadingMessage: 'Loading messages with Vue and SignalR...',
-            messages: null
+            messages: null,
+            message: ''
         },
         methods: {
             sendMessage: function () {
                 var self = this;
-                var message = document.getElementById("messageInput").value;
-                var userId = document.getElementById("userId").value;
+                var userId = document.getElementById("userId").value;//v-model werkt niet met hidden types
                 var chatId = document.getElementById("chatId").value;
-                var jsonObject = self.createJSONobject(chatId, userId, message);
-
+                var jsonObject = JSON.stringify({ chatId: chatId, senderId: userId, text: self.message, sendDate: self.getTime()});
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
                 var ajaxConfig = {
                     method: 'POST',
-                    body: JSON.stringify(jsonObject),
-                    //body: jsonString,
+                    body: jsonObject,
                     headers: ajaxHeaders
                 };
                 
@@ -33,26 +31,19 @@ var app = new Vue(
             updateMessageCount: function () {
                 var self = this;
                 var chatId = document.getElementById("chatId").value;
-                var jsonObject = JSON.parse('{"chatId": "' + chatId + '"}');
+                var jsonObject = JSON.stringify({ chatId: chatId });
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
                 var ajaxConfig = {
                     method: 'PUT',
-                    body: JSON.stringify(jsonObject),
-                    //body: jsonString,
+                    body: jsonObject,
                     headers: ajaxHeaders
                 };
                 let myRequest = new Request(`${apiURL}Chats/Addition/${chatId}`, ajaxConfig);
                 fetch(myRequest)
                     .then(res => res.json())
                     .catch(err => console.error('Fout: ' + err));
-            },
-            createJSONobject: function (chatId, userId, message) {
-                var self = this;
-                var jsonString = '{"chatId": "' + chatId + '","senderId": "' + userId + '","text": "'
-                    + message + '","imageName": null,"sendDate": "' + self.getTime() + '","chat": null,"sender": null}';
-                return JSON.parse(jsonString);
             },
             getTime: function () {
                 var today = new Date();
