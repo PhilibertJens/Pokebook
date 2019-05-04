@@ -8,23 +8,34 @@ var app = new Vue(
             posts: null,
             username: '',
             firstname: '',
-            lastname: ''
+            lastname: '',
+            favPoke: '',
+            favPokegame: ''
+        },
+        created: function () {
+            var self = this;
+            self.username = document.getElementsByName('username')[0].value;
+            self.firstname = document.getElementsByName('firstname')[0].value;
+            self.lastname = document.getElementsByName('lastname')[0].value;
+            self.favPoke = document.getElementsByName('favPoke')[0].value;
+            self.favPokegame = document.getElementsByName('favPokegame')[0].value;
         },
         methods: {
             getUserInfo: function (e) {
-                this.processNavigation(e);
+                this.processNavigation(e, "editUserInfo");
                 document.querySelector("#userInfo").removeAttribute("hidden");
-                document.querySelector("#editPencil").classList.add("editUserInfo");
             },
             getPokeInfo: function (e) {
-                this.processNavigation(e);
+                this.processNavigation(e, "editPokeInfo");
                 document.querySelector("#pokeInfo").removeAttribute("hidden");
             },
             getFriendsInfo: function (e) {
-                this.processNavigation(e);
+                this.processNavigation(e, "editFriendInfo");
                 document.querySelector("#friendInfo").removeAttribute("hidden");
             },
-            processNavigation: function (e) {
+            processNavigation: function (e, classToAdd) {
+                document.querySelector("#editPencil").className = "";
+                document.querySelector("#editPencil").classList.add(classToAdd);
                 items = document.querySelectorAll(".information article");
                 for (i = 0; i < items.length; i++) {
                     items[i].setAttribute("hidden", true);
@@ -46,16 +57,19 @@ var app = new Vue(
                 switch (currentPage) {
                     case "editUserInfo":
                         items = document.querySelectorAll("#userInfo input");
-                        for (i = 0; i < items.length; i++) {
-                            items[i].disabled = false;
-                        }
                         break;
                     case "editPokeInfo":
+                        items = document.querySelectorAll("#pokeInfo input");
                         break;
                     case "editFriendInfo":
+                        items = document.querySelectorAll("#friendInfo input");
                         break;
                     default:
                         break;
+                }
+                console.log(items);
+                for (i = 0; i < items.length; i++) {
+                    items[i].disabled = false;
                 }
             },
             saveUserInfo: function (e) {
@@ -71,6 +85,23 @@ var app = new Vue(
                 };
 
                 let myRequest = new Request(`${apiURL}Users/UpdateUserInfo`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json())
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            savePokeInfo: function (e) {
+                var userId = document.getElementById("userId").value;
+                var profileObject = JSON.stringify({ id: userId, favoritePokemon: this.favPoke, favoritePokemonGame: this.favPokegame });
+                // opslaan - ajax configuratie
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var ajaxConfig = {
+                    method: 'PUT',
+                    body: profileObject,
+                    headers: ajaxHeaders
+                };
+
+                let myRequest = new Request(`${apiURL}Users/UpdatePokeInfo`, ajaxConfig);
                 fetch(myRequest)
                     .then(res => res.json())
                     .catch(err => console.error('Fout: ' + err));
