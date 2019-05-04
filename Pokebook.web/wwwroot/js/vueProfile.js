@@ -61,7 +61,6 @@ var app = new Vue(
             saveUserInfo: function (e) {
                 var userId = document.getElementById("userId").value;
                 var profileObject = JSON.stringify({ id: userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
-                console.log(profileObject);
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
