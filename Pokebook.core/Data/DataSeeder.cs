@@ -18,7 +18,9 @@ namespace Pokebook.core.Data
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                     UserName = "TyrionLannister",
                     ProfilePicture = "Pikachu.png",
-                    CoverPicture = "Mt._Molteau.png"
+                    CoverPicture = "Mt._Molteau.png",
+                    FavoritePokemon = "Pikachu",
+                    FavoritePokemonGame = "Pokemon Red"
                 },
                 new User
                 {
