@@ -48,5 +48,7 @@ namespace Pokebook.web.Models
         [RegularExpression(@"^[\w\d-\.áéÁÉèàâêîôûäëïöü ]{1,}$", ErrorMessage = "The game's name cannot contain special characters")]
         [Display(Name = "Favorite Pokemongame")]
         public string FavoritePokemonGame { get; set; }
+
+        public ICollection<User> Friends { get; set; }
     }
 }

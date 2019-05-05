@@ -143,17 +143,27 @@
                     </button>
                 </div>
             </form>
-            @*<ul>
-                    <li>Favorite pokemon: Pikachu</li>
-                    <li>Favorite pokemon game: Pokemon Red</li>
-                </ul>*@
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>
-            <ul>
-                <li>Username: @Model.me.UserName</li>
-                <li>Full name: @Model.me.FirstName @Model.me.LastName</li>
-            </ul>
+                @{
+                    foreach (var friend in Model.Friends)
+                    {
+                        <div>
+                            <a asp-action="FriendProfile" asp-route-username="@(friend.UserName)">
+                                <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                                        title="open @friend.UserName profile" onerror="this.src='/images/default.png'"/><br/>
+                                <p>@friend.UserName</p>
+                                @*@{
+                                    if (friend.FirstName != null && friend.LastName !=null)
+                                    {
+                                        <p>(@friend.FirstName @friend.LastName)</p>
+                                    }
+                                }*@
+                            </a>
+                        </div>
+                    }
+                }
         </article>
     </div>
 </div>
