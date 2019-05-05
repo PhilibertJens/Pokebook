@@ -117,5 +117,28 @@ namespace Pokebook.web.Controllers
             };
             return View("Index", vm);
         }
+
+        public async Task<IActionResult> FriendProfile(string username)
+        {
+            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            string uri = $"{baseuri}/users/{userId}";
+            User user = WebApiHelper.GetApiResult<User>(uri);
+
+            uri = $"{baseuri}/users/userName/{username}";
+            User friend = WebApiHelper.GetApiResult<User>(uri);
+            List<User> friends = GetFriends(friend);
+
+            ProfileFriendVM vm = new ProfileFriendVM()
+            {
+                me = friend,
+                UserName = friend.UserName,
+                FirstName = friend.FirstName,
+                LastName = friend.LastName,
+                FavoritePokemon = friend.FavoritePokemon,
+                FavoritePokemonGame = friend.FavoritePokemonGame,
+                Friends = friends
+            };
+            return View(vm);
+        }
     }
 }
