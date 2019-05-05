@@ -30,6 +30,9 @@ namespace Pokebook.web.Controllers
             ProfileIndexVM vm = new ProfileIndexVM()
             {
                 me = user,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 FavoritePokemon = user.FavoritePokemon,
                 FavoritePokemonGame = user.FavoritePokemonGame
             };
