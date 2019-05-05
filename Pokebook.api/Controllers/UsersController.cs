@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -133,10 +134,11 @@ namespace Pokebook.api.Controllers
         [Route("UpdatePokeInfo")]
         public async Task<IActionResult> UpdatePokeInfo(UserProfilePokeDTO userProfilePoke)
         {
+            //een niet valid object zal niet toekomen in deze method, zelfs niet wanneer js wordt uitgeschakeld
             Guid id = userProfilePoke.Id;
             User user = unitOfWork.Users.FindById(id);
-            if (userProfilePoke.FavoritePokemon != "") user.FavoritePokemon = userProfilePoke.FavoritePokemon;
-            if (userProfilePoke.FavoritePokemonGame != "") user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
+            user.FavoritePokemon = userProfilePoke.FavoritePokemon;
+            user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
             return await Update(user);
         }
 
