@@ -20,7 +20,7 @@
 </div>
 
 <div class="list-group row userInfo" id="profileInfo">
-    <h2>Information about trainer @Model.me.UserName</h2>
+    <h2>This is trainer @Model.me.UserName</h2>
     <nav class="col-md-4">
         <ul class="links">
             <li class="list-group-item list-group-item-action active" v-on:click="getUserInfo($event)">Personal info</li>
@@ -29,42 +29,17 @@
         </ul>
     </nav>
     <div class="information col-md-7">
-        <img src="~/images/editPencil.png" id="editPencil" class="editUserInfo" v-on:click="editMode($event)" />
         <input type="hidden" id="userId" value="@Model.me.Id" />
         <article id="userInfo">
-            <h3>Personal information about me</h3>
-            <form>
-                <div class="form-group">
-                    <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" disabled class="form-control" v-model="firstname">
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="LastName"></label>
-                    <input asp-for="LastName" disabled class="form-control" v-model="lastname">
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UserName"></label>
-                    <input asp-for="UserName" disabled class="form-control" v-model="username">
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-            </form>
+            <h3>Personal information about @Model.UserName</h3>
+            <p>First name: @Model.FirstName</p>
+            <p>Last name: @Model.LastName</p>
+            <p>Username: @Model.UserName</p>
         </article>
         <article id="pokeInfo" hidden>
-            <h3>My Pokemon interests</h3>
-            <form method="post">
-                <div class="form-group">
-                    <label asp-for="FavoritePokemon">Favorite Pokemon</label>
-                    <input asp-for="FavoritePokemon" value="@Model.me.FavoritePokemon" name="FavoritePokemon" disabled class="form-control" v-model="favPoke">
-                    <span asp-validation-for="FavoritePokemon" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="FavoritePokemonGame">Favorite Pokemongame</label>
-                    <input asp-for="FavoritePokemonGame" value="@Model.me.FavoritePokemonGame" name="FavoritePokemonGame" disabled class="form-control" v-model="favPokegame">
-                    <span asp-validation-for="FavoritePokemonGame" class="text-danger"></span>
-                </div>
-            </form>
+            <h3>Pokemon interests</h3>
+            <p>Favorite Pokemon: @Model.FavoritePokemon</p>
+            <p>Favorite Pokemon Game: @Model.FavoritePokemonGame</p>
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>
@@ -86,5 +61,5 @@
 
 @section scripts{
     <script src="~/js/vue.js"></script>
-    <script src="~/js/vueProfile.js"></script>
+    <script src="~/js/vueFriendProfile.js"></script>
 }
