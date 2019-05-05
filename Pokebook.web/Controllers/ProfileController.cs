@@ -127,6 +127,7 @@ namespace Pokebook.web.Controllers
             uri = $"{baseuri}/users/userName/{username}";
             User friend = WebApiHelper.GetApiResult<User>(uri);
             List<User> friends = GetFriends(friend);
+            
 
             ProfileFriendVM vm = new ProfileFriendVM()
             {
@@ -136,7 +137,8 @@ namespace Pokebook.web.Controllers
                 LastName = friend.LastName,
                 FavoritePokemon = friend.FavoritePokemon,
                 FavoritePokemonGame = friend.FavoritePokemonGame,
-                Friends = friends
+                Friends = friends,
+                UserIsFriend = true //alle users zijn momenteel friends
             };
             return View(vm);
         }

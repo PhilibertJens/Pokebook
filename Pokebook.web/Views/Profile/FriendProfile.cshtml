@@ -29,6 +29,17 @@
         </ul>
     </nav>
     <div class="information col-md-7">
+        @{
+            if (Model.UserIsFriend)//dit hangt af als de user al een friend is (als er dus een friendship db row is)
+            {
+                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="removeFriend($event)" />
+            }
+            else
+            {
+                <img src="~/images/addFriend.png" id="addFriend" v-on:click="addFriend($event)" />
+            }
+        }
+
         <input type="hidden" id="userId" value="@Model.me.Id" />
         <article id="userInfo">
             <h3>Personal information about @Model.UserName</h3>

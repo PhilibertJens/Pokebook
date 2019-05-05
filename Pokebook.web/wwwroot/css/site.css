@@ -306,7 +306,7 @@ body{
     background-color: lightgray;
 }
 
-#editPencil {
+#editPencil, #addFriend, #removeFriend {
     position: relative;
     top: 25px;
     left: 94%;

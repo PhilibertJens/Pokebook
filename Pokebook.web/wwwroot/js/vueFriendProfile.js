@@ -1,4 +1,6 @@
-﻿var app = new Vue(
+﻿var apiURL = 'https://localhost:44321/api/';
+
+var app = new Vue(
     {
         el: '#profileInfo',
         data: {
@@ -28,6 +30,14 @@
                     items[i].classList.remove("active");
                 }
                 e.target.classList.add("active");
+            },
+            addFriend: function (e) {
+                console.log("friend added");
+                //api request om nieuwe friendship aan te maken
+            },
+            removeFriend: function (e) {
+                console.log("friend removed");
+                //api request om bestaande friendship (met id) te verwijderen
             }
         }
     });

@@ -28,5 +28,7 @@ namespace Pokebook.web.Models
         public string FavoritePokemonGame { get; set; }
 
         public ICollection<User> Friends { get; set; }
+
+        public bool UserIsFriend { get; set; }
     }
 }
