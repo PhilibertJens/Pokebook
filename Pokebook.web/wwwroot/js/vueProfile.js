@@ -14,11 +14,11 @@ var app = new Vue(
         },
         created: function () {
             var self = this;
-            self.username = document.getElementsByName('username')[0].value;
-            self.firstname = document.getElementsByName('firstname')[0].value;
-            self.lastname = document.getElementsByName('lastname')[0].value;
-            self.favPoke = document.getElementsByName('favPoke')[0].value;
-            self.favPokegame = document.getElementsByName('favPokegame')[0].value;
+            self.username = document.getElementsByName('UserName')[0].value;
+            self.firstname = document.getElementsByName('FirstName')[0].value;
+            self.lastname = document.getElementsByName('LastName')[0].value;
+            self.favPoke = document.getElementsByName('FavoritePokemon')[0].value;//om jquery validation te laten werken moest dit hetzelfde zijn als de Property Name
+            self.favPokegame = document.getElementsByName('FavoritePokemonGame')[0].value;
         },
         methods: {
             getUserInfo: function (e) {
@@ -67,44 +67,58 @@ var app = new Vue(
                     default:
                         break;
                 }
-                console.log(items);
                 for (i = 0; i < items.length; i++) {
                     items[i].disabled = false;
                 }
             },
             saveUserInfo: function (e) {
-                var userId = document.getElementById("userId").value;
-                var profileObject = JSON.stringify({ id: userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
-                // opslaan - ajax configuratie
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'PUT',
-                    body: profileObject,
-                    headers: ajaxHeaders
-                };
+                items = document.querySelectorAll("#userInfo span");
+                var isValid = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].textContent !== "") isValid = false;
+                }
+                if (isValid) {
+                    //moet nog gevalideerd worden
+                    var userId = document.getElementById("userId").value;
+                    var profileObject = JSON.stringify({ id: userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
+                    // opslaan - ajax configuratie
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'PUT',
+                        body: profileObject,
+                        headers: ajaxHeaders
+                    };
 
-                let myRequest = new Request(`${apiURL}Users/UpdateUserInfo`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .catch(err => console.error('Fout: ' + err));
+                    let myRequest = new Request(`${apiURL}Users/UpdateUserInfo`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                            .catch(err => console.error('Fout: ' + err));
+                }
             },
             savePokeInfo: function (e) {
-                var userId = document.getElementById("userId").value;
-                var profileObject = JSON.stringify({ id: userId, favoritePokemon: this.favPoke, favoritePokemonGame: this.favPokegame });
-                // opslaan - ajax configuratie
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'PUT',
-                    body: profileObject,
-                    headers: ajaxHeaders
-                };
+                items = document.querySelectorAll("#pokeInfo span");
+                var isValid = true;
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].textContent !== "") isValid = false;
+                }
+                if (isValid) {//pas wanneer er geen errormessage in de span staat
+                    var userId = document.getElementById("userId").value;
+                    var profileObject = JSON.stringify({ id: userId, favoritePokemon: this.favPoke, favoritePokemonGame: this.favPokegame });
+                    // opslaan - ajax configuratie
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'PUT',
+                        body: profileObject,
+                        headers: ajaxHeaders
+                    };
 
-                let myRequest = new Request(`${apiURL}Users/UpdatePokeInfo`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .catch(err => console.error('Fout: ' + err));
+                    let myRequest = new Request(`${apiURL}Users/UpdatePokeInfo`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .catch(err => console.error('Fout: ' + err));
+               }
             }
         }
     });

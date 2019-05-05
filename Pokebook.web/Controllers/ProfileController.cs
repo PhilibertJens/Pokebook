@@ -22,14 +22,31 @@ namespace Pokebook.web.Controllers
         
         string baseuri;
 
+        public List<User> GetFriends(User user)
+        {
+            //Nu worden gewoon alle gebruikers getoond. Dit moeten je friends zijn
+            string uri = $"{baseuri}/users";
+            List<User> friends = WebApiHelper.GetApiResult<List<User>>(uri);
+            return friends.Where(f => f.UserName != user.UserName).ToList();
+        }
+
         public async Task<IActionResult> Index()
         {
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
+
+            List<User> friends = GetFriends(user);
+
             ProfileIndexVM vm = new ProfileIndexVM()
             {
-                me = user
+                me = user,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                FavoritePokemon = user.FavoritePokemon,
+                FavoritePokemonGame = user.FavoritePokemonGame,
+                Friends = friends
             };
             return View(vm);
         }
@@ -99,6 +116,31 @@ namespace Pokebook.web.Controllers
                 me = user
             };
             return View("Index", vm);
+        }
+
+        public async Task<IActionResult> FriendProfile(string username)
+        {
+            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            string uri = $"{baseuri}/users/{userId}";
+            User user = WebApiHelper.GetApiResult<User>(uri);
+
+            uri = $"{baseuri}/users/userName/{username}";
+            User friend = WebApiHelper.GetApiResult<User>(uri);
+            List<User> friends = GetFriends(friend);
+            
+
+            ProfileFriendVM vm = new ProfileFriendVM()
+            {
+                me = friend,
+                UserName = friend.UserName,
+                FirstName = friend.FirstName,
+                LastName = friend.LastName,
+                FavoritePokemon = friend.FavoritePokemon,
+                FavoritePokemonGame = friend.FavoritePokemonGame,
+                Friends = friends,
+                UserIsFriend = true //alle users zijn momenteel friends
+            };
+            return View(vm);
         }
     }
 }

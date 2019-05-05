@@ -217,15 +217,18 @@ h1 {
     margin-left: 5px;
 }
 
-#profilePicture {
+#profilePicture, #friendInfo img {
     height: 200px;
-    max-width: 20%;
     display: inline-block;
     padding: 5px;
     border: 1px solid black;
     border-radius: 10px;
     background-color: white;
     margin: 10px;
+}
+
+#profilePicture {
+    max-width: 20%;
 }
 
 .profilePictureForm {
@@ -303,11 +306,25 @@ body{
     background-color: lightgray;
 }
 
-#editPencil {
+#editPencil, #addFriend, #removeFriend {
     position: relative;
     top: 25px;
     left: 94%;
     border: none;
     width: 30px;
     cursor: pointer;
+}
+
+#friendInfo div {
+    display: inline-block;
+}
+
+#friendInfo p{
+    text-align: center;
+    font-weight: bold;
+}
+
+#friendInfo a {
+    text-decoration: none;
+    color: black;
 }

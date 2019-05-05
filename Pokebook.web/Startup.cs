@@ -104,6 +104,11 @@ namespace Pokebook.web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "friendProfile",
+                    template: "{controller=Profile}/{action=FriendProfile}/{username}"
+                );
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
                     //template: "{controller=Home}/{action=Index}/{id?}");
