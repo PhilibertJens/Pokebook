@@ -126,16 +126,16 @@
         </article>
         <article id="pokeInfo" hidden>
             <h3>My Pokemon interests</h3>
-            <form>
+            <form method="post">
                 <div class="form-group">
-                    <label>Favorite Pokemon</label>
-                    <input value="@Model.me.FavoritePokemon" name="favPoke" disabled class="form-control" v-model="favPoke">
-                    <span class="text-danger"></span>
+                    <label asp-for="FavoritePokemon">Favorite Pokemon</label>
+                    <input asp-for="FavoritePokemon" value="@Model.me.FavoritePokemon" name="FavoritePokemon" disabled class="form-control" v-model="favPoke">
+                    <span asp-validation-for="FavoritePokemon" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label>Favorite Pokemongame</label>
-                    <input value="@Model.me.FavoritePokemonGame" name="favPokegame" disabled class="form-control" v-model="favPokegame">
-                    <span class="text-danger"></span>
+                    <label asp-for="FavoritePokemonGame">Favorite Pokemongame</label>
+                    <input asp-for="FavoritePokemonGame" value="@Model.me.FavoritePokemonGame" name="FavoritePokemonGame" disabled class="form-control" v-model="favPokegame">
+                    <span asp-validation-for="FavoritePokemonGame" class="text-danger"></span>
                 </div>
                 <div>
                     <button id="savePokeInfo" type="button" v-on:click="savePokeInfo($event)">
@@ -144,9 +144,9 @@
                 </div>
             </form>
             @*<ul>
-                <li>Favorite pokemon: Pikachu</li>
-                <li>Favorite pokemon game: Pokemon Red</li>
-            </ul>*@
+                    <li>Favorite pokemon: Pikachu</li>
+                    <li>Favorite pokemon game: Pokemon Red</li>
+                </ul>*@
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>
@@ -181,6 +181,8 @@
 
 
 @section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/preview.js"></script>
     <script src="~/js/vue.js"></script>
     <script src="~/js/vueProfile.js"></script>

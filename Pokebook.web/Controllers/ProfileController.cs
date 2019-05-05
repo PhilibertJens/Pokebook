@@ -29,7 +29,9 @@ namespace Pokebook.web.Controllers
             User user = WebApiHelper.GetApiResult<User>(uri);
             ProfileIndexVM vm = new ProfileIndexVM()
             {
-                me = user
+                me = user,
+                FavoritePokemon = user.FavoritePokemon,
+                FavoritePokemonGame = user.FavoritePokemonGame
             };
             return View(vm);
         }
