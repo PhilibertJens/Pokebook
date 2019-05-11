@@ -124,9 +124,9 @@ namespace Pokebook.api.Controllers
         {
             Guid id = userProfile.Id;
             User user = unitOfWork.Users.FindById(id);
-            if(userProfile.FirstName != "") user.FirstName = userProfile.FirstName;
-            if (userProfile.LastName != "") user.LastName = userProfile.LastName;
-            if (userProfile.UserName != "") user.UserName = userProfile.UserName;
+            if (unitOfWork.Users.FindUserByUserName(userProfile.UserName) == null) user.UserName = userProfile.UserName;
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
             return await Update(user);
         }
 
