@@ -118,7 +118,7 @@ namespace Pokebook.web.Controllers
             return View("Index", vm);
         }
 
-        public async Task<IActionResult> FriendProfile(string username)
+        public async Task<IActionResult> UserProfile(string username)
         {
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/users/{userId}";
