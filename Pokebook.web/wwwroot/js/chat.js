@@ -1,4 +1,8 @@
-﻿"use strict";
+﻿document.querySelector('.chat #messageInput').scrollIntoView({
+    behavior: 'smooth'
+});
+
+"use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 var chatId = document.getElementById("chatId").value;
 setTimeout(function () {//als er niet gewacht wordt dan wordt de JoinChat al gedaan voordat de chathub connection is gemaakt
