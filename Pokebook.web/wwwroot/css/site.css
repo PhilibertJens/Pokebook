@@ -55,6 +55,32 @@ body {
     background-color: cornflowerblue;
 }
 
+.sideBar #profilePicture {
+    width: 90%;
+    height: 90%;
+    max-width: 100%;
+}
+
+.sideBar p{
+    text-align: center;
+    color: black;
+}
+
+.sideBar a {
+    text-decoration: none;
+}
+
+#friendRequests {
+    border: none;
+    width: 30px;
+    cursor: pointer;
+}
+
+#RequestProfilePicture{
+    width: 100px;
+    border-radius: 20px;
+}
+
 /*----Chat----*/
 #chat li {
     list-style-type: none;
