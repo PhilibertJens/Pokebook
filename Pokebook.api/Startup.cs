@@ -39,6 +39,7 @@ namespace Pokebook.api
             services.AddScoped<MessageRepository>();
             services.AddScoped<UserChatRepository>();
             services.AddScoped<UserRepository>();
+            services.AddScoped<FriendshipRepository>();
             services.AddScoped<UnitOfWork>();
             
         }

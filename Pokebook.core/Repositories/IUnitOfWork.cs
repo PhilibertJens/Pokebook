@@ -14,6 +14,7 @@ namespace Pokebook.core.Repositories
         IMessageRepository Messages { get; }
         IUserChatRepository UserChats { get; }
         IUserRepository Users { get; }
+        IFriendshipRepository Friendships { get; }
         int Complete();
     }
 }
