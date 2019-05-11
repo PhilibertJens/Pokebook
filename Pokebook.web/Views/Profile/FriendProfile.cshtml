@@ -30,13 +30,17 @@
     </nav>
     <div class="information col-md-7">
         @{
-            if (Model.UserIsFriend)//dit hangt af als de user al een friend is (als er dus een friendship db row is)
+            if (Model.Friendship != null && Model.Friendship.Accepted)//dit hangt af als de user al een friend is (als er dus een friendship db row is)
             {
-                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="removeFriend($event)" />
+                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="removeFriend($event)" alt="remove friend" title="remove friend"/>
+            }
+            else if (Model.Friendship != null && !Model.Friendship.Accepted)
+            {
+                <img src="~/images/friendRequestSend.png" id="friendRequestSend" alt="request send" title="request send"/>
             }
             else
             {
-                <img src="~/images/addFriend.png" id="addFriend" v-on:click="addFriend($event)" />
+                <img src="~/images/addFriend.png" id="addFriend" v-on:click="addFriend($event)" alt="add friend" title="add friend"/>
             }
         }
 

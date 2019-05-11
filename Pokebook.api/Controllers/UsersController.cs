@@ -101,7 +101,8 @@ namespace Pokebook.api.Controllers
                     await formFile.CopyToAsync(stream);
                 }
             }
-            return Ok(new { count = 1, formFile.Length, uniqueFileName });
+            //return Ok(new { count = 1, formFile.Length, uniqueFileName });
+            return Ok(uniqueFileName);
         }
 
         [HttpPut]
@@ -141,6 +142,15 @@ namespace Pokebook.api.Controllers
             user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
             return await Update(user);
         }
+
+        //[HttpGet]
+        //[Route("GetFriends/{userid}")]
+        //public IActionResult GetFriendsForUser(Guid userid)
+        //{
+        //    List<Friendship> friendships = unitOfWork.Friendships.GetByUserId(userid);
+
+        //    return Ok(unitOfWork.Friendships.GetByUserId(userid));
+        //}
 
         //[HttpPost]
         //[Route("{User}")]

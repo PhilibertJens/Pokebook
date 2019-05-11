@@ -306,13 +306,20 @@ body{
     background-color: lightgray;
 }
 
-#editPencil, #addFriend, #removeFriend {
+#editPencil, #addFriend, #removeFriend, #friendRequestSend {
     position: relative;
     top: 25px;
     left: 94%;
     border: none;
     width: 30px;
     cursor: pointer;
+}
+
+#friendRequestSend {
+    top: 15px;
+    left: 89%;
+    width: 95px;
+    cursor: auto;
 }
 
 #friendInfo div {
