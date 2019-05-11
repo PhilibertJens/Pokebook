@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 
@@ -127,20 +128,24 @@ namespace Pokebook.web.Controllers
             uri = $"{baseuri}/users/userName/{username}";
             User friend = WebApiHelper.GetApiResult<User>(uri);
             List<User> friends = GetFriends(friend);
-            
+
+            bool userIsfriend = IsUserFriend(user, friend);
 
             ProfileFriendVM vm = new ProfileFriendVM()
             {
-                me = friend,
-                UserName = friend.UserName,
-                FirstName = friend.FirstName,
-                LastName = friend.LastName,
-                FavoritePokemon = friend.FavoritePokemon,
-                FavoritePokemonGame = friend.FavoritePokemonGame,
-                Friends = friends,
-                UserIsFriend = true //alle users zijn momenteel friends
+                Me = user,
+                Friend = friend,
+                FriendsOfFriend = friends,
+                UserIsFriend = userIsfriend
             };
             return View(vm);
+        }
+
+        private bool IsUserFriend(User me, User friend)
+        {
+            string uri = $"{baseuri}/friendships/GetFriendship/{me.Id}/{friend.Id}";
+            Friendship friendship = WebApiHelper.GetApiResult<Friendship>(uri);//nu moet er nog gecheckt worden als de friendship is aanvaard
+            return friendship != null;
         }
     }
 }
