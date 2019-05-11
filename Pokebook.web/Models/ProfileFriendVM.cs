@@ -14,6 +14,6 @@ namespace Pokebook.web.Models
 
         public ICollection<User> FriendsOfFriend { get; set; }
 
-        public bool UserIsFriend { get; set; }
+        public Friendship Friendship { get; set; }
     }
 }

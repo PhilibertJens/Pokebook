@@ -25,10 +25,9 @@ namespace Pokebook.web.Controllers
 
         public List<User> GetFriends(User user)
         {
-            //Nu worden gewoon alle gebruikers getoond. Dit moeten je friends zijn
-            string uri = $"{baseuri}/users";
-            List<User> friends = WebApiHelper.GetApiResult<List<User>>(uri);
-            return friends.Where(f => f.UserName != user.UserName).ToList();
+            string uri = $"{baseuri}/friendships/Get/{user.Id}";
+            List<FriendWithFriendshipDTO> friendships = WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
+            return friendships.Where(f => f.Friendship.Accepted == true).Select(f => f.Friend).ToList();
         }
 
         public async Task<IActionResult> Index()
@@ -127,25 +126,26 @@ namespace Pokebook.web.Controllers
 
             uri = $"{baseuri}/users/userName/{username}";
             User friend = WebApiHelper.GetApiResult<User>(uri);
-            List<User> friends = GetFriends(friend);
+            List<User> friends = GetFriends(friend);//de friends van deze friend
 
-            bool userIsfriend = IsUserFriend(user, friend);
+            Friendship friendship = GetFriendship(user, friend);
 
             ProfileFriendVM vm = new ProfileFriendVM()
             {
                 Me = user,
                 Friend = friend,
                 FriendsOfFriend = friends,
-                UserIsFriend = userIsfriend
+                Friendship = friendship
+                //3 situaties: user is friend; user must accept friendship request, user is no friend
             };
             return View(vm);
         }
 
-        private bool IsUserFriend(User me, User friend)
+        private Friendship GetFriendship(User me, User friend)
         {
             string uri = $"{baseuri}/friendships/GetFriendship/{me.Id}/{friend.Id}";
-            Friendship friendship = WebApiHelper.GetApiResult<Friendship>(uri);//nu moet er nog gecheckt worden als de friendship is aanvaard
-            return friendship != null;
+            Friendship friendship = WebApiHelper.GetApiResult<Friendship>(uri);
+            return friendship;
         }
     }
 }
