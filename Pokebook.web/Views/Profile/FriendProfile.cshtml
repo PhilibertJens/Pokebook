@@ -5,14 +5,14 @@
 
 <div>
     <header id='coverPicture'
-            style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.me.CoverPicture}")),
+            style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.Friend.CoverPicture}")),
                                      url(/images/default.jpg)'>
         <section class='inner'>
             <div class="row">
                 <div class="col-md-12">
-                    <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
+                    <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.Friend.ProfilePicture)" alt="@Model.Friend.ProfilePicture"
                          onerror="this.src='/images/default.png'" id="profilePicture" />
-                    <h2>@Model.me.UserName</h2>
+                    <h2>@Model.Friend.UserName</h2>
                 </div>
             </div>
         </section>
@@ -20,7 +20,7 @@
 </div>
 
 <div class="list-group row userInfo" id="profileInfo">
-    <h2>This is trainer @Model.me.UserName</h2>
+    <h2>This is trainer @Model.Friend.UserName</h2>
     <nav class="col-md-4">
         <ul class="links">
             <li class="list-group-item list-group-item-action active" v-on:click="getUserInfo($event)">Personal info</li>
@@ -40,22 +40,23 @@
             }
         }
 
-        <input type="hidden" id="userId" value="@Model.me.Id" />
+        <input type="hidden" id="friendId" value="@Model.Friend.Id" />
+        <input type="hidden" id="userId" value="@Model.Me.Id" />
         <article id="userInfo">
-            <h3>Personal information about @Model.UserName</h3>
-            <p>First name: @Model.FirstName</p>
-            <p>Last name: @Model.LastName</p>
-            <p>Username: @Model.UserName</p>
+            <h3>Personal information about @Model.Friend.UserName</h3>
+            <p>First name: @Model.Friend.FirstName</p>
+            <p>Last name: @Model.Friend.LastName</p>
+            <p>Username: @Model.Friend.UserName</p>
         </article>
         <article id="pokeInfo" hidden>
             <h3>Pokemon interests</h3>
-            <p>Favorite Pokemon: @Model.FavoritePokemon</p>
-            <p>Favorite Pokemon Game: @Model.FavoritePokemonGame</p>
+            <p>Favorite Pokemon: @Model.Friend.FavoritePokemon</p>
+            <p>Favorite Pokemon Game: @Model.Friend.FavoritePokemonGame</p>
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>
             @{
-                foreach (var friend in Model.Friends)
+                foreach (var friend in Model.FriendsOfFriend)
                 {
                     <div>
                         <a asp-action="FriendProfile" asp-route-username="@(friend.UserName)">
