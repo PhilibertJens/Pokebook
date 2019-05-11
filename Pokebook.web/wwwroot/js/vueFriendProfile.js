@@ -34,6 +34,23 @@ var app = new Vue(
             addFriend: function (e) {
                 console.log("friend added");
                 //api request om nieuwe friendship aan te maken
+                var friendId = document.getElementById("friendId").value;
+                var userId = document.getElementById("userId").value;
+                var friendShipObject = JSON.stringify({ IdRequester: userId, IdApprover: friendId, Accepted: 0 });
+                // opslaan - ajax configuratie
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var ajaxConfig = {
+                    method: 'POST',
+                    body: friendShipObject,
+                    headers: ajaxHeaders
+                };
+
+                let myRequest = new Request(`${apiURL}Friendships/Add`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json())
+                    .catch(err => console.error('Fout: ' + err));
+
             },
             removeFriend: function (e) {
                 console.log("friend removed");

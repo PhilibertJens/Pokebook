@@ -20,12 +20,14 @@ namespace Pokebook.core.Repositories
             Messages = new MessageRepository(context, mapper);
             UserChats = new UserChatRepository(context, mapper);
             Users = new UserRepository(context, mapper);
+            Friendships = new FriendshipRepository(context, mapper);
         }
 
         public IChatRepository Chats { get; }
         public IMessageRepository Messages { get; }
         public IUserChatRepository UserChats { get; }
         public IUserRepository Users { get; }
+        public IFriendshipRepository Friendships { get; }
 
         public int Complete()
         {

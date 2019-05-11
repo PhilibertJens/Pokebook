@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.web.Helpers;
 using Pokebook.web.Models;
 
@@ -24,10 +25,9 @@ namespace Pokebook.web.Controllers
 
         public List<User> GetFriends(User user)
         {
-            //Nu worden gewoon alle gebruikers getoond. Dit moeten je friends zijn
-            string uri = $"{baseuri}/users";
-            List<User> friends = WebApiHelper.GetApiResult<List<User>>(uri);
-            return friends.Where(f => f.UserName != user.UserName).ToList();
+            string uri = $"{baseuri}/friendships/Get/{user.Id}";
+            List<FriendWithFriendshipDTO> friendships = WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
+            return friendships.Where(f => f.Friendship.Accepted == true).Select(f => f.Friend).ToList();
         }
 
         public async Task<IActionResult> Index()
@@ -118,7 +118,7 @@ namespace Pokebook.web.Controllers
             return View("Index", vm);
         }
 
-        public async Task<IActionResult> FriendProfile(string username)
+        public async Task<IActionResult> UserProfile(string username)
         {
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/users/{userId}";
@@ -126,21 +126,26 @@ namespace Pokebook.web.Controllers
 
             uri = $"{baseuri}/users/userName/{username}";
             User friend = WebApiHelper.GetApiResult<User>(uri);
-            List<User> friends = GetFriends(friend);
-            
+            List<User> friends = GetFriends(friend);//de friends van deze friend
+
+            Friendship friendship = GetFriendship(user, friend);
 
             ProfileFriendVM vm = new ProfileFriendVM()
             {
-                me = friend,
-                UserName = friend.UserName,
-                FirstName = friend.FirstName,
-                LastName = friend.LastName,
-                FavoritePokemon = friend.FavoritePokemon,
-                FavoritePokemonGame = friend.FavoritePokemonGame,
-                Friends = friends,
-                UserIsFriend = true //alle users zijn momenteel friends
+                Me = user,
+                Friend = friend,
+                FriendsOfFriend = friends,
+                Friendship = friendship
+                //3 situaties: user is friend; user must accept friendship request, user is no friend
             };
             return View(vm);
+        }
+
+        private Friendship GetFriendship(User me, User friend)
+        {
+            string uri = $"{baseuri}/friendships/GetFriendship/{me.Id}/{friend.Id}";
+            Friendship friendship = WebApiHelper.GetApiResult<Friendship>(uri);
+            return friendship;
         }
     }
 }

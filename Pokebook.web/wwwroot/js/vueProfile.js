@@ -78,7 +78,6 @@ var app = new Vue(
                     if (items[i].textContent !== "") isValid = false;
                 }
                 if (isValid) {
-                    //moet nog gevalideerd worden
                     var userId = document.getElementById("userId").value;
                     var profileObject = JSON.stringify({ id: userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
                     // opslaan - ajax configuratie
