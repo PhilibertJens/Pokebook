@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    <aside id="myModal" class="modal fade">
+    <aside id="myModal" class="modal fade friendRequests">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -12,25 +12,26 @@
                     <h4 class="modal-title">Friend requests @Model.FriendsToApprove.Count()</h4>
                 </div>
                 <div class="modal-body">
+                    <h3>{{ loadingMessage }}</h3>
                     <ul>
-                        @{ 
+                        @{
                             foreach (var friend in Model.FriendsToApprove)
                             {
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
-                                         onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                                             onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <a asp-controller="Profile" asp-action="UserProfile" asp-route-username="@(friend.UserName)">@friend.UserName</a>
+                                        <p>@friend.FirstName @friend.LastName</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <form>
+                                            <button type="submit">Approve</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <a asp-controller="Profile" asp-action="UserProfile" asp-route-username="@(friend.UserName)">@friend.UserName</a>
-                                    <p>@friend.FirstName @friend.LastName</p>
-                                </div>
-                                <div class="col-md-4">
-                                    <form>
-                                        <button type="submit">Approve</button>
-                                    </form>
-                                </div>
-                            </div>
                             }
                         }
                     </ul>
@@ -41,7 +42,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-        @*</div>*@
     </aside>
     <aside class="col-md-2 sideBar">
         <a asp-controller="Profile" asp-action="index">
@@ -72,4 +72,5 @@
 @section scripts{
     <script src="~/js/vue.js"></script>
     <script src="~/js/timeLine.js"></script>
+    <script src="~/js/friendRequests.js"></script>
 }
