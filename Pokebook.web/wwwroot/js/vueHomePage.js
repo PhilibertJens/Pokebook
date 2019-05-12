@@ -6,12 +6,15 @@ var app = new Vue(
         data: {
             loadingMessage: 'Loading friendRequests...',
             friendRequests: null,
+            users: null,
             userId: '',
+            me: null,
             numberOfRequests: ''
         },
         created: function() {
             var self = this;
             self.userId = document.getElementById("userId").value;
+            self.getMyUserName();
             self.fetchFriendRequests();
         },
         methods: {
@@ -56,6 +59,33 @@ var app = new Vue(
                     .then(res => res.json())
                     .then(() => {
                         self.fetchFriendRequests();
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            getUsers: function () {
+                self = this;
+                fetch(`${apiURL}Users/Simple`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        var allExceptMe = [];
+                        Object.keys(res).forEach(function (key) {
+                            if (res[key].userName !== self.me.userName) {
+                                allExceptMe.push(res[key].userName);
+                                console.log(self.me.userName);
+                            }
+                        });
+                        self.users = allExceptMe;
+                        console.log(self.users);
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            getMyUserName: function () {
+                self = this;
+                fetch(`${apiURL}Users/Simple/${self.userId}`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        self.me = res;
+                        self.getUsers();
                     })
                     .catch(err => console.error('Fout: ' + err));
             }
