@@ -4,7 +4,14 @@ var app = new Vue(
     {
         el: '#profileInfo',
         data: {
-            loadingMessage: 'Loading info...'
+            loadingMessage: 'Loading info...',
+            userId: '',
+            friendId: ''
+        },
+        created: function () {
+            var self = this;
+            self.userId = document.getElementById("userId").value;
+            self.friendId = document.getElementById("friendId").value;
         },
         methods: {
             getUserInfo: function (e) {
@@ -31,13 +38,14 @@ var app = new Vue(
                 }
                 e.target.classList.add("active");
             },
+            editFriendStatus: function (e) {
+                self = this;
+                if (e.target.id === "addFriend") self.addFriend(e);
+                else if (e.target.id === "removeFriend") self.removeFriend(e);
+            },
             addFriend: function (e) {
-                console.log("friend added");
-                //api request om nieuwe friendship aan te maken
-                var friendId = document.getElementById("friendId").value;
-                var userId = document.getElementById("userId").value;
-                var friendShipObject = JSON.stringify({ IdRequester: userId, IdApprover: friendId, Accepted: 0 });
-                // opslaan - ajax configuratie
+                self = this;
+                var friendShipObject = JSON.stringify({ IdRequester: self.userId, IdApprover: self.friendId, Accepted: 0 });
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
                 var ajaxConfig = {
@@ -49,12 +57,34 @@ var app = new Vue(
                 let myRequest = new Request(`${apiURL}Friendships/Add`, ajaxConfig);
                 fetch(myRequest)
                     .then(res => res.json())
+                    .then(() => {
+                        var img = document.getElementById("addFriend");
+                        img.src = '/images/friendRequestSend.png';
+                        img.id = 'friendRequestSend';
+                        img.alt = 'request send';
+                        img.title = 'request send';
+                    })
                     .catch(err => console.error('Fout: ' + err));
-
             },
             removeFriend: function (e) {
-                console.log("friend removed");
-                //api request om bestaande friendship (met id) te verwijderen
+                self = this;
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var ajaxConfig = {
+                    method: 'DELETE',
+                    headers: ajaxHeaders
+                };
+                let myRequest = new Request(`${apiURL}Friendships/Ignore/${self.friendId}/${self.userId}`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json())
+                    .then(() => {
+                        var img = document.getElementById("removeFriend");
+                        img.src = '/images/addFriend.png';
+                        img.id = 'addFriend';
+                        img.alt = 'add friend';
+                        img.title = 'add friend';
+                    })
+                    .catch(err => console.error('Fout: ' + err));
             }
         }
     });

@@ -13,7 +13,13 @@ namespace Pokebook.web.Components
 {
     public class ChatListViewComponent : ViewComponent
     {
-        string baseuri = "https://localhost:44321/api";//poortnummer aanpassen!
+        public ChatListViewComponent()
+        {
+            Constants constants = new Constants();
+            baseuri = $"https://localhost:{constants.Portnumber}/api";
+        }
+
+        string baseuri;
 
         public async Task<IViewComponentResult> InvokeAsync()
         {

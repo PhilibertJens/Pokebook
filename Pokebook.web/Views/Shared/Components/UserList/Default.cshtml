@@ -1,0 +1,25 @@
+﻿@model AllUsersVM
+@{
+    ViewData["Title"] = "Default";
+}
+
+<div class="form-group" id="userSearch">
+    <h3>{{ loadingMessage }}</h3>
+    <ul>
+        <li v-for="test in users">
+            <a :href="`/Profile/UserProfile/${test}`">{{test}}</a>
+        </li>
+    </ul>
+    @*<input list="userList" id="userListValue">
+        <datalist id="userList">
+            @{
+                foreach (var user in Model.AllUsers)
+                {
+                    <option value="@user.UserName">@user.UserName</option>
+                }
+            }
+        </datalist>
+        <input type="submit" id="test" class="btn btn-default">*@
+</div>
+@*<script src="~/js/vue.js"></script>
+<script src="~/js/vueUserSearch.js"></script>*@

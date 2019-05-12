@@ -10,5 +10,6 @@ namespace Pokebook.core.Repositories.Specific
     {
         List<Friendship> GetByUserId(Guid userId);
         Friendship GetFriendship(Guid userId, Guid friendId);
+        List<FriendshipDTO> GetFriendIdWithFriendshipDTOs(Guid userId);
     }
 }

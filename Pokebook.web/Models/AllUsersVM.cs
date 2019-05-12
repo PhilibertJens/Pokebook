@@ -1,4 +1,4 @@
-﻿using Pokebook.core.Models;
+﻿using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Pokebook.web.Models
 {
-    public class HomeIndexVM
+    public class AllUsersVM
     {
-        public User Me { get; set; }
+        public List<UserSimpleDTO> AllUsers { get; set; }
     }
 }

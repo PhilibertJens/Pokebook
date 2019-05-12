@@ -32,5 +32,19 @@ namespace Pokebook.core.Repositories.Specific
                   || (f.IdRequester == friendId && f.IdApprover == userId)
                 ).FirstOrDefault();
         }
+
+        public List<FriendshipDTO> GetFriendIdWithFriendshipDTOs (Guid userid)
+        {
+            List<Friendship> friendshipsForUser = GetByUserId(userid);
+            List<FriendshipDTO> friendshipDTOs = new List<FriendshipDTO>();
+            foreach (var friendship in friendshipsForUser)
+            {
+                Guid friendId = new Guid();
+                if (friendship.IdApprover == userid) friendId = friendship.IdRequester;
+                else friendId = friendship.IdApprover;
+                friendshipDTOs.Add(new FriendshipDTO() { FriendId = friendId, Friendship = friendship });
+            }
+            return friendshipDTOs;
+        }
     }
 }
