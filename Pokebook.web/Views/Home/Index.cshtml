@@ -10,7 +10,8 @@
                 <div class="modal-header">
                     <input type="hidden" id="userId" value="@Model.Me.Id" />
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Friend requests @Model.FriendsToApprove.Count()</h4>
+                    @*<h4 class="modal-title">Friend requests @Model.FriendsToApprove.Count()</h4>*@
+                    <h4 class="modal-title">Friend requests {{numberOfRequests}}</h4>
                 </div>
                 <div class="modal-body">
                     <h3>{{ loadingMessage }}</h3>
@@ -25,9 +26,7 @@
                             <p>{{ friend.firstName }} {{friend.lastName}}</p>
                         </div>
                         <div class="col-md-4">
-                            <form>
-                                <button type="submit">Approve</button>
-                            </form>
+                            <button v-on:click="approveFriendRequest(friend)" class="btn btn-primary">Approve</button>
                         </div>
                     </div>
 

@@ -72,5 +72,14 @@ namespace Pokebook.api.Controllers
         {
             return Ok(Post(friendship));
         }
+
+        [HttpPut]
+        [Route("Approve/{requesterId}/{approverId}")]
+        public IActionResult ApproveFriendRequest(Guid requesterId, Guid approverId)
+        {
+            Friendship friendship = unitOfWork.Friendships.GetFriendship(requesterId, approverId);
+            friendship.Accepted = true;
+            return Ok(Put(friendship.Id, friendship));
+        }
     }
 }
