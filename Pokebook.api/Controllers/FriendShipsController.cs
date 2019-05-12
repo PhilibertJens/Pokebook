@@ -81,5 +81,13 @@ namespace Pokebook.api.Controllers
             friendship.Accepted = true;
             return Ok(Put(friendship.Id, friendship));
         }
+
+        [HttpDelete]
+        [Route("Ignore/{requesterId}/{approverId}")]
+        public IActionResult IgnoreFriendRequest(Guid requesterId, Guid approverId)
+        {
+            Friendship friendship = unitOfWork.Friendships.GetFriendship(requesterId, approverId);
+            return Ok(Delete(friendship.Id));
+        }
     }
 }
