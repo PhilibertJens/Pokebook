@@ -39,6 +39,11 @@ namespace Pokebook.core.Repositories.Specific
                                   .ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefault();
         }
 
+        public List<UserSimpleDTO> GetUsersSimple()
+        {
+            return PokebookContext.Users.ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).ToList();
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
