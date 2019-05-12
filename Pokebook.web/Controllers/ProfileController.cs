@@ -126,19 +126,22 @@ namespace Pokebook.web.Controllers
 
             uri = $"{baseuri}/users/userName/{username}";
             User friend = WebApiHelper.GetApiResult<User>(uri);
-            List<User> friends = GetFriends(friend);//de friends van deze friend
-
-            Friendship friendship = GetFriendship(user, friend);
-
-            ProfileFriendVM vm = new ProfileFriendVM()
+            if (friend != null)
             {
-                Me = user,
-                Friend = friend,
-                FriendsOfFriend = friends,
-                Friendship = friendship
-                //3 situaties: user is friend; user must accept friendship request, user is no friend
-            };
-            return View(vm);
+                List<User> friends = GetFriends(friend);//de friends van deze friend
+                Friendship friendship = GetFriendship(user, friend);
+
+                ProfileFriendVM vm = new ProfileFriendVM()
+                {
+                    Me = user,
+                    Friend = friend,
+                    FriendsOfFriend = friends,
+                    Friendship = friendship
+                    //3 situaties: user is friend; user must accept friendship request, user is no friend
+                };
+                return View(vm);
+            }
+            else return new RedirectToActionResult("Index", "Home", null);
         }
 
         private Friendship GetFriendship(User me, User friend)
