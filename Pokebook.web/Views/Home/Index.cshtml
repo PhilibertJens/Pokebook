@@ -8,35 +8,50 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <input type="hidden" id="userId" value="@Model.Me.Id" />
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Friend requests @Model.FriendsToApprove.Count()</h4>
                 </div>
                 <div class="modal-body">
                     <h3>{{ loadingMessage }}</h3>
-                    <ul>
-                        @{
-                            foreach (var friend in Model.FriendsToApprove)
-                            {
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
-                                             onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <a asp-controller="Profile" asp-action="UserProfile" asp-route-username="@(friend.UserName)">@friend.UserName</a>
-                                        <p>@friend.FirstName @friend.LastName</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <form>
-                                            <button type="submit">Approve</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    </ul>
-                </div>
+                    <div class="row" v-for="friend in friendRequests">
+                        <div class="col-md-4">
+                            @*Alternatieve manier om src attr te tonen :src="`https://localhost:44321/api/users/ProfilePicture/${friend.profilePicture}`"*@
+                            <img v-bind:src="'https://localhost:44321/api/users/ProfilePicture/' + friend.profilePicture"
+                                 v-bind:alt="'friend.ProfilePicture'" onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
+                        </div>
+                        <div class="col-md-4">
+                            <a :href="`/Profile/UserProfile/${friend.userName}`">{{friend.userName}}</a>
+                            <p>{{ friend.firstName }} {{friend.lastName}}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <form>
+                                <button type="submit">Approve</button>
+                            </form>
+                        </div>
+                    </div>
 
+                    @*@{
+                        foreach (var friend in Model.FriendsToApprove)
+                        {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                                         onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
+                                </div>
+                                <div class="col-md-4">
+                                    <a asp-controller="Profile" asp-action="UserProfile" asp-route-username="@(friend.UserName)">@friend.UserName</a>
+                                    <p>@friend.FirstName @friend.LastName</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <form>
+                                        <button type="submit">Approve</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    }*@
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -72,5 +87,5 @@
 @section scripts{
     <script src="~/js/vue.js"></script>
     <script src="~/js/timeLine.js"></script>
-    <script src="~/js/friendRequests.js"></script>
+    <script src="~/js/vueFriendRequests.js"></script>
 }
