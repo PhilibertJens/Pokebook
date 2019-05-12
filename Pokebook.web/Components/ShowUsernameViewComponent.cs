@@ -11,9 +11,16 @@ namespace Pokebook.web.Components
 {
     public class ShowUsernameViewComponent : ViewComponent
     {
+        public ShowUsernameViewComponent()
+        {
+            Constants constants = new Constants();
+            baseuri = $"https://localhost:{constants.Portnumber}/api";
+        }
+
+        string baseuri;
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            string baseuri = "https://localhost:44321/api";
             if (HttpContext.Session.GetString("UserId") != null)
             {
                 Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
