@@ -9,6 +9,6 @@ namespace Pokebook.web.Models
     public class HomeIndexVM
     {
         public User Me { get; set; }
-        public List<User> FriendsToApprove { get; set; }
+        //public List<User> FriendsToApprove { get; set; }
     }
 }

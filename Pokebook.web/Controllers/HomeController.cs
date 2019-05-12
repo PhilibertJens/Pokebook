@@ -31,7 +31,7 @@ namespace Pokebook.web.Controllers
             HomeIndexVM vm = new HomeIndexVM
             {
                 Me = user,
-                FriendsToApprove = friends
+                //FriendsToApprove = friends
             };
             return View(vm);
         }

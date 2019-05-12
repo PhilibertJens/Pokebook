@@ -32,7 +32,7 @@
         @{
             if (Model.Friendship != null && Model.Friendship.Accepted)//dit hangt af als de user al een friend is (als er dus een friendship db row is)
             {
-                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="removeFriend($event)" alt="remove friend" title="remove friend"/>
+                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="editFriendStatus($event)" alt="remove friend" title="remove friend"/>
             }
             else if (Model.Friendship != null && !Model.Friendship.Accepted)
             {
@@ -40,7 +40,7 @@
             }
             else
             {
-                <img src="~/images/addFriend.png" id="addFriend" v-on:click="addFriend($event)" alt="add friend" title="add friend"/>
+                <img src="~/images/addFriend.png" id="addFriend" v-on:click="editFriendStatus($event)" alt="add friend" title="add friend"/>
             }
         }
 
