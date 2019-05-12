@@ -44,6 +44,28 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Friendships.GetFriendship(userid, friendid));
         }
 
+        [HttpGet]
+        [Route("GetFriendsToApprove/{userid}")]
+        public IActionResult GetFriendsToApprove(Guid userid)
+        {
+            List<FriendWithFriendshipDTO> friendWithFriendshipDTOList = new List<FriendWithFriendshipDTO>();
+            List<FriendshipDTO> friendIdWithfriendshipDTOs = unitOfWork.Friendships.GetFriendIdWithFriendshipDTOs(userid);
+            foreach(var dto in friendIdWithfriendshipDTOs)
+            {
+                User friend = unitOfWork.Users.FindUserById(dto.FriendId);
+                FriendWithFriendshipDTO friendWithFriendshipDTO = new FriendWithFriendshipDTO()
+                {
+                    Friend = friend,
+                    Friendship = dto.Friendship
+                };
+                friendWithFriendshipDTOList.Add(friendWithFriendshipDTO);
+            }
+
+            var selection = friendWithFriendshipDTOList.Where(f => f.Friendship.Accepted == false && f.Friendship.IdApprover == userid)
+                                .Select(f => f.Friend).ToList();
+            return Ok(selection);
+        }
+
         [HttpPost]
         [Route("Add")]
         public IActionResult Add(Friendship friendship)
