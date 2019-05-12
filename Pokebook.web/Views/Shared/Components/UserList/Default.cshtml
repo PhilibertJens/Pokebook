@@ -1,0 +1,17 @@
+﻿@model AllUsersVM
+@{
+    ViewData["Title"] = "Default";
+}
+
+<div class="form-group">
+    <input list="userList" id="userListValue">
+    <datalist id="userList">
+        @{
+            foreach (var user in Model.AllUsers)
+            {
+                <option value="@user.UserName">@user.UserName</option>
+            }
+        }
+    </datalist>
+    <input type="submit" id="test" class="btn btn-default">
+</div>
