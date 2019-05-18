@@ -171,8 +171,8 @@ namespace Pokebook.web.Controllers
 
             string uri = $"{baseuri}/chats/{chatId}";
             Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
-
-            uri = $"{baseuri}/messages/chatId/{chatId}";
+            //uri = $"{baseuri}/messages/chatId/{chatId}";
+            uri = $"{baseuri}/messages/range/{chatId}/{0}/{20}";//--> enkel de 20 recentste berichten worden getoond
             List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
             currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 

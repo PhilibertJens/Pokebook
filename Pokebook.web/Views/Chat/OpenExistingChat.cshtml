@@ -12,7 +12,8 @@
         <input type="hidden" id="user" value="@(Model.Me.UserName)" />
         <input type="hidden" id="userId" value="@(Model.Id)" />
         <input type="hidden" id="chatId" value="@(Model.Chat.Id)" />
-        <ul class='speech-bubbles'>
+        <a v-on:click="loadMoreMessages()">Load more messages</a>
+        <ul id="messagesList" class='speech-bubbles'>
             @{
                 foreach (var message in Model.Chat.Messages)
                 {
@@ -34,9 +35,8 @@
                 }
             }
         </ul>
-        <ul id="messagesList" class='speech-bubbles'>
-            @*<li>{{ loadingMessage }}</li>*@
-        </ul>
+        @*<ul id="messagesList" class='speech-bubbles'>
+        </ul>*@
         <form method="post" class="speechForm" id="speech">
             <div asp-validation-summary="ModelOnly"></div>
             <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />

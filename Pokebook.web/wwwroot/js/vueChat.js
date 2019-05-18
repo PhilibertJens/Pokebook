@@ -55,7 +55,7 @@ var app = new Vue(
                 self = this;
                 var chatId = document.getElementById("chatId").value;
                 var numberOfShownMessages = document.getElementById("messagesList").getElementsByTagName("li").length;
-                fetch(`${apiURL}Messages/range/${chatId}/${100}/${20}`)
+                fetch(`${apiURL}Messages/range/${chatId}/${numberOfShownMessages}/${20}`)
                     .then(res => res.json())
                     .then(function (res) {
                         var list = Object.assign([], res).reverse();//object omzetten naar array van objecten en omdraaien
