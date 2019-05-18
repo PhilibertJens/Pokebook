@@ -130,11 +130,74 @@ a .badge, .layoutBadge {
     box-shadow: 0 0 1px #333;
 }
 
-/*.layoutBadge:after {
-    content: attr(data-badge);
-}*/
+#loadMessagesLink{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    cursor: pointer;
+    display: block;
+    width: 40px;
+}
+
+.messageDiv {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#left {
+    position: fixed;
+    left: 0;
+    overflow: hidden;
+    padding: 2em;
+}
+
+#right {
+    background-color: gray;
+    position: absolute;
+    left: 33%;
+    overflow-y: auto;
+    padding: 2em;
+    padding-right: 10%;
+}
+
+@media screen and (max-width: 1000px){
+    #right{
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #left {
+        position: sticky;
+        top: 0px;
+    }
+    #right{
+        left: unset;
+        padding-right: 30%;
+        padding-left: 10%;
+        position: unset;
+        width: 100%;
+    }
+
+    #chat .bubble-me, #chat .bubble-other {
+        width: 100%;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+* {
+    -ms-overflow-style: none !important;
+}
 
 /*----Chat----*/
+#chat h2{
+    text-align:center;
+}
+
 #chat li {
     list-style-type: none;
     margin-bottom: 10px;
@@ -171,6 +234,7 @@ a .badge, .layoutBadge {
     background: yellowgreen;
     text-align: left;
     margin-bottom: 10px;
+    width: 70%;
 }
 
 .bubble-other p {
@@ -180,6 +244,9 @@ a .badge, .layoutBadge {
 .bubble-me {
     background: lightskyblue;
     text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+    width: 70%;
 }
 
 .bubble-me:after, .bubble-other:after {
