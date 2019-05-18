@@ -110,6 +110,30 @@ body {
     outline: none;
 }
 
+a .badge, .layoutBadge {
+    color: white;
+    background-color: red;
+}
+
+.layoutBadge {
+    display: none;
+    position: relative;
+    position: absolute;
+    top: 5px;
+    right: -13px;
+    font-size: .7em;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 50%;
+    box-shadow: 0 0 1px #333;
+}
+
+/*.layoutBadge:after {
+    content: attr(data-badge);
+}*/
+
 /*----Chat----*/
 #chat li {
     list-style-type: none;
