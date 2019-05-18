@@ -5,6 +5,8 @@ using Pokebook.core.Models;
 using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokebook.api.Controllers
 {
@@ -30,6 +32,13 @@ namespace Pokebook.api.Controllers
         public IActionResult GetByChatId(Guid chatId)
         {
             return Ok(unitOfWork.Messages.GetByChatId(chatId));
+        }
+
+        [HttpGet]
+        [Route("range/{chatId}/{startMessage}/{numberOfMessages}")]
+        public IActionResult GetMessageRange(Guid chatId, int startMessage, int numberOfMessages)
+        {
+            return Ok(unitOfWork.Messages.GetMessageRange(chatId, startMessage, numberOfMessages));
         }
     }
 }

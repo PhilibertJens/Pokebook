@@ -11,6 +11,7 @@ namespace Pokebook.web.Hubs
         public async Task SendMessage(string user, string message, Guid chatId)
         {
             await Clients.Group(chatId.ToString()).SendAsync("ReceiveMessage", user, message);
+            await Clients.Group(chatId.ToString()).SendAsync("ReceiveNotification", user, message, chatId);
         }
 
         public async Task JoinChat(string chatName)

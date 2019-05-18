@@ -41,8 +41,8 @@
                  onerror="this.src='/images/default.png'" id="profilePicture" />
             <p>Profile page</p>
         </a>
-        <img src="~/images/friendRequests.png" alt="Friend Requests" title="Friend Requests" 
-             id="friendRequests" data-toggle="modal" data-target="#myModal"/>
+        <img src="~/images/friendRequests.png" alt="Friend Requests" title="Friend Requests"
+             id="friendRequests" data-toggle="modal" data-target="#myModal" />
         <vc:chat-list></vc:chat-list>
     </aside>
     <main class="col-md-10" id="pokeTimeLine">
@@ -66,4 +66,6 @@
     <script src="~/js/vue.js"></script>
     <script src="~/js/timeLine.js"></script>
     <script src="~/js/vueHomePage.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chatNotification.js"></script>
 }

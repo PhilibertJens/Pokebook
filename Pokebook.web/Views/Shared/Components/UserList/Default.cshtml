@@ -4,22 +4,9 @@
 }
 
 <div class="form-group" id="userSearch">
-    <h3>{{ loadingMessage }}</h3>
-    <ul>
-        <li v-for="test in users">
-            <a :href="`/Profile/UserProfile/${test}`">{{test}}</a>
-        </li>
-    </ul>
-    @*<input list="userList" id="userListValue">
-        <datalist id="userList">
-            @{
-                foreach (var user in Model.AllUsers)
-                {
-                    <option value="@user.UserName">@user.UserName</option>
-                }
-            }
-        </datalist>
-        <input type="submit" id="test" class="btn btn-default">*@
+    <input list="userList" id="userListValue" placeholder="Search" v-on:change='getSelectedUser($event)'>
+    <datalist id="userList">
+        <option v-for="test in users" v-bind:value="test">{{test}}</option>
+    </datalist>
+    @*<button type="submit" id="navigateToUserProfile">Go</button>*@
 </div>
-@*<script src="~/js/vue.js"></script>
-<script src="~/js/vueUserSearch.js"></script>*@

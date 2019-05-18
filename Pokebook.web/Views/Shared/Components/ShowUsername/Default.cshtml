@@ -6,7 +6,7 @@
 @{
     if (Model != null)
     {
-        <li><a asp-area="" asp-controller="Home" asp-action="Index">Hey @Model.UserName</a></li>
+        <li><a asp-area="" asp-controller="Home" asp-action="Index" data-username="@Model.UserName">Hey @Model.UserName</a></li>
     }
     else
     {

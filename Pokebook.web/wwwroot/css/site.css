@@ -81,7 +81,123 @@ body {
     border-radius: 20px;
 }
 
+#userSearch {
+    margin-top: 2%;
+    text-align:center;
+}
+
+#userSearch input {
+    border-radius: 20px;
+    border: none;
+    width: 70%;
+    height: 3em;
+    background-image: url(../images/loop.png);
+    background-position: 95%;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+#userSearch input::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+#userSearch input::-webkit-input-placeholder{
+    padding-left: 10px;
+}
+
+#userSearch input:focus {
+    outline: none;
+}
+
+a .badge, .layoutBadge {
+    color: white;
+    background-color: red;
+}
+
+.layoutBadge {
+    display: none;
+    position: relative;
+    position: absolute;
+    top: 5px;
+    right: -13px;
+    font-size: .7em;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 50%;
+    box-shadow: 0 0 1px #333;
+}
+
+#loadMessagesLink{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    cursor: pointer;
+    display: block;
+    width: 40px;
+}
+
+.messageDiv {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#left {
+    position: fixed;
+    left: 0;
+    overflow: hidden;
+    padding: 2em;
+}
+
+#right {
+    background-color: gray;
+    position: absolute;
+    left: 33%;
+    overflow-y: auto;
+    padding: 2em;
+    padding-right: 10%;
+}
+
+@media screen and (max-width: 1000px){
+    #right{
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #left {
+        position: sticky;
+        top: 0px;
+    }
+    #right{
+        left: unset;
+        padding-right: 30%;
+        padding-left: 10%;
+        position: unset;
+        width: 100%;
+    }
+
+    #chat .bubble-me, #chat .bubble-other {
+        width: 100%;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+* {
+    -ms-overflow-style: none !important;
+}
+
 /*----Chat----*/
+#chat h2{
+    text-align:center;
+}
+
 #chat li {
     list-style-type: none;
     margin-bottom: 10px;
@@ -118,6 +234,7 @@ body {
     background: yellowgreen;
     text-align: left;
     margin-bottom: 10px;
+    width: 70%;
 }
 
 .bubble-other p {
@@ -127,6 +244,9 @@ body {
 .bubble-me {
     background: lightskyblue;
     text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+    width: 70%;
 }
 
 .bubble-me:after, .bubble-other:after {

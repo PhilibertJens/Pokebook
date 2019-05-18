@@ -4,22 +4,22 @@
 }
 
 
-    <h2>Current chats</h2>
-    <div class="list-group">
-        @{
-            if (Model.ListChats.Count() == 0)
+<h2>Current chats</h2>
+<div class="list-group">
+    @{
+        if (Model.ListChats.Count() == 0)
+        {
+            <p>No current chats</p>
+        }
+        else
+        {
+            foreach (var chat in Model.ListChats)
             {
-                <p>No current chats</p>
-            }
-            else
-            {
-                foreach (var chat in Model.ListChats)
-                {
-                    <a asp-action="OpenExistingChat" asp-controller="Chat" asp-route-chatId="@(chat.Id)" 
-                        class="list-group-item list-group-item-action">
-                        @(chat.Name)
-                    </a>
-                }
+                <a asp-action="OpenExistingChat" asp-controller="Chat" asp-route-chatId="@(chat.Id)"
+                   class="list-group-item list-group-item-action" data-id="@(chat.Id)">
+                    @(chat.Name)<span class="badge"></span>
+                </a>
             }
         }
-    </div>
+    }
+</div>
