@@ -75,7 +75,6 @@ var app = new Vue(
                             }
                         });
                         self.users = allExceptMe;
-                        console.log(self.users);
                     })
                     .catch(err => console.error('Fout: ' + err));
             },
@@ -85,9 +84,23 @@ var app = new Vue(
                     .then(res => res.json())
                     .then(function (res) {
                         self.me = res;
-                        self.getUsers();
+                        self.getUsers();//de users worden pas opgevraagd wanneer de username is ontvangen
                     })
                     .catch(err => console.error('Fout: ' + err));
+            },
+            getSelectedUser: function (e) {
+                var self = this;
+                var name = e.target.value;
+                for (var i = 0; i < self.users.length; i++) {
+                    if (self.users[i] === name) window.location = "/Profile/UserProfile/" + name;
+                }
             }
         }
     });
+
+//document.getElementById("navigateToUserProfile").addEventListener("click", myFunction);
+//function myFunction() {
+//    alert("ok");
+//    var selected = document.getElementById("userListValue").value;
+//    window.location = "/Profile/UserProfile/" + selected;
+//}
