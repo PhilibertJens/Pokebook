@@ -50,6 +50,48 @@ var app = new Vue(
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                 var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                 return date + ' ' + time;
+            },
+            loadMoreMessages: function () {
+                self = this;
+                var chatId = document.getElementById("chatId").value;
+                var numberOfShownMessages = document.getElementById("messagesList").getElementsByTagName("li").length;
+                fetch(`${apiURL}Messages/range/${chatId}/${100}/${20}`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        var list = Object.assign([], res).reverse();//object omzetten naar array van objecten en omdraaien
+                        for (var i = 0; i < list.length; i++) self.createNewBubble(list[i]);
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            createNewBubble: function (message) {
+                var userId = document.getElementById("userId").value;
+                //aanmaak nodige HTML elementen
+                var li = document.createElement("li");
+                var p = document.createElement("p");
+                var spanTime = document.createElement("span");
+                var spanLetter = document.createElement("span");
+                var br = document.createElement("br");
+
+                //inhoud van HTML elementen
+                p.textContent = message.text;
+                //if (message.senderId !== userId)
+                    spanLetter.textContent = 'T';
+                spanTime.textContent = message.sendDate;
+
+                //li opvullen met andere HTML elementen
+                if (message.senderId !== userId) li.appendChild(spanLetter);
+                li.appendChild(p);
+                if (message.senderId !== userId) li.appendChild(br);
+                li.appendChild(spanTime);
+
+                //classes geven aan HTML elementen en toevoegen aan messagesList
+                spanLetter.setAttribute("class", "eersteLetter");
+                spanTime.setAttribute("class", "time");
+
+                if (message.senderId === userId) li.setAttribute("class", "bubble-me");
+                else li.setAttribute("class", "bubble-other");
+                var list = document.getElementById("messagesList");
+                list.insertBefore(li, list.childNodes[0]);
             }
         }
     });
