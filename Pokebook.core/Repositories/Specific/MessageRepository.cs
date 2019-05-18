@@ -27,6 +27,17 @@ namespace Pokebook.core.Repositories.Specific
             return test;
         }
 
+        public List<Message> GetMessageRange(Guid chatId, int startMessage, int numberOfMessages)
+        {
+            List<Message> messagesList = GetByChatId(chatId);
+            int totalLength = messagesList.Count;
+            messagesList.Reverse();
+            if ((startMessage + numberOfMessages) >= totalLength) messagesList = messagesList.Skip(startMessage).ToList();
+            else messagesList = messagesList.GetRange(startMessage, numberOfMessages);//vb. 20 eerdere berichten
+            messagesList.Reverse();
+            return messagesList;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
