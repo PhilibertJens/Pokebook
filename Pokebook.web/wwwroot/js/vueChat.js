@@ -20,7 +20,7 @@ var app = new Vue(
             var self = this;
             self.userId = document.getElementById("userId").value;//v-model werkt niet met hidden types
             self.chatId = document.getElementById("chatId").value;
-            self.myUserName = document.querySelectorAll('[data-username]')[0].getAttribute('data-username');
+            self.myUserName = document.querySelector('[data-username]').getAttribute('data-username');
             self.chatName = document.getElementById("Chat_Name").value;
             self.getGroupMembers();
         },
@@ -131,25 +131,24 @@ var app = new Vue(
             },
             saveChatInfo: function (e) {
                 var self = this;
-                self.encodeImage(self.file);
+                //self.encodeImage(self.file);
                 var data = new FormData();
                 data.append('file', self.file);
-                console.log(self.file);
-                //var ajaxHeaders = new Headers();--> De api endpoint wordt niet geraakt als de header wordt ingesteld
-                //ajaxHeaders.append("Content-Type", "multipart/form-data");
-                var ajaxConfig = {
-                    method: 'POST',
-                    body: data,
-                    //headers: ajaxHeaders
-                };
+                if (self.file !== "") {
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: data
+                    };
 
-                let myRequest = new Request(`${apiURL}Chats/Uploads/ChatImage/${self.chatName}`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .then(function (res) {
-                        console.log(res);                        
-                    })
-                    .catch(err => console.error('Fout: ' + err));
+                    let myRequest = new Request(`${apiURL}Chats/Uploads/ChatImage`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .then(function (res) {
+                            if(res.status !== 400) self.updateChatInfo(res);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                        })
+                        .catch(err => console.error('Fout: ' + err));
+                }
+                else self.updateChatInfo(null);
             },
             encodeImage(input) {
                 if (input) {
@@ -163,6 +162,26 @@ var app = new Vue(
             handleFileUpload: function () {
                 var self = this;
                 self.file = self.$refs.file.files[0];
+            },
+            updateChatInfo: function (imageName) {
+                var self = this;
+                var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: imageName });
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var ajaxConfig = {
+                    method: 'POST',
+                    body: jsonObject,
+                    headers: ajaxHeaders
+                };
+
+                var myRequest = new Request(`${apiURL}Chats/ChatSettings`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
+                        document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                    })
+                    .catch(err => console.error('Fout: ' + err));
             }
         }
     });
