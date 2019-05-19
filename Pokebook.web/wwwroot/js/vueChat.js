@@ -6,14 +6,23 @@ var app = new Vue(
         data: {
             loadingMessage: 'Loading messages with Vue and SignalR...',
             messages: null,
-            message: ''
+            message: '',
+            userId: '',
+            chatId: '',
+            users: null,
+            myUserName: ''
+        },
+        created: function () {
+            var self = this;
+            self.userId = document.getElementById("userId").value;//v-model werkt niet met hidden types
+            self.chatId = document.getElementById("chatId").value;
+            self.myUserName = document.querySelectorAll('[data-username]')[0].getAttribute('data-username');
+            self.getGroupMembers();
         },
         methods: {
             sendMessage: function () {
                 var self = this;
-                var userId = document.getElementById("userId").value;//v-model werkt niet met hidden types
-                var chatId = document.getElementById("chatId").value;
-                var jsonObject = JSON.stringify({ chatId: chatId, senderId: userId, text: self.message, sendDate: self.getTime()});
+                var jsonObject = JSON.stringify({ chatId: self.chatId, senderId: self.userId, text: self.message, sendDate: self.getTime()});
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
@@ -30,8 +39,7 @@ var app = new Vue(
             },
             updateMessageCount: function () {
                 var self = this;
-                var chatId = document.getElementById("chatId").value;
-                var jsonObject = JSON.stringify({ chatId: chatId });
+                var jsonObject = JSON.stringify({ chatId: self.chatId });
                 // opslaan - ajax configuratie
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
@@ -40,7 +48,7 @@ var app = new Vue(
                     body: jsonObject,
                     headers: ajaxHeaders
                 };
-                let myRequest = new Request(`${apiURL}Chats/Addition/${chatId}`, ajaxConfig);
+                let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
                 fetch(myRequest)
                     .then(res => res.json())
                     .catch(err => console.error('Fout: ' + err));
@@ -53,9 +61,8 @@ var app = new Vue(
             },
             loadMoreMessages: function () {
                 self = this;
-                var chatId = document.getElementById("chatId").value;
                 var numberOfShownMessages = document.getElementById("messagesList").getElementsByTagName("li").length;
-                fetch(`${apiURL}Messages/range/${chatId}/${numberOfShownMessages}/${20}`)
+                fetch(`${apiURL}Messages/range/${self.chatId}/${numberOfShownMessages}/${20}`)
                     .then(res => res.json())
                     .then(function (res) {
                         var list = Object.assign([], res).reverse();//object omzetten naar array van objecten en omdraaien
@@ -64,7 +71,7 @@ var app = new Vue(
                     .catch(err => console.error('Fout: ' + err));
             },
             createNewBubble: function (message) {
-                var userId = document.getElementById("userId").value;
+                var self = this;
                 //aanmaak nodige HTML elementen
                 var li = document.createElement("li");
                 var p = document.createElement("p");
@@ -74,24 +81,48 @@ var app = new Vue(
 
                 //inhoud van HTML elementen
                 p.textContent = message.text;
-                //if (message.senderId !== userId)
-                    spanLetter.textContent = 'T';
+                if (message.senderId !== self.userId) {
+                    var senderUsername = self.getUserNameFromUser(message.senderId);
+                    spanLetter.textContent = senderUsername.charAt(0);
+                }
                 spanTime.textContent = message.sendDate;
 
                 //li opvullen met andere HTML elementen
-                if (message.senderId !== userId) li.appendChild(spanLetter);
+                if (message.senderId !== self.userId) li.appendChild(spanLetter);
                 li.appendChild(p);
-                if (message.senderId !== userId) li.appendChild(br);
+                if (message.senderId !== self.userId) li.appendChild(br);
                 li.appendChild(spanTime);
 
                 //classes geven aan HTML elementen en toevoegen aan messagesList
                 spanLetter.setAttribute("class", "eersteLetter");
                 spanTime.setAttribute("class", "time");
 
-                if (message.senderId === userId) li.setAttribute("class", "bubble-me");
+                if (message.senderId === self.userId) li.setAttribute("class", "bubble-me");
                 else li.setAttribute("class", "bubble-other");
                 var list = document.getElementById("messagesList");
                 list.insertBefore(li, list.childNodes[0]);
+            },
+            getGroupMembers: function () {
+                var self = this;
+                fetch(`${apiURL}Users/Simple`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        var allExceptMe = [];
+                        Object.keys(res).forEach(function (key) {
+                            if (res[key].userName !== self.myUserName) {
+                                allExceptMe.push(res[key]);
+                            }
+                        });
+                        self.users = allExceptMe;
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            getUserNameFromUser: function(id) {
+                var self = this;
+                for (var i = 0; i < self.users.length; i++) {
+                    if (self.users[i].id === id) return self.users[i].userName;
+                }
+                return null;
             }
         }
     });
