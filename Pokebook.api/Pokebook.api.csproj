@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Pokebook.core\Pokebook.core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\ChatPictures\" />
+  </ItemGroup>
+
 </Project>

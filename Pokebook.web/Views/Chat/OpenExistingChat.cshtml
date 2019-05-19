@@ -3,60 +3,118 @@
     ViewData["Title"] = "OpenExistingChat";
 }
 
-<div class="row chat chatPageContainer" id="chat">
-    <div class="col-md-4" id="left">
+<div id="chat">
+    <aside id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change the chat details here</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-pills">
+                        <li class="active">
+                            <a href="#1a" data-toggle="tab">Chat details</a>
+                        </li>
+                        <li>
+                            <a href="#2a" data-toggle="tab">User management</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content clearfix">
+                        <div class="tab-pane active" id="1a">
+                            <form enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label asp-for="Chat.Name"></label>
+                                    <input asp-for="Chat.Name" class="form-control" v-model="chatName">
+                                    <span asp-validation-for="Chat.Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Chat.Image" id="fileLabel-cover" class="control-label">
+                                        Change cover picture
+                                        <input type="file" asp-for="Chat.Image" class="form-control" ref="file" v-on:change="handleFileUpload()">
+                                    </label>
+                                    <p>
+                                        <span asp-validation-for="Chat.Image" class="text-danger"></span>
+                                    </p>
+                                    <img id="preview-chatImage" src="http://placehold.it/180" alt="your image" />
+                                </div>
+                                <div>
+                                    <button id="saveChatInfo" type="button" v-on:click="saveChatInfo($event)">
+                                        Update chat info
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="2a">
+                            <form></form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </aside>
+    <div class="row chat chatPageContainer">
+        <div class="col-md-4" id="left">
+            <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal" />
             <vc:chat-list></vc:chat-list>
-    </div>
-    <div class="col-md-8 messageDiv" id="right">
-        <h2>@Model.Chat.Name</h2>
-        <input type="hidden" id="user" value="@(Model.Me.UserName)" />
-        <input type="hidden" id="userId" value="@(Model.Id)" />
-        <input type="hidden" id="chatId" value="@(Model.Chat.Id)" />
-        <img src="~/images/loadMore.png" id="loadMessagesLink" v-on:click="loadMoreMessages()" />
-        <ul id="messagesList" class='speech-bubbles'>
-            @{
-                foreach (var message in Model.Chat.Messages)
-                {
-                    if (message.Sender.UserName == Model.Me.UserName)
+        </div>
+        <div class="col-md-8 messageDiv" id="right">
+            <h2 id="ChatNameTitle">@Model.Chat.Name</h2>
+            <input type="hidden" id="user" value="@(Model.Me.UserName)" />
+            <input type="hidden" id="userId" value="@(Model.Id)" />
+            <input type="hidden" id="chatId" value="@(Model.Chat.Id)" />
+            <img src="~/images/loadMore.png" alt="Load more messages" title="Load more messages" id="loadMessagesLink" v-on:click="loadMoreMessages()" />
+            <ul id="messagesList" class='speech-bubbles'>
+                @{
+                    foreach (var message in Model.Chat.Messages)
                     {
-                        <li class="bubble-me">
-                            <p>@message.Text</p>
-                            <span class="time">@message.SendDate</span>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="bubble-other">
-                            <span class='eersteLetter'>@message.Sender.UserName[0]</span>
-                            <p>@message.Text</p><br />
-                            <span class="time">@message.SendDate</span>
-                        </li>
+                        if (message.Sender.UserName == Model.Me.UserName)
+                        {
+                            <li class="bubble-me">
+                                <p>@message.Text</p>
+                                <span class="time">@message.SendDate</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="bubble-other">
+                                <span class='eersteLetter'>@message.Sender.UserName[0]</span>
+                                <p>@message.Text</p><br />
+                                <span class="time">@message.SendDate</span>
+                            </li>
+                        }
                     }
                 }
-            }
-        </ul>
-        @*<ul id="messagesList" class='speech-bubbles'>
-        </ul>*@
-        <form method="post" class="speechForm" id="speech">
-            <div asp-validation-summary="ModelOnly"></div>
-            <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
-            <div class="form-group relative">
-                <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control" required></textarea>
-                <button type="submit" id="sendButton"
-                        v-on:click="sendMessage">
-                    <img src="~/images/send.png" />
-                </button><br />
-                <span asp-validation-for="Text" class="text-danger"></span>
-            </div>
-        </form>
+            </ul>
+            @*<ul id="messagesList" class='speech-bubbles'>
+                </ul>*@
+            <form method="post" class="speechForm" id="speech">
+                <div asp-validation-summary="ModelOnly"></div>
+                <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
+                <div class="form-group relative">
+                    <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control" required></textarea>
+                    <button type="submit" id="sendButton"
+                            v-on:click="sendMessage">
+                        <img src="~/images/send.png" />
+                    </button><br />
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
 @section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/vue.js"></script>
     <script src="~/js/vueChat.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js"></script>
+    <script src="~/js/preview.js"></script>
     @*<script src="~/lib/signalr/dist/browser/signalr.js"></script>*@
     @*<script src="~/js/chatNotification.js"></script>*@
 }

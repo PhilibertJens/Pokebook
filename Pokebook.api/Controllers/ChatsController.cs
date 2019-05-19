@@ -6,6 +6,11 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Pokebook.core.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Newtonsoft.Json;
+using Pokebook.core.Models.DTO;
 
 namespace Pokebook.api.Controllers
 {
@@ -13,9 +18,12 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class ChatsController : ControllerCrudBase<Chat>
     {
-        public ChatsController(PokebookContext dbc, IMapper m, ChatRepository repo) : base(dbc, m,repo)
+        public ChatsController(PokebookContext dbc, IMapper m, ChatRepository repo, IHostingEnvironment hostingEnvironment) : base(dbc, m,repo)
         {
+            _hostingEnvironment = hostingEnvironment;
         }
+
+        private IHostingEnvironment _hostingEnvironment;
 
         // GET: api/Chats
         [HttpGet]
@@ -57,6 +65,46 @@ namespace Pokebook.api.Controllers
             unitOfWork.Chats.Update(chat);
             unitOfWork.Complete();
             return Ok(chat);
+        }
+
+        [HttpPost]
+        [Route("ChatSettings")]
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> UpdateChatSettings(ChatSettingsDTO chatSettings)
+        {
+            if (ModelState.IsValid)
+            {
+                string ok = "ok";
+            }
+            Chat foundChat = unitOfWork.Chats.FindById(chatSettings.ChatId);
+            if(foundChat != null)
+            {
+                foundChat.Name = chatSettings.ChatName;
+                foundChat.Image = chatSettings.ChatImage;
+            }
+            return Ok(Put(foundChat.Id, foundChat));
+        }
+
+        [HttpPost]
+        [Route("Uploads/ChatImage")]
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile)
+        {
+            if(formFile != null)
+            {
+                string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", uniqueFileName);
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+                return Ok(JsonConvert.SerializeObject(uniqueFileName));
+            }
+            return BadRequest();
+            //return Ok(JsonConvert.SerializeObject("File not found"));
         }
     }
 }
