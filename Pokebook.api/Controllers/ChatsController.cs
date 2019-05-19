@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
+using Pokebook.core.Models.DTO;
 
 namespace Pokebook.api.Controllers
 {
@@ -67,20 +68,43 @@ namespace Pokebook.api.Controllers
         }
 
         [HttpPost]
-        [Route("Uploads/ChatImage/{chatName}")]
+        [Route("ChatSettings")]
         [Consumes("application/json", "multipart/form-data")]
-        public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile, string chatName)
+        public async Task<IActionResult> UpdateChatSettings(ChatSettingsDTO chatSettings)
         {
-            string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
-            var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", uniqueFileName);
-            if (formFile.Length > 0)
+            if (ModelState.IsValid)
             {
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await formFile.CopyToAsync(stream);
-                }
+                string ok = "ok";
             }
-            return Ok(JsonConvert.SerializeObject(uniqueFileName));
+            Chat foundChat = unitOfWork.Chats.FindById(chatSettings.ChatId);
+            if(foundChat != null)
+            {
+                foundChat.Name = chatSettings.ChatName;
+                foundChat.Image = chatSettings.ChatImage;
+            }
+            return Ok(Put(foundChat.Id, foundChat));
+        }
+
+        [HttpPost]
+        [Route("Uploads/ChatImage")]
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile)
+        {
+            if(formFile != null)
+            {
+                string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", uniqueFileName);
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+                return Ok(JsonConvert.SerializeObject(uniqueFileName));
+            }
+            return BadRequest();
+            //return Ok(JsonConvert.SerializeObject("File not found"));
         }
     }
 }
