@@ -67,9 +67,9 @@ namespace Pokebook.api.Controllers
         }
 
         [HttpPost]
-        [Route("Uploads/ChatImage")]
+        [Route("Uploads/ChatImage/{chatName}")]
         [Consumes("application/json", "multipart/form-data")]
-        public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile)
+        public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile, string chatName)
         {
             string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
             var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", uniqueFileName);
