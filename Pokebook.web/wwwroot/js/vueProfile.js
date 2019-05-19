@@ -72,6 +72,7 @@ var app = new Vue(
                 }
             },
             saveUserInfo: function (e) {
+                var self = this;
                 items = document.querySelectorAll("#userInfo span");
                 var isValid = true;
                 for (i = 0; i < items.length; i++) {
@@ -91,8 +92,8 @@ var app = new Vue(
 
                     let myRequest = new Request(`${apiURL}Users/UpdateUserInfo`, ajaxConfig);
                     fetch(myRequest)
-                        .then(res => res.json())
-                            .catch(err => console.error('Fout: ' + err));
+                        .then(res => res.json(), self.updateDataAttr())
+                        .catch(err => console.error('Fout: ' + err));
                 }
             },
             savePokeInfo: function (e) {
@@ -118,6 +119,10 @@ var app = new Vue(
                         .then(res => res.json())
                         .catch(err => console.error('Fout: ' + err));
                }
+            },
+            updateDataAttr: function () {
+                var self = this;
+                document.querySelectorAll('[data-username]')[0].setAttribute('data-username', self.username);
             }
         }
     });

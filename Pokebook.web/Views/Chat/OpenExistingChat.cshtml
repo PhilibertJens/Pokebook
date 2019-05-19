@@ -3,16 +3,63 @@
     ViewData["Title"] = "OpenExistingChat";
 }
 
+
+<aside id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change the chat details here</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-pills">
+                    <li class="active">
+                        <a href="#1a" data-toggle="tab">Chat details</a>
+                    </li>
+                    <li>
+                        <a href="#2a" data-toggle="tab">User management</a>
+                    </li>
+                </ul>
+                <div class="tab-content clearfix">
+                    <div class="tab-pane active" id="1a">
+                        <form>
+                            <div class="form-group">
+                                <label asp-for="Chat.Name"></label>
+                                <input asp-for="Chat.Name" disabled class="form-control" v-model="chatName">
+                                <span asp-validation-for="Chat.Name" class="text-danger"></span>
+                            </div>
+                            <div>
+                                <button id="saveUserInfo" type="button" v-on:click="saveChatInfo($event)">
+                                    Update chat info
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane" id="2a">
+                        <form>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</aside>
 <div class="row chat chatPageContainer" id="chat">
     <div class="col-md-4" id="left">
-            <vc:chat-list></vc:chat-list>
+        <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal"/>
+        <vc:chat-list></vc:chat-list>
     </div>
     <div class="col-md-8 messageDiv" id="right">
         <h2>@Model.Chat.Name</h2>
         <input type="hidden" id="user" value="@(Model.Me.UserName)" />
         <input type="hidden" id="userId" value="@(Model.Id)" />
         <input type="hidden" id="chatId" value="@(Model.Chat.Id)" />
-        <img src="~/images/loadMore.png" id="loadMessagesLink" v-on:click="loadMoreMessages()" />
+        <img src="~/images/loadMore.png" alt="Load more messages" title="Load more messages" id="loadMessagesLink" v-on:click="loadMoreMessages()" />
         <ul id="messagesList" class='speech-bubbles'>
             @{
                 foreach (var message in Model.Chat.Messages)
@@ -36,7 +83,7 @@
             }
         </ul>
         @*<ul id="messagesList" class='speech-bubbles'>
-        </ul>*@
+            </ul>*@
         <form method="post" class="speechForm" id="speech">
             <div asp-validation-summary="ModelOnly"></div>
             <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
