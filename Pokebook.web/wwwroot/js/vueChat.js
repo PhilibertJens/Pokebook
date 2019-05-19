@@ -10,13 +10,18 @@ var app = new Vue(
             userId: '',
             chatId: '',
             users: null,
-            myUserName: ''
+            myUserName: '',
+            chatName: '',
+            chatImage: '',
+            file: '',
+            encodedImage: ''
         },
         created: function () {
             var self = this;
             self.userId = document.getElementById("userId").value;//v-model werkt niet met hidden types
             self.chatId = document.getElementById("chatId").value;
             self.myUserName = document.querySelectorAll('[data-username]')[0].getAttribute('data-username');
+            self.chatName = document.getElementById("Chat_Name").value;
             self.getGroupMembers();
         },
         methods: {
@@ -123,6 +128,41 @@ var app = new Vue(
                     if (self.users[i].id === id) return self.users[i].userName;
                 }
                 return null;
+            },
+            saveChatInfo: function (e) {
+                var self = this;
+                self.encodeImage(self.file);
+                var data = new FormData();
+                data.append('file', self.file);
+                console.log(self.file);
+                //var ajaxHeaders = new Headers();--> De api endpoint wordt niet geraakt als de header wordt ingesteld
+                //ajaxHeaders.append("Content-Type", "multipart/form-data");
+                var ajaxConfig = {
+                    method: 'POST',
+                    body: data,
+                    //headers: ajaxHeaders
+                };
+
+                let myRequest = new Request(`${apiURL}Chats/Uploads/ChatImage/${self.chatName}`, ajaxConfig);
+                fetch(myRequest)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        console.log(res);                        
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            encodeImage(input) {
+                if (input) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.base64Img = e.target.result;
+                    };
+                    reader.readAsDataURL(input);
+                }
+            },
+            handleFileUpload: function () {
+                var self = this;
+                self.file = self.$refs.file.files[0];
             }
         }
     });
