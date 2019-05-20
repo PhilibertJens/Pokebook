@@ -55,7 +55,7 @@ body {
     background-color: cornflowerblue;
 }
 
-.sideBar #profilePicture {
+#profilePicture {
     width: 90%;
     height: 90%;
     max-width: 100%;
@@ -380,15 +380,11 @@ h1 {
     margin: 10px;
 }
 
-#profilePicture {
-    max-width: 20%;
-}
-
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
 
     #profilePicture {
         max-height: 200px;
-        max-width: unset;
+        max-width: 200px;
     }
 }
 
@@ -396,7 +392,7 @@ h1 {
 
     #profilePicture {
         max-height: 100px;
-        max-width: unset;
+        max-width: 100px;
     }
 }
 

@@ -55,10 +55,12 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     document.getElementById("messageInput").value = "";
-    connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
+    if (message !== "") {
+        connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    }
 });
 
 function GetTime() {
