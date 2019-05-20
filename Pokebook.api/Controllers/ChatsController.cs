@@ -78,7 +78,7 @@ namespace Pokebook.api.Controllers
                 foundChat.Name = chatSettings.ChatName;
                 foundChat.Image = chatSettings.ChatImage;
             }
-            return Ok(Put(foundChat.Id, foundChat));
+            return Ok(Put(foundChat.Id, foundChat));// als er geen update is gebeurd komt er een Microsoft.AspNetCore.Mvc.NotFoundResult (statusCode 404) result
         }
 
         [HttpPost]

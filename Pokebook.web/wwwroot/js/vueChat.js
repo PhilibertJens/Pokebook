@@ -161,6 +161,7 @@ var app = new Vue(
             },
             updateChatInfo: function (imageUploaded) {
                 var self = this;
+                document.getElementById("feedbackError").innerHTML = "";
                 if (self.validCheck()) {
                     var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: self.chatImage });
                     var ajaxHeaders = new Headers();
@@ -175,8 +176,12 @@ var app = new Vue(
                     fetch(myRequest)
                         .then(res => res.json())
                         .then(function (res) {
-                            document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
-                            document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                            if (res.statusCode !== 404) {
+                                document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
+                                document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                                $('#myModal').modal('hide');
+                            }
+                            else document.getElementById("feedbackError").innerHTML = "No changes made";
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
