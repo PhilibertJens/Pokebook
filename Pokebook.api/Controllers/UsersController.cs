@@ -126,6 +126,14 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Users.GetUsersSimple());
         }
 
+        [HttpGet]
+        [Route("RemainingUsersSimple/{chatId}")]
+        public IActionResult GetRemainingUsersSimple(Guid chatId)
+        {
+            //return Ok(unitOfWork.Users.GetRemainingUsers(chatId));
+            return Ok(unitOfWork.Users.GetRemainingUsersSimple(chatId));//geeft alle userDTO's die geen lid van de chat zijn
+        }
+
         [HttpPut]
         [Route("UpdateUserInfo")]
         public async Task<IActionResult> UpdateUserInfo(UserProfileDTO userProfile)

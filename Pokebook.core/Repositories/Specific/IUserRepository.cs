@@ -13,5 +13,9 @@ namespace Pokebook.core.Repositories
         User UpdateUser(User user);
         UserSimpleDTO GetUserSimple(Guid Id);
         List<UserSimpleDTO> GetUsersSimple();
+        List<UserSimpleDTO> GetChatUsersSimple(Guid chatId);
+        List<User> GetChatUsers(Guid chatId);
+        List<User> GetRemainingUsers(Guid chatId);
+        List<UserSimpleDTO> GetRemainingUsersSimple(Guid chatId);
     }
 }
