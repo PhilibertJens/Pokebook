@@ -31,7 +31,7 @@
                                     <p>
                                         <span asp-validation-for="UploadedProfileImage" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-profile" src="http://placehold.it/180" alt="your image" />
+                                    <img id="preview-profile" class="preview" src="~/images/preview.png" alt="your image" width="400"/>
                                     <input type="hidden" asp-for="ProfilePicture" value="ProfilePicture" />
                                 </div>
                                 <div class="form-group">
@@ -49,7 +49,7 @@
                                     <p>
                                         <span asp-validation-for="UploadedCoverImage" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-cover" src="http://placehold.it/180" alt="your image" />
+                                    <img id="preview-cover" class="preview" src="~/images/preview.png" alt="your image" width="400"/>
                                     <input type="hidden" asp-for="CoverPicture" value="CoverPicture" />
                                 </div>
                                 <div class="form-group">
@@ -88,7 +88,7 @@
 </div>
 
 <div class="list-group row userInfo" id="profileInfo">
-    <h2>Information about trainer @Model.me.UserName</h2>
+    <h2>Information about trainer {{username}}</h2>
     <nav class="col-md-4">
         <ul class="links">
             <li class="list-group-item list-group-item-action active" v-on:click="getUserInfo($event)">Personal info</li>

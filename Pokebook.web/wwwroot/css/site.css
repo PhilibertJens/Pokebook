@@ -313,6 +313,10 @@ a .badge, .layoutBadge {
     .speechForm button {
         right: 0;
     }
+
+    .preview {
+        width: 300px;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -378,6 +382,22 @@ h1 {
 
 #profilePicture {
     max-width: 20%;
+}
+
+@media screen and (max-width: 900px) {
+
+    #profilePicture {
+        max-height: 200px;
+        max-width: unset;
+    }
+}
+
+@media screen and (max-width: 360px) {
+
+    #profilePicture {
+        max-height: 100px;
+        max-width: unset;
+    }
 }
 
 .profilePictureForm {

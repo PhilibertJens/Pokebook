@@ -36,7 +36,7 @@
                                     <p>
                                         <span asp-validation-for="Chat.Image" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-chatImage" v-bind:src="chatPreview" alt="your image" />
+                                    <img id="preview-chatImage" class="preview" v-bind:src="chatPreview" alt="your image" width="400"/>
                                 </div>
                                 <div>
                                     <button id="saveChatInfo" type="button" v-on:click="uploadChatImage($event)">
