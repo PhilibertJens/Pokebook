@@ -112,7 +112,7 @@ var app = new Vue(
             },
             getGroupMembers: function () {
                 var self = this;
-                fetch(`${apiURL}Users/Simple`)
+                fetch(`${apiURL}Users/RemainingUsersSimple/${self.chatId}`)
                     .then(res => res.json())
                     .then(function (res) {
                         var allExceptMe = [];
@@ -229,6 +229,10 @@ var app = new Vue(
                 let myRequest = new Request(`${apiURL}userchats/AddUsersToChat`, ajaxConfig);
                     fetch(myRequest)
                         .then(res => res.json())
+                        .then(function (res) {
+                            self.usersToAdd = [];
+                            $('#myModal').modal('hide');
+                        })
                         .catch(err => console.error('Fout: ' + err));
             }
         }
