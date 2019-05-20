@@ -14,7 +14,7 @@ var app = new Vue(
             chatName: '',
             chatImage: '',
             file: '',
-            encodedImage: ''
+            chat: ''
         },
         created: function () {
             var self = this;
@@ -23,6 +23,7 @@ var app = new Vue(
             self.myUserName = document.querySelector('[data-username]').getAttribute('data-username');
             self.chatName = document.getElementById("Chat_Name").value;
             self.getGroupMembers();
+            self.chat = self.getChatById();
         },
         methods: {
             sendMessage: function () {
@@ -144,7 +145,8 @@ var app = new Vue(
                     fetch(myRequest)
                         .then(res => res.json())
                         .then(function (res) {
-                            if(res.status !== 400) self.updateChatInfo(res);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                            self.chatImage = res;
+                            if (res.status !== 400) self.updateChatInfo();//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
@@ -163,9 +165,9 @@ var app = new Vue(
                 var self = this;
                 self.file = self.$refs.file.files[0];
             },
-            updateChatInfo: function (imageName) {
+            updateChatInfo: function () {
                 var self = this;
-                var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: imageName });
+                var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: self.chatImage });
                 var ajaxHeaders = new Headers();
                 ajaxHeaders.append("Content-Type", "application/json");
                 var ajaxConfig = {
@@ -180,6 +182,16 @@ var app = new Vue(
                     .then(function (res) {
                         document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
                         document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            getChatById: function () {
+                var self = this;
+                fetch(`${apiURL}Chats/GetById/${self.chatId}`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        console.log(res);
+                        self.chatImage = res.image;
                     })
                     .catch(err => console.error('Fout: ' + err));
             }

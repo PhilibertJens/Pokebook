@@ -97,10 +97,3 @@ var app = new Vue(
             }
         }
     });
-
-//document.getElementById("navigateToUserProfile").addEventListener("click", myFunction);
-//function myFunction() {
-//    alert("ok");
-//    var selected = document.getElementById("userListValue").value;
-//    window.location = "/Profile/UserProfile/" + selected;
-//}
