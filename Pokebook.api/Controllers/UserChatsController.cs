@@ -7,6 +7,7 @@ using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Pokebook.api.Controllers
 {
@@ -39,6 +40,13 @@ namespace Pokebook.api.Controllers
         [Route("AddUsersToChat")]
         public IActionResult AddUsersToChat(AddUserToChatDTO addUserToChat)
         {
+            Chat currentChat = unitOfWork.Chats.FindById(addUserToChat.ChatId);
+            List<UserSimpleDTO> users = unitOfWork.Users.GetChatUsersSimple(currentChat.Id);
+            foreach(var test in users)
+            {//controle als er geen bestaande user wordt toegevoegd
+                if (addUserToChat.Users.Contains(test.UserName)) addUserToChat.Users.Remove(test.UserName);
+            }
+
             List<UserChat> userChats = new List<UserChat>();
             foreach(var uc in addUserToChat.Users)
             {
@@ -53,9 +61,9 @@ namespace Pokebook.api.Controllers
                     userChats.Add(newUserChat);
                 }
             }
-            var test = unitOfWork.UserChats.AddRange(userChats);
+            var addedUsers = unitOfWork.UserChats.AddRange(userChats);
             unitOfWork.Complete();
-            return Ok(test);
+            return Ok(addedUsers);
         }
     }
 }
