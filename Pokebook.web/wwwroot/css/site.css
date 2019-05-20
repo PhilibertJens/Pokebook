@@ -55,7 +55,7 @@ body {
     background-color: cornflowerblue;
 }
 
-.sideBar #profilePicture {
+#profilePicture {
     width: 90%;
     height: 90%;
     max-width: 100%;
@@ -313,6 +313,10 @@ a .badge, .layoutBadge {
     .speechForm button {
         right: 0;
     }
+
+    .preview {
+        width: 300px;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -376,8 +380,20 @@ h1 {
     margin: 10px;
 }
 
-#profilePicture {
-    max-width: 20%;
+@media screen and (max-width: 1000px) {
+
+    #profilePicture {
+        max-height: 200px;
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+
+    #profilePicture {
+        max-height: 100px;
+        max-width: 100px;
+    }
 }
 
 .profilePictureForm {

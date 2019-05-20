@@ -72,17 +72,13 @@ namespace Pokebook.api.Controllers
         [Consumes("application/json", "multipart/form-data")]
         public async Task<IActionResult> UpdateChatSettings(ChatSettingsDTO chatSettings)
         {
-            if (ModelState.IsValid)
-            {
-                string ok = "ok";
-            }
             Chat foundChat = unitOfWork.Chats.FindById(chatSettings.ChatId);
             if(foundChat != null)
             {
                 foundChat.Name = chatSettings.ChatName;
                 foundChat.Image = chatSettings.ChatImage;
             }
-            return Ok(Put(foundChat.Id, foundChat));
+            return Ok(Put(foundChat.Id, foundChat));// als er geen update is gebeurd komt er een Microsoft.AspNetCore.Mvc.NotFoundResult (statusCode 404) result
         }
 
         [HttpPost]
@@ -104,7 +100,22 @@ namespace Pokebook.api.Controllers
                 return Ok(JsonConvert.SerializeObject(uniqueFileName));
             }
             return BadRequest();
-            //return Ok(JsonConvert.SerializeObject("File not found"));
+        }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult GetById(Guid Id)
+        {
+            return Ok(unitOfWork.Chats.FindById(Id));
+        }
+
+        // GET: api/Users/CoverPicture/name
+        [HttpGet]
+        [Route("ChatPicture/{filename}")]
+        public IActionResult ChatPicture(string filename)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", filename);
+            return PhysicalFile(image, "image/jpeg");
         }
     }
 }

@@ -126,6 +126,14 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Users.GetUsersSimple());
         }
 
+        [HttpGet]
+        [Route("RemainingUsersSimple/{chatId}")]
+        public IActionResult GetRemainingUsersSimple(Guid chatId)
+        {
+            //return Ok(unitOfWork.Users.GetRemainingUsers(chatId));
+            return Ok(unitOfWork.Users.GetRemainingUsersSimple(chatId));//geeft alle userDTO's die geen lid van de chat zijn
+        }
+
         [HttpPut]
         [Route("UpdateUserInfo")]
         public async Task<IActionResult> UpdateUserInfo(UserProfileDTO userProfile)
@@ -149,22 +157,5 @@ namespace Pokebook.api.Controllers
             user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
             return await Update(user);
         }
-
-        //[HttpGet]
-        //[Route("GetFriends/{userid}")]
-        //public IActionResult GetFriendsForUser(Guid userid)
-        //{
-        //    List<Friendship> friendships = unitOfWork.Friendships.GetByUserId(userid);
-
-        //    return Ok(unitOfWork.Friendships.GetByUserId(userid));
-        //}
-
-        //[HttpPost]
-        //[Route("{User}")]
-        //public IActionResult AddNewUser(User user)
-        //{
-        //    //return Ok(unitOfWork.Users.Add(user)); --> werkt niet omdat de Id al bepaald is voor de Add method wordt uitgevoerd
-        //    return Ok(Post(user));
-        //}
     }
 }

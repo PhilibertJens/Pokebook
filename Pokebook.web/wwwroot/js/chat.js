@@ -17,7 +17,7 @@ connection.on("ReceiveMessage", function (user, message) {
     //enkel users die in dezelfde group (chat) zitten zullen dit ontvangen
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g,
         "&gt;");
-    var me = document.getElementById("user").value;
+    var me = document.querySelector('[data-username]').getAttribute('data-username');
 
     //aanmaak nodige HTML elementen
     var li = document.createElement("li");
@@ -51,14 +51,16 @@ connection.start().catch(function (err) {
 });
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("user").value;
+    var user = document.querySelector('[data-username]').getAttribute('data-username');
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     document.getElementById("messageInput").value = "";
-    connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
+    if (message !== "") {
+        connection.invoke("SendMessage", user, message, chatId).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    }
 });
 
 function GetTime() {

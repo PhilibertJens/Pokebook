@@ -71,7 +71,6 @@ var app = new Vue(
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.me.userName) {
                                 allExceptMe.push(res[key].userName);
-                                console.log(self.me.userName);
                             }
                         });
                         self.users = allExceptMe;
@@ -97,10 +96,3 @@ var app = new Vue(
             }
         }
     });
-
-//document.getElementById("navigateToUserProfile").addEventListener("click", myFunction);
-//function myFunction() {
-//    alert("ok");
-//    var selected = document.getElementById("userListValue").value;
-//    window.location = "/Profile/UserProfile/" + selected;
-//}

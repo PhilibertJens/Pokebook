@@ -6,7 +6,7 @@
 <div class="form-group" id="userSearch">
     <input list="userList" id="userListValue" placeholder="Search" v-on:change='getSelectedUser($event)'>
     <datalist id="userList">
-        <option v-for="test in users" v-bind:value="test">{{test}}</option>
+        <option v-for="user in users" v-bind:value="user">{{user}}</option>
     </datalist>
     @*<button type="submit" id="navigateToUserProfile">Go</button>*@
 </div>

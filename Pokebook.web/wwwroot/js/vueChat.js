@@ -13,8 +13,10 @@ var app = new Vue(
             myUserName: '',
             chatName: '',
             chatImage: '',
-            file: '',
-            encodedImage: ''
+            fileToUpload: '',
+            chat: '',
+            chatPreview: '/images/preview.png',
+            usersToAdd: [],
         },
         created: function () {
             var self = this;
@@ -23,6 +25,7 @@ var app = new Vue(
             self.myUserName = document.querySelector('[data-username]').getAttribute('data-username');
             self.chatName = document.getElementById("Chat_Name").value;
             self.getGroupMembers();
+            self.chat = self.getChatById();
         },
         methods: {
             sendMessage: function () {
@@ -109,13 +112,13 @@ var app = new Vue(
             },
             getGroupMembers: function () {
                 var self = this;
-                fetch(`${apiURL}Users/Simple`)
+                fetch(`${apiURL}Users/RemainingUsersSimple/${self.chatId}`)
                     .then(res => res.json())
                     .then(function (res) {
                         var allExceptMe = [];
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.myUserName) {
-                                allExceptMe.push(res[key]);
+                                allExceptMe.push(res[key].userName);
                             }
                         });
                         self.users = allExceptMe;
@@ -129,12 +132,11 @@ var app = new Vue(
                 }
                 return null;
             },
-            saveChatInfo: function (e) {
+            uploadChatImage: function (e) {
                 var self = this;
-                //self.encodeImage(self.file);
                 var data = new FormData();
-                data.append('file', self.file);
-                if (self.file !== "") {
+                data.append('file', self.fileToUpload);
+                if (self.fileToUpload !== "") {
                     var ajaxConfig = {
                         method: 'POST',
                         body: data
@@ -144,44 +146,94 @@ var app = new Vue(
                     fetch(myRequest)
                         .then(res => res.json())
                         .then(function (res) {
-                            if(res.status !== 400) self.updateChatInfo(res);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                            self.chatImage = res;//de naam van de image
+                            document.getElementById("Chat_Image").value = "";
+                            self.fileToUpload = '';
+                            self.chatPreview = '/images/preview1.png';
+                            if (res.status !== 400) self.updateChatInfo(true);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
-                else self.updateChatInfo(null);
+                else self.updateChatInfo(false);
             },
-            encodeImage(input) {
-                if (input) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.base64Img = e.target.result;
+            prepareFileUpload: function () {
+                var self = this;
+                self.fileToUpload = self.$refs.file.files[0];
+            },
+            updateChatInfo: function (imageUploaded) {
+                var self = this;
+                document.getElementById("feedbackError").innerHTML = "";
+                if (self.validCheck()) {
+                    var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: self.chatImage });
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: jsonObject,
+                        headers: ajaxHeaders
                     };
-                    reader.readAsDataURL(input);
+
+                    var myRequest = new Request(`${apiURL}Chats/ChatSettings`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .then(function (res) {
+                            if (res.statusCode !== 404) {
+                                document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
+                                document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                                $('#myModal').modal('hide');
+                            }
+                            else document.getElementById("feedbackError").innerHTML = "No changes made";
+                        })
+                        .catch(err => console.error('Fout: ' + err));
                 }
             },
-            handleFileUpload: function () {
+            getChatById: function () {
                 var self = this;
-                self.file = self.$refs.file.files[0];
-            },
-            updateChatInfo: function (imageName) {
-                var self = this;
-                var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: imageName });
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'POST',
-                    body: jsonObject,
-                    headers: ajaxHeaders
-                };
-
-                var myRequest = new Request(`${apiURL}Chats/ChatSettings`, ajaxConfig);
-                fetch(myRequest)
+                fetch(`${apiURL}Chats/GetById/${self.chatId}`)
                     .then(res => res.json())
                     .then(function (res) {
-                        document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
-                        document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                        console.log(res);
+                        self.chatImage = res.image;
                     })
                     .catch(err => console.error('Fout: ' + err));
+            },
+            validCheck: function () {
+                var items = document.querySelectorAll(".chatSettings span");
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].textContent !== "") return false;
+                }
+                var el = document.getElementById('Chat_Name').value;
+                return el !== "";//returned true als de waarde niet leeg is
+            },
+            getSelectedUser: function (e) {
+                var self = this;
+                var name = e.target.value;
+                self.usersToAdd.push(name);
+                for (var i = 0; i < self.users.length; i++) {
+                    if (self.users[i] === name) self.users.splice(i, 1);
+                }
+                document.getElementById("userListValue").value = "";
+            },
+            addUsersToChat: function (e) {
+                var self = this;
+                    var jsonObject = JSON.stringify({ ChatId: self.chatId, Users: self.usersToAdd });
+                    // opslaan - ajax configuratie
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: jsonObject,
+                        headers: ajaxHeaders
+                    };
+
+                let myRequest = new Request(`${apiURL}userchats/AddUsersToChat`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .then(function (res) {
+                            self.usersToAdd = [];
+                            $('#myModal').modal('hide');
+                        })
+                        .catch(err => console.error('Fout: ' + err));
             }
         }
     });
