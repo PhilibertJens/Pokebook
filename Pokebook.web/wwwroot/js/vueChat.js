@@ -15,7 +15,8 @@ var app = new Vue(
             chatImage: '',
             fileToUpload: '',
             chat: '',
-            chatPreview: '/images/preview.png'
+            chatPreview: '/images/preview.png',
+            usersToAdd: [],
         },
         created: function () {
             var self = this;
@@ -117,7 +118,7 @@ var app = new Vue(
                         var allExceptMe = [];
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.myUserName) {
-                                allExceptMe.push(res[key]);
+                                allExceptMe.push(res[key].userName);
                             }
                         });
                         self.users = allExceptMe;
@@ -203,6 +204,32 @@ var app = new Vue(
                 }
                 var el = document.getElementById('Chat_Name').value;
                 return el !== "";//returned true als de waarde niet leeg is
+            },
+            getSelectedUser: function (e) {
+                var self = this;
+                var name = e.target.value;
+                self.usersToAdd.push(name);
+                for (var i = 0; i < self.users.length; i++) {
+                    if (self.users[i] === name) self.users.splice(i, 1);
+                }
+                document.getElementById("userListValue").value = "";
+            },
+            addUsersToChat: function (e) {
+                var self = this;
+                    var jsonObject = JSON.stringify({ ChatId: self.chatId, Users: self.usersToAdd });
+                    // opslaan - ajax configuratie
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: jsonObject,
+                        headers: ajaxHeaders
+                    };
+
+                let myRequest = new Request(`${apiURL}userchats/AddUsersToChat`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .catch(err => console.error('Fout: ' + err));
             }
         }
     });
