@@ -71,7 +71,6 @@ var app = new Vue(
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.me.userName) {
                                 allExceptMe.push(res[key].userName);
-                                console.log(self.me.userName);
                             }
                         });
                         self.users = allExceptMe;

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
 using System;
+using System.Collections.Generic;
 
 namespace Pokebook.api.Controllers
 {
@@ -31,6 +33,29 @@ namespace Pokebook.api.Controllers
         public IActionResult GetUserChatsForChat(Guid Id)
         {
             return Ok(unitOfWork.UserChats.GetUserChatsForChat(Id));
+        }
+
+        [HttpPost]
+        [Route("AddUsersToChat")]
+        public IActionResult AddUsersToChat(AddUserToChatDTO addUserToChat)
+        {
+            List<UserChat> userChats = new List<UserChat>();
+            foreach(var uc in addUserToChat.Users)
+            {
+                User user = unitOfWork.Users.FindUserByUserName(uc);
+                if(user != null)
+                {
+                    UserChat newUserChat = new UserChat
+                    {
+                        ChatId = addUserToChat.ChatId,
+                        UserId = user.Id
+                    };
+                    userChats.Add(newUserChat);
+                }
+            }
+            var test = unitOfWork.UserChats.AddRange(userChats);
+            unitOfWork.Complete();
+            return Ok(test);
         }
     }
 }
