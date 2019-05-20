@@ -13,8 +13,9 @@ var app = new Vue(
             myUserName: '',
             chatName: '',
             chatImage: '',
-            file: '',
-            chat: ''
+            fileToUpload: '',
+            chat: '',
+            chatPreview: '/images/preview.png'
         },
         created: function () {
             var self = this;
@@ -130,12 +131,11 @@ var app = new Vue(
                 }
                 return null;
             },
-            saveChatInfo: function (e) {
+            uploadChatImage: function (e) {
                 var self = this;
-                //self.encodeImage(self.file);
                 var data = new FormData();
-                data.append('file', self.file);
-                if (self.file !== "") {
+                data.append('file', self.fileToUpload);
+                if (self.fileToUpload !== "") {
                     var ajaxConfig = {
                         method: 'POST',
                         body: data
@@ -145,45 +145,41 @@ var app = new Vue(
                     fetch(myRequest)
                         .then(res => res.json())
                         .then(function (res) {
-                            self.chatImage = res;
-                            if (res.status !== 400) self.updateChatInfo();//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                            self.chatImage = res;//de naam van de image
+                            document.getElementById("Chat_Image").value = "";
+                            self.fileToUpload = '';
+                            self.chatPreview = '/images/preview1.png';
+                            if (res.status !== 400) self.updateChatInfo(true);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
-                else self.updateChatInfo(null);
+                else self.updateChatInfo(false);
             },
-            encodeImage(input) {
-                if (input) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        this.base64Img = e.target.result;
+            prepareFileUpload: function () {
+                var self = this;
+                self.fileToUpload = self.$refs.file.files[0];
+            },
+            updateChatInfo: function (imageUploaded) {
+                var self = this;
+                if (self.validCheck()) {
+                    var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: self.chatImage });
+                    var ajaxHeaders = new Headers();
+                    ajaxHeaders.append("Content-Type", "application/json");
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: jsonObject,
+                        headers: ajaxHeaders
                     };
-                    reader.readAsDataURL(input);
-                }
-            },
-            handleFileUpload: function () {
-                var self = this;
-                self.file = self.$refs.file.files[0];
-            },
-            updateChatInfo: function () {
-                var self = this;
-                var jsonObject = JSON.stringify({ ChatId: self.chatId, ChatName: self.chatName, ChatImage: self.chatImage });
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'POST',
-                    body: jsonObject,
-                    headers: ajaxHeaders
-                };
 
-                var myRequest = new Request(`${apiURL}Chats/ChatSettings`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .then(function (res) {
-                        document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
-                        document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
-                    })
-                    .catch(err => console.error('Fout: ' + err));
+                    var myRequest = new Request(`${apiURL}Chats/ChatSettings`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .then(function (res) {
+                            document.querySelector("#ChatNameTitle").innerHTML = res.value.name;//h2 titel
+                            document.querySelector('[data-id="' + self.chatId + '"]').innerHTML = res.value.name;//a-tag uit vc:chat-list
+                        })
+                        .catch(err => console.error('Fout: ' + err));
+                }
             },
             getChatById: function () {
                 var self = this;
@@ -194,6 +190,14 @@ var app = new Vue(
                         self.chatImage = res.image;
                     })
                     .catch(err => console.error('Fout: ' + err));
+            },
+            validCheck: function () {
+                var items = document.querySelectorAll(".chatSettings span");
+                for (i = 0; i < items.length; i++) {
+                    if (items[i].textContent !== "") return false;
+                }
+                var el = document.getElementById('Chat_Name').value;
+                return el !== "";//returned true als de waarde niet leeg is
             }
         }
     });

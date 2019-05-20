@@ -72,10 +72,6 @@ namespace Pokebook.api.Controllers
         [Consumes("application/json", "multipart/form-data")]
         public async Task<IActionResult> UpdateChatSettings(ChatSettingsDTO chatSettings)
         {
-            if (ModelState.IsValid)
-            {
-                string ok = "ok";
-            }
             Chat foundChat = unitOfWork.Chats.FindById(chatSettings.ChatId);
             if(foundChat != null)
             {
