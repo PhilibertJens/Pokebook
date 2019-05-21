@@ -36,8 +36,12 @@ body {
     }
 }
 
-.sideBar{ 
-    padding-top:10px;
+#appTitle{
+    width: 40%;
+}
+
+.sideBar {
+    padding-top: 10px;
     overflow-y: scroll;
 }
 
@@ -371,13 +375,20 @@ h1 {
 }
 
 #profilePicture, #friendInfo img {
-    height: 200px;
     display: inline-block;
     padding: 5px;
     border: 1px solid black;
     border-radius: 10px;
     background-color: white;
     margin: 10px;
+}
+
+#friendInfo img {
+    height: 200px;
+}
+
+#coverPicture #profilePicture {
+    width: 20%;
 }
 
 @media screen and (max-width: 1000px) {
