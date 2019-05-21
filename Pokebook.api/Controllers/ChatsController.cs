@@ -70,7 +70,7 @@ namespace Pokebook.api.Controllers
         [HttpPost]
         [Route("ChatSettings")]
         [Consumes("application/json", "multipart/form-data")]
-        public async Task<IActionResult> UpdateChatSettings(ChatSettingsDTO chatSettings)
+        public IActionResult UpdateChatSettings(ChatSettingsDTO chatSettings)
         {
             Chat foundChat = unitOfWork.Chats.FindById(chatSettings.ChatId);
             if(foundChat != null)

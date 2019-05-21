@@ -22,7 +22,7 @@ namespace Pokebook.api.Controllers
 
         [HttpGet]
         [Route("Get/{userid}")]
-        public IActionResult GetFriendshipsForUser(Guid userid)
+        public async Task<IActionResult> GetFriendshipsForUser(Guid userid)
         {
             List<Friendship> friendshipsForUser = unitOfWork.Friendships.GetByUserId(userid);
             List<FriendWithFriendshipDTO> friendshipDTOs = new List<FriendWithFriendshipDTO>();
@@ -31,7 +31,7 @@ namespace Pokebook.api.Controllers
                 Guid friendId = new Guid();
                 if (friendship.IdApprover == userid) friendId = friendship.IdRequester;
                 else friendId = friendship.IdApprover;
-                User friend = unitOfWork.Users.FindUserById(friendId);
+                User friend = await unitOfWork.Users.FindUserById(friendId);
                 friendshipDTOs.Add(new FriendWithFriendshipDTO() { Friend = friend, Friendship = friendship });
             }
             return Ok(friendshipDTOs);
@@ -46,13 +46,13 @@ namespace Pokebook.api.Controllers
 
         [HttpGet]
         [Route("GetFriendsToApprove/{userid}")]
-        public IActionResult GetFriendsToApprove(Guid userid)
+        public async Task<IActionResult> GetFriendsToApprove(Guid userid)
         {
             List<FriendWithFriendshipDTO> friendWithFriendshipDTOList = new List<FriendWithFriendshipDTO>();
             List<FriendshipDTO> friendIdWithfriendshipDTOs = unitOfWork.Friendships.GetFriendIdWithFriendshipDTOs(userid);
             foreach(var dto in friendIdWithfriendshipDTOs)
             {
-                User friend = unitOfWork.Users.FindUserById(dto.FriendId);
+                User friend = await unitOfWork.Users.FindUserById(dto.FriendId);
                 FriendWithFriendshipDTO friendWithFriendshipDTO = new FriendWithFriendshipDTO()
                 {
                     Friend = friend,

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
@@ -17,14 +18,14 @@ namespace Pokebook.core.Repositories.Specific
         {
         }
 
-        public User FindUserById(Guid Id)
+        public async Task<User> FindUserById(Guid Id)
         {
-            return PokebookContext.Users.Find(Id);
+            return await PokebookContext.Users.FindAsync(Id);
         }
 
-        public User FindUserByUserName(string userName)
+        public async Task<User> FindUserByUserName(string userName)
         {
-            return PokebookContext.Users.Where(u => u.UserName.Equals(userName)).FirstOrDefault();
+            return await PokebookContext.Users.Where(u => u.UserName.Equals(userName)).FirstOrDefaultAsync();
         }
 
         public User UpdateUser(User user)
@@ -34,24 +35,24 @@ namespace Pokebook.core.Repositories.Specific
             return user;
         }
 
-        public UserSimpleDTO GetUserSimple(Guid Id)
+        public async Task<UserSimpleDTO> GetUserSimple(Guid Id)
         {
-            return PokebookContext.Users.Where(u => u.Id == Id)
-                                  .ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefault();
+            return await PokebookContext.Users.Where(u => u.Id == Id)
+                                  .ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
         }
         
-        public List<UserSimpleDTO> GetUsersSimple()
+        public async Task<List<UserSimpleDTO>> GetUsersSimple()
         {
-            return PokebookContext.Users.ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).ToList();
+            return await PokebookContext.Users.ProjectTo<UserSimpleDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
-        public List<UserSimpleDTO> GetChatUsersSimple(Guid chatId)
+        public async Task<List<UserSimpleDTO>> GetChatUsersSimple(Guid chatId)
         {
             var userList = new List<UserSimpleDTO>();
             var allUserChats = PokebookContext.UserChats.Include(uc => uc.User).Where(uc => uc.ChatId == chatId).ToList();
             foreach (var uc in allUserChats)
             {
-                UserSimpleDTO userToAddDTO = GetUserSimple(uc.User.Id);
+                UserSimpleDTO userToAddDTO = await GetUserSimple(uc.User.Id);
                 userList.Add(userToAddDTO);
             }
             return userList;

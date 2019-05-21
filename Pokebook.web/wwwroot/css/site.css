@@ -309,7 +309,7 @@ a .badge, .layoutBadge {
 @media screen and (max-width: 600px) {
     #left {
         position: sticky;
-        top: 0px;
+        top: 0;
     }
 
     #right {
@@ -341,7 +341,7 @@ a .badge, .layoutBadge {
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
+    width: 0;
     background: transparent;
 }
 
