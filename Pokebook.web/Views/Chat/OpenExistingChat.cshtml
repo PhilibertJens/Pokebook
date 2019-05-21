@@ -47,7 +47,8 @@
                             </form>
                         </div>
                         <div class="tab-pane" id="2a">
-                            <vc:user-list></vc:user-list>
+                            @*<vc:user-list></vc:user-list>*@
+                            <partial name="Partial/UserListPartial" />
                             <ul><li v-for="user in usersToAdd">{{user}}</li></ul>
                             <button v-on:click="addUsersToChat($event)" class="btn btn-primary">Toevoegen</button>
                         </div>

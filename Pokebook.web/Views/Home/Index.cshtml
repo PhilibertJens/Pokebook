@@ -36,17 +36,19 @@
         </div>
     </aside>
     <aside class="col-md-2 sideBar">
-        <a asp-controller="Profile" asp-action="index">
-            <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.Me.ProfilePicture)" alt="@Model.Me.ProfilePicture"
-                 onerror="this.src='/images/default.png'" id="profilePicture" />
-            <p>Profile page</p>
-        </a>
-        <img src="~/images/friendRequests.png" alt="Friend Requests" title="Friend Requests"
-             id="friendRequests" data-toggle="modal" data-target="#myModal" />
+        <div class="nav-icons">
+            <a asp-controller="Profile" asp-action="index">
+                <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.Me.ProfilePicture)" alt="@Model.Me.ProfilePicture"
+                     onerror="this.src='/images/default.png'" id="profilePicture" />
+            </a>
+            <img src="~/images/friendRequests.png" alt="Friend Requests" title="Friend Requests"
+                 id="friendRequests" data-toggle="modal" data-target="#myModal" />
+        </div>
         <vc:chat-list></vc:chat-list>
     </aside>
     <main class="col-md-10" id="pokeTimeLine">
-        <vc:user-list></vc:user-list>
+        @*<vc:user-list></vc:user-list>*@
+        <partial name="Partial/UserListPartial"/>
         <h2>Pokebook timeline here</h2>
         <div id="posts">
             @*Hier komen alle time line posts via Vue.js*@
