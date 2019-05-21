@@ -18,7 +18,30 @@ h2 {
     width: 100%;
 }
 
+.welcome img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.welcome{
+    text-align: center;
+}
+
+.welcome a {
+    font-size: 3em;
+    text-decoration: none;
+}
+
 /****Media screens****/
+@media screen and (max-width: 1200px) {
+    h2 {
+        font-size: 100%;
+    }
+}
+
+
 @media screen and (max-width: 1000px) {
     .container {
         width: 60%;
