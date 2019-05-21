@@ -31,12 +31,12 @@ namespace Pokebook.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(AccountLoginVM userData)
+        public async Task<IActionResult> Login(AccountLoginVM userData)
         {
             if (ModelState.IsValid)
             {
                 string uri = $"{baseuri}/users/username/{userData.UserName}";
-                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+                User currentUser = await WebApiHelper.GetApiResult<User>(uri);
 
                 if (currentUser != null && verifyPassword(currentUser, userData.Password))//paswoord hash moet ook gecheckt worden
                 {
@@ -67,7 +67,7 @@ namespace Pokebook.web.Controllers
             if (ModelState.IsValid)
             {
                 string uri = $"{baseuri}/users/username/{userData.UserName}";
-                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+                User currentUser = await WebApiHelper.GetApiResult<User>(uri);
                 if (currentUser == null)//user bestaat nog niet
                 {
                     User newUser = new User()

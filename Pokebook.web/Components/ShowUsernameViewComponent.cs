@@ -25,7 +25,7 @@ namespace Pokebook.web.Components
             {
                 Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
                 var uri = $"{baseuri}/users/{userId}";
-                var currentUser = WebApiHelper.GetApiResult<User>(uri);
+                var currentUser = await WebApiHelper.GetApiResult<User>(uri);
                 return View(currentUser);
             }
             return View(null);

@@ -9,15 +9,15 @@ namespace Pokebook.web.Helpers
 {
     public class WebApiHelper
     {
-        public static T GetApiResult<T>(string uri)
+        public static async Task<T> GetApiResult<T>(string uri)
         {
             using (HttpClient httpClient = new HttpClient())
             {
-                Task<String> response = httpClient.GetStringAsync(uri);
+                string response = await httpClient.GetStringAsync(uri);
                 return Task.Factory.StartNew
                 (
                 () => JsonConvert
-                .DeserializeObject<T>(response.Result)
+                .DeserializeObject<T>(response)
                 )
                 .Result;
             }

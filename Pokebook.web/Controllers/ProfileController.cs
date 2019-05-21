@@ -30,10 +30,10 @@ namespace Pokebook.web.Controllers
             else return null;
         }
 
-        public List<User> GetFriends(User user)
+        public async Task<List<User>> GetFriends(User user)
         {
             string uri = $"{baseuri}/friendships/Get/{user.Id}";
-            List<FriendWithFriendshipDTO> friendships = WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
+            List<FriendWithFriendshipDTO> friendships = await WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
             return friendships.Where(f => f.Friendship.Accepted == true).Select(f => f.Friend).ToList();
         }
 
@@ -42,9 +42,9 @@ namespace Pokebook.web.Controllers
             Guid? userId = CheckSession();
             if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
-            User user = WebApiHelper.GetApiResult<User>(uri);
+            User user = await WebApiHelper.GetApiResult<User>(uri);
 
-            List<User> friends = GetFriends(user);
+            List<User> friends = await GetFriends(user);
 
             ProfileIndexVM vm = new ProfileIndexVM()
             {
@@ -101,7 +101,7 @@ namespace Pokebook.web.Controllers
             Guid? userId = CheckSession();
             if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
-            User user = WebApiHelper.GetApiResult<User>(uri);
+            User user = await WebApiHelper.GetApiResult<User>(uri);
             string responseFileName = "";
             
             ImageUploadData imageUploadData = GetImageUploadData(userdata);
@@ -137,14 +137,14 @@ namespace Pokebook.web.Controllers
             Guid? userId = CheckSession();
             if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
-            User user = WebApiHelper.GetApiResult<User>(uri);
+            User user = await WebApiHelper.GetApiResult<User>(uri);
 
             uri = $"{baseuri}/users/userName/{username}";
-            User friend = WebApiHelper.GetApiResult<User>(uri);
+            User friend = await WebApiHelper.GetApiResult<User>(uri);
             if (friend != null)
             {
-                List<User> friends = GetFriends(friend);//de friends van deze friend
-                Friendship friendship = GetFriendship(user, friend);
+                List<User> friends = await GetFriends(friend);//de friends van deze friend
+                Friendship friendship = await GetFriendship(user, friend);
 
                 ProfileFriendVM vm = new ProfileFriendVM()
                 {
@@ -159,10 +159,10 @@ namespace Pokebook.web.Controllers
             else return new RedirectToActionResult("Index", "Home", null);
         }
 
-        private Friendship GetFriendship(User me, User friend)
+        private async Task<Friendship> GetFriendship(User me, User friend)
         {
             string uri = $"{baseuri}/friendships/GetFriendship/{me.Id}/{friend.Id}";
-            Friendship friendship = WebApiHelper.GetApiResult<Friendship>(uri);
+            Friendship friendship = await WebApiHelper.GetApiResult<Friendship>(uri);
             return friendship;
         }
     }

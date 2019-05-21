@@ -35,12 +35,12 @@ namespace Pokebook.web.Controllers
             if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
             else userId = (Guid)tempUserId;
             string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
+            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);
 
             UserSimpleDTO currentUser = await GetUserWithId(userId);
 
             uri = $"{baseuri}/users";
-            var allUsers = WebApiHelper.GetApiResult<List<User>>(uri);
+            var allUsers = await WebApiHelper.GetApiResult<List<User>>(uri);
             allUsers = await FilterUserList(allUsers, userId);
 
             ChatIndexVM vm = new ChatIndexVM
@@ -56,7 +56,7 @@ namespace Pokebook.web.Controllers
         public async Task<UserSimpleDTO> GetUserWithId(Guid userId)
         {
             string uri = $"{baseuri}/users/{userId}";
-            return WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
+            return await WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
         }
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
@@ -67,13 +67,13 @@ namespace Pokebook.web.Controllers
                                                  .Select(u => u.Id).ToList();//eigen userId verwijderen uit list
 
             string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
+            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
 
             var usersToRemoveById = new List<Guid>();
             foreach(var chat in chatListForUser)
             {
                 uri = $"{baseuri}/userchats/chatId/{chat.Id}";
-                List<UserChat> userChatListForChat = WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
+                List<UserChat> userChatListForChat = await WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
                 //var userchats = chat.UserChats; --> kan niet door [JsonIgnore] in Chat class
 
                 foreach (var uc in userChatListForChat)
@@ -93,7 +93,7 @@ namespace Pokebook.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(ChatIndexVM userdata)
+        public IActionResult Index(ChatIndexVM userdata)
         {
             Guid userId;
             Guid? tempUserId = CheckSession();
@@ -198,10 +198,10 @@ namespace Pokebook.web.Controllers
             }
 
             string uri = $"{baseuri}/chats/{chatId}";
-            Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
+            Chat currentChat = await WebApiHelper.GetApiResult<Chat>(uri);
             //uri = $"{baseuri}/messages/chatId/{chatId}";
             uri = $"{baseuri}/messages/range/{chatId}/{0}/{20}";//--> enkel de 20 recentste berichten worden getoond
-            List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
+            List<Message> messagesFromChat = await WebApiHelper.GetApiResult<List<Message>>(uri);
             currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
             UserSimpleDTO currentUser = await GetUserWithId(myId);
