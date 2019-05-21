@@ -63,6 +63,11 @@ namespace Pokebook.api.Controllers
                 }
             }
             var addedUsers = unitOfWork.UserChats.AddRange(userChats);
+            if (addedUsers.Count() > 0)
+            {
+                currentChat.NumberOfUsers += addedUsers.Count();
+                unitOfWork.Chats.Update(currentChat);
+            }
             unitOfWork.Complete();
             return Ok(addedUsers);
         }
