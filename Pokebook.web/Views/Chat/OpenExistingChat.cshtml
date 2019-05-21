@@ -87,7 +87,8 @@
                         else
                         {
                             <li class="bubble-other">
-                                <span class='eersteLetter'>@message.Sender.UserName[0]</span>
+                                @*<span class='eersteLetter'>@message.Sender.UserName[0]</span>*@
+                                <span class='eersteLetter'>@message.Sender.UserName</span>
                                 <p>@message.Text</p><br />
                                 <span class="time">@message.SendDate</span>
                             </li>

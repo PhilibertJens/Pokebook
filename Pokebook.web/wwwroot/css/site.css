@@ -169,10 +169,10 @@ a .badge, .layoutBadge {
     padding: 5px;
     margin-right: 5px;
     margin-top: 5px;
-    width: 40px;
+    width: 55px;
     text-align: center;
     background-color: #4CAF50;
-    font-size: 15px;
+    font-size: 10px;
 }
 
 .bubble-me, .bubble-other {

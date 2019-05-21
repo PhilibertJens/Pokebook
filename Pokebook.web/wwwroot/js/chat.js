@@ -28,7 +28,8 @@ connection.on("ReceiveMessage", function (user, message) {
 
     //inhoud van HTML elementen
     p.textContent = msg;
-    spanLetter.textContent = user.charAt(0);
+    //spanLetter.textContent = user.charAt(0);
+    spanLetter.textContent = user;
     spanTime.textContent = GetTime();
 
     //li opvullen met andere HTML elementen

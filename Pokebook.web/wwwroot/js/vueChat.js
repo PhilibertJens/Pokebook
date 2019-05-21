@@ -10,6 +10,7 @@ var app = new Vue(
             userId: '',
             chatId: '',
             users: [],
+            usersMetId: [],
             groupMembers: [],
             myUserName: '',
             chatName: '',
@@ -92,9 +93,10 @@ var app = new Vue(
                 //inhoud van HTML elementen
                 p.textContent = message.text;
                 if (message.senderId !== self.userId) {
-                    console.log(message.senderId);
                     var senderUsername = self.getUserNameFromUser(message.senderId);
-                    spanLetter.textContent = senderUsername.charAt(0);
+                    if (senderUsername === null) spanLetter.textContent = "removed user";
+                    //spanLetter.textContent = senderUsername.charAt(0);
+                    else spanLetter.textContent = senderUsername;
                 }
                 spanTime.textContent = message.sendDate;
 
@@ -119,12 +121,15 @@ var app = new Vue(
                     .then(res => res.json())
                     .then(function (res) {
                         var allExceptMe = [];
+                        var allExceptMeWithId = [];
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.myUserName) {
                                 allExceptMe.push(res[key].userName);
+                                allExceptMeWithId.push(res[key]);
                             }
                         });
                         self.users = allExceptMe;
+                        self.usersMetId = allExceptMeWithId;
                     })
                     .catch(err => console.error('Fout: ' + err));
             },
@@ -147,6 +152,9 @@ var app = new Vue(
                 var self = this;
                 for (var i = 0; i < self.groupMembers.length; i++) {
                     if (self.groupMembers[i].id === id) return self.groupMembers[i].userName;
+                }
+                for (i = 0; i < self.usersMetId.length; i++) {//als de user uit de chat is verwijderd wordt hij hier opgehaald
+                    if (self.usersMetId[i].id === id) return self.usersMetId[i].userName;
                 }
                 return null;
             },
