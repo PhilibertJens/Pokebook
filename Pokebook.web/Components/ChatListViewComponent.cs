@@ -25,10 +25,10 @@ namespace Pokebook.web.Components
         {
             Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
+            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);
 
             uri = $"{baseuri}/users/{userId}";
-            User currentUser = WebApiHelper.GetApiResult<User>(uri);
+            User currentUser = await WebApiHelper.GetApiResult<User>(uri);
 
             AllChatsForUserVM vm = new AllChatsForUserVM
             {

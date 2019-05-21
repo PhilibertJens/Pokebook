@@ -15,10 +15,12 @@
         {
             foreach (var chat in Model.ListChats)
             {
-                <a asp-action="OpenExistingChat" asp-controller="Chat" asp-route-chatId="@(chat.Id)"
-                   class="list-group-item list-group-item-action" data-id="@(chat.Id)">
-                    @(chat.Name)<span class="badge"></span>
-                </a>
+            <a asp-action="OpenExistingChat" asp-controller="Chat" asp-route-chatId="@(chat.Id)"
+               class="list-group-item list-group-item-action" data-id="@(chat.Id)">
+                @(chat.Name)
+                <span>(@chat.NumberOfUsers)</span>
+                <span class="badge"></span>
+            </a>
             }
         }
     }

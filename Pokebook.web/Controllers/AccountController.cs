@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Models;
 using Pokebook.web.Helpers;
@@ -19,23 +20,25 @@ namespace Pokebook.web.Controllers
         }
         
         string baseuri;
+        private PasswordHasher pH = new PasswordHasher();
 
         public IActionResult Login()
         {
+            HttpContext.Session.Remove("UserId");
             AccountLoginVM vm = new AccountLoginVM();
             return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(AccountLoginVM userData)
+        public async Task<IActionResult> Login(AccountLoginVM userData)
         {
             if (ModelState.IsValid)
             {
                 string uri = $"{baseuri}/users/username/{userData.UserName}";
-                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+                User currentUser = await WebApiHelper.GetApiResult<User>(uri);
 
-                if (currentUser != null)//paswoord hash moet ook gecheckt worden
+                if (currentUser != null && verifyPassword(currentUser, userData.Password))//paswoord hash moet ook gecheckt worden
                 {
                     HttpContext.Session.SetString("UserId", currentUser.Id.ToString());
                     return new RedirectToActionResult("Index", "Home", null);
@@ -52,6 +55,7 @@ namespace Pokebook.web.Controllers
 
         public IActionResult Registration()
         {
+            HttpContext.Session.Remove("UserId");
             AccountRegisterVM vm = new AccountRegisterVM();
             return View(vm);
         }
@@ -63,7 +67,7 @@ namespace Pokebook.web.Controllers
             if (ModelState.IsValid)
             {
                 string uri = $"{baseuri}/users/username/{userData.UserName}";
-                User currentUser = WebApiHelper.GetApiResult<User>(uri);
+                User currentUser = await WebApiHelper.GetApiResult<User>(uri);
                 if (currentUser == null)//user bestaat nog niet
                 {
                     User newUser = new User()
@@ -71,9 +75,9 @@ namespace Pokebook.web.Controllers
                         FirstName = userData.FirstName,
                         LastName = userData.LastName,
                         UserName = userData.UserName,
-                        PasswordHash = userData.Password//is momenteel nog niet gehasht
+                        PasswordHash = userData.Password
                     };
-
+                    pH.HashPassword(newUser, newUser.PasswordHash);//het paswoord van de user wordt binnen deze functie vervangen
                     uri = $"{baseuri}/users";
                     User AddedUser = await WebApiHelper.PostCallAPI<User, User>(uri, newUser);
 
@@ -93,6 +97,14 @@ namespace Pokebook.web.Controllers
         public IActionResult RegisterSuccess()
         {
             return View();
+        }
+
+        private bool verifyPassword(User user, string providedPW) => (pH.VerifyHashedPassword(user, user.PasswordHash, providedPW) == PasswordVerificationResult.Success);
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account", null);
         }
     }
 }

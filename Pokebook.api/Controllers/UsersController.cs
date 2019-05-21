@@ -47,9 +47,9 @@ namespace Pokebook.api.Controllers
         // GET: api/Users/userName/userName
         [HttpGet]
         [Route("userName/{userName}")]
-        public IActionResult GetUserWithUserName(string userName)
+        public async Task<IActionResult> GetUserWithUserName(string userName)
         {
-            return Ok(unitOfWork.Users.FindUserByUserName(userName));
+            return Ok(await unitOfWork.Users.FindUserByUserName(userName));
         }
 
         // GET: api/Users/ProfilePicture/name
@@ -101,13 +101,12 @@ namespace Pokebook.api.Controllers
                     await formFile.CopyToAsync(stream);
                 }
             }
-            //return Ok(new { count = 1, formFile.Length, uniqueFileName });
             return Ok(uniqueFileName);
         }
 
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(User user)
+        public IActionResult Update(User user)
         {
             return Ok(unitOfWork.Users.UpdateUser(user));
         }
@@ -116,21 +115,27 @@ namespace Pokebook.api.Controllers
         [Route("Simple/{id}")]
         public async Task<IActionResult> GetSimpleUser(Guid id)
         {
-            return Ok(unitOfWork.Users.GetUserSimple(id));
+            return Ok(await unitOfWork.Users.GetUserSimple(id));
         }
 
         [HttpGet]
         [Route("Simple")]
         public async Task<IActionResult> GetSimpleUsers()
         {
-            return Ok(unitOfWork.Users.GetUsersSimple());
+            return Ok(await unitOfWork.Users.GetUsersSimple());
+        }
+
+        [HttpGet]
+        [Route("ChatUsersSimple/{chatId}")]
+        public async Task<IActionResult> GetChatUsers(Guid chatId)
+        {
+            return Ok(await unitOfWork.Users.GetChatUsersSimple(chatId));
         }
 
         [HttpGet]
         [Route("RemainingUsersSimple/{chatId}")]
         public IActionResult GetRemainingUsersSimple(Guid chatId)
         {
-            //return Ok(unitOfWork.Users.GetRemainingUsers(chatId));
             return Ok(unitOfWork.Users.GetRemainingUsersSimple(chatId));//geeft alle userDTO's die geen lid van de chat zijn
         }
 
@@ -140,22 +145,22 @@ namespace Pokebook.api.Controllers
         {
             Guid id = userProfile.Id;
             User user = unitOfWork.Users.FindById(id);
-            if (unitOfWork.Users.FindUserByUserName(userProfile.UserName) == null) user.UserName = userProfile.UserName;
+            if (await unitOfWork.Users.FindUserByUserName(userProfile.UserName) == null) user.UserName = userProfile.UserName;
             user.FirstName = userProfile.FirstName;
             user.LastName = userProfile.LastName;
-            return await Update(user);
+            return Update(user);
         }
 
         [HttpPut]
         [Route("UpdatePokeInfo")]
-        public async Task<IActionResult> UpdatePokeInfo(UserProfilePokeDTO userProfilePoke)
+        public IActionResult UpdatePokeInfo(UserProfilePokeDTO userProfilePoke)
         {
             //een niet valid object zal niet toekomen in deze method, zelfs niet wanneer js wordt uitgeschakeld
             Guid id = userProfilePoke.Id;
             User user = unitOfWork.Users.FindById(id);
             user.FavoritePokemon = userProfilePoke.FavoritePokemon;
             user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
-            return await Update(user);
+            return Update(user);
         }
     }
 }

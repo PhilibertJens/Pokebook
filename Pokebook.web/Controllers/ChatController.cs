@@ -21,16 +21,26 @@ namespace Pokebook.web.Controllers
         }
         string baseuri;
 
+        public Guid? CheckSession()
+        {
+            string id = HttpContext.Session.GetString("UserId");
+            if (id != null) return Guid.Parse(id);
+            else return null;
+        }
+
         public async Task<IActionResult> Index()
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
             string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
+            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);
 
             UserSimpleDTO currentUser = await GetUserWithId(userId);
 
             uri = $"{baseuri}/users";
-            var allUsers = WebApiHelper.GetApiResult<List<User>>(uri);
+            var allUsers = await WebApiHelper.GetApiResult<List<User>>(uri);
             allUsers = await FilterUserList(allUsers, userId);
 
             ChatIndexVM vm = new ChatIndexVM
@@ -46,7 +56,7 @@ namespace Pokebook.web.Controllers
         public async Task<UserSimpleDTO> GetUserWithId(Guid userId)
         {
             string uri = $"{baseuri}/users/{userId}";
-            return WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
+            return await WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
         }
 
         private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
@@ -57,13 +67,13 @@ namespace Pokebook.web.Controllers
                                                  .Select(u => u.Id).ToList();//eigen userId verwijderen uit list
 
             string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
+            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
 
             var usersToRemoveById = new List<Guid>();
             foreach(var chat in chatListForUser)
             {
                 uri = $"{baseuri}/userchats/chatId/{chat.Id}";
-                List<UserChat> userChatListForChat = WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
+                List<UserChat> userChatListForChat = await WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
                 //var userchats = chat.UserChats; --> kan niet door [JsonIgnore] in Chat class
 
                 foreach (var uc in userChatListForChat)
@@ -83,19 +93,28 @@ namespace Pokebook.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(ChatIndexVM userdata)
+        public IActionResult Index(ChatIndexVM userdata)
         {
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
+
             HttpContext.Session.SetString("ReceiverId", userdata.SelectedUserId.ToString());
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
         public async Task<IActionResult> SendFirstMessage()
         {
+            Guid senderId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else senderId = (Guid)tempUserId;
+
+            UserSimpleDTO sender = await GetUserWithId(senderId);
+
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
             UserSimpleDTO receiver = await GetUserWithId(receiverId);
-
-            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
@@ -109,11 +128,15 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
+            Guid senderId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else senderId = (Guid)tempUserId;
+
+            UserSimpleDTO sender = await GetUserWithId(senderId);
+
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
             UserSimpleDTO receiver = await GetUserWithId(receiverId);
-
-            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             if (ModelState.IsValid)
             {
@@ -165,18 +188,22 @@ namespace Pokebook.web.Controllers
 
         public async Task<IActionResult> OpenExistingChat(Guid chatId)//is 000... na Redirect om de een of andere reden
         {
-            if(chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
+            Guid myId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else myId = (Guid)tempUserId;
+
+            if (chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
                 chatId = Guid.Parse(HttpContext.Session.GetString("ChatId"));
             }
 
             string uri = $"{baseuri}/chats/{chatId}";
-            Chat currentChat = WebApiHelper.GetApiResult<Chat>(uri);
+            Chat currentChat = await WebApiHelper.GetApiResult<Chat>(uri);
             //uri = $"{baseuri}/messages/chatId/{chatId}";
             uri = $"{baseuri}/messages/range/{chatId}/{0}/{20}";//--> enkel de 20 recentste berichten worden getoond
-            List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
+            List<Message> messagesFromChat = await WebApiHelper.GetApiResult<List<Message>>(uri);
             currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
-            Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             UserSimpleDTO currentUser = await GetUserWithId(myId);
 
             OpenExistingChatVM vm = new OpenExistingChatVM

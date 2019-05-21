@@ -9,14 +9,16 @@ var app = new Vue(
             message: '',
             userId: '',
             chatId: '',
-            users: null,
+            users: [],
+            usersMetId: [],
+            groupMembers: [],
             myUserName: '',
             chatName: '',
             chatImage: '',
             fileToUpload: '',
             chat: '',
             chatPreview: '/images/preview.png',
-            usersToAdd: [],
+            usersToAdd: []
         },
         created: function () {
             var self = this;
@@ -24,6 +26,7 @@ var app = new Vue(
             self.chatId = document.getElementById("chatId").value;
             self.myUserName = document.querySelector('[data-username]').getAttribute('data-username');
             self.chatName = document.getElementById("Chat_Name").value;
+            self.getNonChatUsers();
             self.getGroupMembers();
             self.chat = self.getChatById();
         },
@@ -91,7 +94,9 @@ var app = new Vue(
                 p.textContent = message.text;
                 if (message.senderId !== self.userId) {
                     var senderUsername = self.getUserNameFromUser(message.senderId);
-                    spanLetter.textContent = senderUsername.charAt(0);
+                    if (senderUsername === null) spanLetter.textContent = "removed user";
+                    //spanLetter.textContent = senderUsername.charAt(0);
+                    else spanLetter.textContent = senderUsername;
                 }
                 spanTime.textContent = message.sendDate;
 
@@ -110,25 +115,46 @@ var app = new Vue(
                 var list = document.getElementById("messagesList");
                 list.insertBefore(li, list.childNodes[0]);
             },
-            getGroupMembers: function () {
+            getNonChatUsers: function () {
                 var self = this;
                 fetch(`${apiURL}Users/RemainingUsersSimple/${self.chatId}`)
                     .then(res => res.json())
                     .then(function (res) {
                         var allExceptMe = [];
+                        var allExceptMeWithId = [];
                         Object.keys(res).forEach(function (key) {
                             if (res[key].userName !== self.myUserName) {
                                 allExceptMe.push(res[key].userName);
+                                allExceptMeWithId.push(res[key]);
                             }
                         });
                         self.users = allExceptMe;
+                        self.usersMetId = allExceptMeWithId;
+                    })
+                    .catch(err => console.error('Fout: ' + err));
+            },
+            getGroupMembers: function () {
+                var self = this;
+                fetch(`${apiURL}Users/ChatUsersSimple/${self.chatId}`)
+                    .then(res => res.json())
+                    .then(function (res) {
+                        var allExceptMe = [];
+                        Object.keys(res).forEach(function (key) {
+                            if (res[key].userName !== self.myUserName) {
+                                allExceptMe.push(res[key]);
+                            }
+                        });
+                        self.groupMembers = allExceptMe;
                     })
                     .catch(err => console.error('Fout: ' + err));
             },
             getUserNameFromUser: function(id) {
                 var self = this;
-                for (var i = 0; i < self.users.length; i++) {
-                    if (self.users[i].id === id) return self.users[i].userName;
+                for (var i = 0; i < self.groupMembers.length; i++) {
+                    if (self.groupMembers[i].id === id) return self.groupMembers[i].userName;
+                }
+                for (i = 0; i < self.usersMetId.length; i++) {//als de user uit de chat is verwijderd wordt hij hier opgehaald
+                    if (self.usersMetId[i].id === id) return self.usersMetId[i].userName;
                 }
                 return null;
             },
@@ -192,7 +218,6 @@ var app = new Vue(
                 fetch(`${apiURL}Chats/GetById/${self.chatId}`)
                     .then(res => res.json())
                     .then(function (res) {
-                        console.log(res);
                         self.chatImage = res.image;
                     })
                     .catch(err => console.error('Fout: ' + err));

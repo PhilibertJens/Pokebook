@@ -8,6 +8,7 @@ using Pokebook.core.Repositories.Specific;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pokebook.api.Controllers
 {
@@ -38,10 +39,10 @@ namespace Pokebook.api.Controllers
 
         [HttpPost]
         [Route("AddUsersToChat")]
-        public IActionResult AddUsersToChat(AddUserToChatDTO addUserToChat)
+        public async Task<IActionResult> AddUsersToChat(AddUserToChatDTO addUserToChat)
         {
             Chat currentChat = unitOfWork.Chats.FindById(addUserToChat.ChatId);
-            List<UserSimpleDTO> users = unitOfWork.Users.GetChatUsersSimple(currentChat.Id);
+            List<UserSimpleDTO> users = await unitOfWork.Users.GetChatUsersSimple(currentChat.Id);
             foreach(var test in users)
             {//controle als er geen bestaande user wordt toegevoegd
                 if (addUserToChat.Users.Contains(test.UserName)) addUserToChat.Users.Remove(test.UserName);
@@ -50,7 +51,7 @@ namespace Pokebook.api.Controllers
             List<UserChat> userChats = new List<UserChat>();
             foreach(var uc in addUserToChat.Users)
             {
-                User user = unitOfWork.Users.FindUserByUserName(uc);
+                User user = await unitOfWork.Users.FindUserByUserName(uc);
                 if(user != null)
                 {
                     UserChat newUserChat = new UserChat
@@ -62,6 +63,11 @@ namespace Pokebook.api.Controllers
                 }
             }
             var addedUsers = unitOfWork.UserChats.AddRange(userChats);
+            if (addedUsers.Count() > 0)
+            {
+                currentChat.NumberOfUsers += addedUsers.Count();
+                unitOfWork.Chats.Update(currentChat);
+            }
             unitOfWork.Complete();
             return Ok(addedUsers);
         }

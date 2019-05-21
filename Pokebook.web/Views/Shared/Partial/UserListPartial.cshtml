@@ -1,12 +1,11 @@
-﻿@model AllUsersVM
-@{
-    ViewData["Title"] = "Default";
-}
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
 
 <div class="form-group" id="userSearch">
     <input list="userList" id="userListValue" placeholder="Search" v-on:change='getSelectedUser($event)'>
     <datalist id="userList">
         <option v-for="user in users" v-bind:value="user">{{user}}</option>
     </datalist>
-    @*<button type="submit" id="navigateToUserProfile">Go</button>*@
 </div>

@@ -22,12 +22,20 @@ namespace Pokebook.web.Controllers
 
         string baseuri;
 
-        public IActionResult Index()
+        public Guid? CheckSession()
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            string id = HttpContext.Session.GetString("UserId");
+            if (id != null) return Guid.Parse(id);
+            else return null;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
-            User user = WebApiHelper.GetApiResult<User>(uri);
-            List<User> friends = GetFriends(user);
+            User user = await WebApiHelper.GetApiResult<User>(uri);
+            List<User> friends = await GetFriends(user);
             HomeIndexVM vm = new HomeIndexVM
             {
                 Me = user
@@ -35,16 +43,18 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        public List<User> GetFriends(User user)
+        public async Task<List<User>> GetFriends(User user)
         {
             string uri = $"{baseuri}/friendships/Get/{user.Id}";
-            List<FriendWithFriendshipDTO> friendships = WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
+            List<FriendWithFriendshipDTO> friendships = await WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
             return friendships.Where(f => f.Friendship.Accepted == false && f.Friendship.IdApprover == user.Id)
                               .Select(f => f.Friend).ToList();
         }
 
         public IActionResult About()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             ViewData["Message"] = "Your application description page.";
 
             return View();
@@ -52,6 +62,8 @@ namespace Pokebook.web.Controllers
 
         public IActionResult Contact()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             ViewData["Message"] = "Your contact page.";
 
             return View();
@@ -59,12 +71,16 @@ namespace Pokebook.web.Controllers
 
         public IActionResult Privacy()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
