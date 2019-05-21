@@ -23,6 +23,13 @@ namespace Pokebook.web.Controllers
         
         string baseuri;
 
+        public Guid? CheckSession()
+        {
+            string id = HttpContext.Session.GetString("UserId");
+            if (id != null) return Guid.Parse(id);
+            else return null;
+        }
+
         public List<User> GetFriends(User user)
         {
             string uri = $"{baseuri}/friendships/Get/{user.Id}";
@@ -32,7 +39,8 @@ namespace Pokebook.web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
 
@@ -63,7 +71,8 @@ namespace Pokebook.web.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Change(ProfileIndexVM userdata)
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
             string responseFileName = "";
@@ -120,7 +129,8 @@ namespace Pokebook.web.Controllers
 
         public async Task<IActionResult> UserProfile(string username)
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
 

@@ -21,9 +21,19 @@ namespace Pokebook.web.Controllers
         }
         string baseuri;
 
+        public Guid? CheckSession()
+        {
+            string id = HttpContext.Session.GetString("UserId");
+            if (id != null) return Guid.Parse(id);
+            else return null;
+        }
+
         public async Task<IActionResult> Index()
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
             string uri = $"{baseuri}/chats/userId/{userId}";
             List<Chat> chatListForUser = WebApiHelper.GetApiResult<List<Chat>>(uri);
 
@@ -85,17 +95,26 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ChatIndexVM userdata)
         {
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
+
             HttpContext.Session.SetString("ReceiverId", userdata.SelectedUserId.ToString());
             return new RedirectToActionResult("SendFirstMessage", "Chat", null);
         }
 
         public async Task<IActionResult> SendFirstMessage()
         {
+            Guid senderId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else senderId = (Guid)tempUserId;
+
+            UserSimpleDTO sender = await GetUserWithId(senderId);
+
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
             UserSimpleDTO receiver = await GetUserWithId(receiverId);
-
-            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             ChatSendFirstMessageVM vm = new ChatSendFirstMessageVM()
             {
@@ -109,11 +128,15 @@ namespace Pokebook.web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendFirstMessage(ChatSendFirstMessageVM vm)
         {
+            Guid senderId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else senderId = (Guid)tempUserId;
+
+            UserSimpleDTO sender = await GetUserWithId(senderId);
+
             Guid receiverId = Guid.Parse(HttpContext.Session.GetString("ReceiverId"));
             UserSimpleDTO receiver = await GetUserWithId(receiverId);
-
-            Guid senderId = Guid.Parse(HttpContext.Session.GetString("UserId"));
-            UserSimpleDTO sender = await GetUserWithId(senderId);
 
             if (ModelState.IsValid)
             {
@@ -165,7 +188,12 @@ namespace Pokebook.web.Controllers
 
         public async Task<IActionResult> OpenExistingChat(Guid chatId)//is 000... na Redirect om de een of andere reden
         {
-            if(chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
+            Guid myId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else myId = (Guid)tempUserId;
+
+            if (chatId.ToString() == "00000000-0000-0000-0000-000000000000"){
                 chatId = Guid.Parse(HttpContext.Session.GetString("ChatId"));
             }
 
@@ -176,7 +204,6 @@ namespace Pokebook.web.Controllers
             List<Message> messagesFromChat = WebApiHelper.GetApiResult<List<Message>>(uri);
             currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
-            Guid myId = Guid.Parse(HttpContext.Session.GetString("UserId"));
             UserSimpleDTO currentUser = await GetUserWithId(myId);
 
             OpenExistingChatVM vm = new OpenExistingChatVM

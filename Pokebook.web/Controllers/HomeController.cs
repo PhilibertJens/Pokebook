@@ -22,9 +22,17 @@ namespace Pokebook.web.Controllers
 
         string baseuri;
 
+        public Guid? CheckSession()
+        {
+            string id = HttpContext.Session.GetString("UserId");
+            if (id != null) return Guid.Parse(id);
+            else return null;
+        }
+
         public IActionResult Index()
         {
-            Guid userId = Guid.Parse(HttpContext.Session.GetString("UserId"));
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
             List<User> friends = GetFriends(user);
@@ -45,6 +53,8 @@ namespace Pokebook.web.Controllers
 
         public IActionResult About()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             ViewData["Message"] = "Your application description page.";
 
             return View();
@@ -52,6 +62,8 @@ namespace Pokebook.web.Controllers
 
         public IActionResult Contact()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             ViewData["Message"] = "Your contact page.";
 
             return View();
@@ -59,12 +71,16 @@ namespace Pokebook.web.Controllers
 
         public IActionResult Privacy()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+            Guid? userId = CheckSession();
+            if (userId == null) return new RedirectToActionResult("Login", "Account", null);
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
