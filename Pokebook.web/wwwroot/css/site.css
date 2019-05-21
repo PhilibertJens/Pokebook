@@ -60,9 +60,9 @@ body {
 }
 
 #profilePicture {
-    width: 90%;
-    height: 90%;
-    max-width: 100%;
+    width: 40%;
+    /*height: 90%;*/
+    /*max-width: 100%;*/
 }
 
 .sideBar p{
@@ -76,7 +76,7 @@ body {
 
 #friendRequests {
     border: none;
-    width: 30px;
+    width: 40%;
     cursor: pointer;
 }
 
@@ -132,6 +132,19 @@ a .badge, .layoutBadge {
     line-height: 25px;
     border-radius: 50%;
     box-shadow: 0 0 1px #333;
+}
+
+@media screen and (max-width: 1000px) {
+    #profilePicture ,#friendRequests {
+        width: 10%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    #profilePicture, #friendRequests {
+        position: relative;
+        top: 33px;
+    }
 }
 
 /*----Chat----*/
@@ -283,6 +296,10 @@ a .badge, .layoutBadge {
     padding-right: 10%;
 }
 
+#chat + hr + footer{
+    display: none;
+}
+
 @media screen and (max-width: 1000px) {
     #right {
         width: 75%;
@@ -419,6 +436,8 @@ h1 {
     top: 25px;
     border: none;
     transition: all 2s ease-in;
+    width: 50px;
+    height: 50px;
 }
 
 #wheel:hover {

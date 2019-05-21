@@ -66,6 +66,33 @@ namespace Pokebook.web.Controllers
             return true;
         }
 
+        public ImageUploadData GetImageUploadData(ProfileIndexVM userdata)
+        {
+            ImageUploadData imageUploadData = new ImageUploadData();
+
+            if (userdata.ProfilePicture == null && userdata.UploadedCoverImage == null) return null;//kan gebeuren als de user de html wijzigt
+            if (userdata.CoverPicture == null && userdata.UploadedProfileImage == null) return null;//kan gebeuren als de user de html wijzigt
+
+            if (userdata.ProfilePicture != null && !userdata.UploadedProfileImage.ContentType.Contains("image"))
+                return null;
+
+            if (userdata.CoverPicture != null && !userdata.UploadedCoverImage.ContentType.Contains("image"))
+                return null;
+
+            if (userdata.ProfilePicture == null)
+            {
+                imageUploadData.Uri = $"{baseuri}/users/CoverPicture";
+                imageUploadData.FileName = userdata.UploadedCoverImage.FileName;
+                imageUploadData.Image = userdata.UploadedCoverImage.OpenReadStream();
+            }
+            else {
+                imageUploadData.Uri = $"{baseuri}/users/ProfilePicture";
+                imageUploadData.FileName = userdata.UploadedProfileImage.FileName;
+                imageUploadData.Image = userdata.UploadedProfileImage.OpenReadStream();
+            }
+            return imageUploadData;
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Consumes("multipart/form-data")]
@@ -76,55 +103,33 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/users/{userId}";
             User user = WebApiHelper.GetApiResult<User>(uri);
             string responseFileName = "";
-            if (Validate(userdata)){
-            //if (ModelState.IsValid){ --> vervangen door eigen Validate method
-                if(userdata.ProfilePicture == null) uri = $"{baseuri}/users/CoverPicture";
-                else uri = $"{baseuri}/users/ProfilePicture";
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    HttpContent fileStreamContent;
-                    if (userdata.ProfilePicture == null)
-                    {
-                        fileStreamContent = new StreamContent(userdata.UploadedCoverImage.OpenReadStream());
-                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-                        {
-                            Name = "file",
-                            FileName = userdata.UploadedCoverImage.FileName
-                        };
-                    }
-                    else
-                    {
-                        fileStreamContent = new StreamContent(userdata.UploadedProfileImage.OpenReadStream());
-                        fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-                        {
-                            Name = "file",
-                            FileName = userdata.UploadedProfileImage.FileName
-                        }; 
-                    }
-                    fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-                    using (var formData = new MultipartFormDataContent())
-                    {
-                        formData.Add(fileStreamContent);
-                        HttpResponseMessage response = await httpClient.PostAsync(uri, formData);
-                        responseFileName = await response.Content.ReadAsStringAsync();
-                    }
-                }
-                if (responseFileName != "")
-                {
-                    if (userdata.ProfilePicture == null) user.CoverPicture = responseFileName;
-                    else user.ProfilePicture = responseFileName;
-                    uri = $"{baseuri}/users/update";
-                    User updatedProfile = await WebApiHelper.PutCallAPI<User, User>(uri, user);
-                }
-                return new RedirectToActionResult("Index", "Profile", null);
-            }
             
-            ProfileIndexVM vm = new ProfileIndexVM()
+            ImageUploadData imageUploadData = GetImageUploadData(userdata);
+            if (imageUploadData == null) return new RedirectToActionResult("Index", "Profile", null);
+
+            using (HttpClient httpClient = new HttpClient())
             {
-                me = user
-            };
-            return View("Index", vm);
+                HttpContent fileStreamContent = new StreamContent(imageUploadData.Image);
+                fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "file",
+                    FileName = imageUploadData.FileName
+                };
+                fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                var formData = new MultipartFormDataContent();
+                formData.Add(fileStreamContent);
+            
+                HttpResponseMessage response = await httpClient.PostAsync(imageUploadData.Uri, formData);
+                responseFileName = await response.Content.ReadAsStringAsync();
+            }
+            if (responseFileName != "")
+            {
+                if (userdata.ProfilePicture == null) user.CoverPicture = responseFileName;
+                else user.ProfilePicture = responseFileName;
+                uri = $"{baseuri}/users/update";
+                User updatedProfile = await WebApiHelper.PutCallAPI<User, User>(uri, user);
+            }
+            return new RedirectToActionResult("Index", "Profile", null);
         }
 
         public async Task<IActionResult> UserProfile(string username)
