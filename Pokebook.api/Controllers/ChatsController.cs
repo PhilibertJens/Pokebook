@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
 using Pokebook.core.Models.DTO;
+using System.Collections.Generic;
 
 namespace Pokebook.api.Controllers
 {
@@ -107,6 +108,17 @@ namespace Pokebook.api.Controllers
         public IActionResult GetById(Guid Id)
         {
             return Ok(unitOfWork.Chats.FindById(Id));
+        }
+
+        [HttpGet]
+        [Route("GetChatSafe/{chatId}/{userId}")]
+        public IActionResult GetChatSafe(Guid chatId, Guid userId)
+        {
+            var list = unitOfWork.UserChats.GetUserChatsForUser(userId);
+            var ok = false;
+            foreach(var uc in list) if (uc.ChatId == chatId) ok = true;
+            if (ok) return Ok(unitOfWork.Chats.FindById(chatId));
+            else return Ok(null);
         }
 
         // GET: api/Users/CoverPicture/name

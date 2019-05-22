@@ -197,23 +197,26 @@ namespace Pokebook.web.Controllers
                 chatId = Guid.Parse(HttpContext.Session.GetString("ChatId"));
             }
 
-            string uri = $"{baseuri}/chats/{chatId}";
+            //string uri = $"{baseuri}/chats/{chatId}";
+            string uri = $"{baseuri}/chats/GetChatSafe/{chatId}/{myId}";//extra controle als je wel lid bent van deze chat
             Chat currentChat = await WebApiHelper.GetApiResult<Chat>(uri);
-            //uri = $"{baseuri}/messages/chatId/{chatId}";
-            uri = $"{baseuri}/messages/range/{chatId}/{0}/{20}";//--> enkel de 20 recentste berichten worden getoond
-            List<Message> messagesFromChat = await WebApiHelper.GetApiResult<List<Message>>(uri);
-            currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
-
-            UserSimpleDTO currentUser = await GetUserWithId(myId);
-
-            OpenExistingChatVM vm = new OpenExistingChatVM
+            if(currentChat != null)
             {
-                Chat = currentChat,
-                Me = currentUser,
-                Id = myId
-            };
+                uri = $"{baseuri}/messages/range/{chatId}/{0}/{20}";//--> enkel de 20 recentste berichten worden getoond
+                List<Message> messagesFromChat = await WebApiHelper.GetApiResult<List<Message>>(uri);
+                currentChat.Messages = messagesFromChat;//de messages moeten apart opgehaald worden door de [JsonIgnore] in Chat class
 
-            return View(vm);
+                UserSimpleDTO currentUser = await GetUserWithId(myId);
+
+                OpenExistingChatVM vm = new OpenExistingChatVM
+                {
+                    Chat = currentChat,
+                    Me = currentUser,
+                    Id = myId
+                };
+                return View(vm);
+            }
+            return new RedirectToActionResult("Index", "Home", null);
         }
     }
 }
