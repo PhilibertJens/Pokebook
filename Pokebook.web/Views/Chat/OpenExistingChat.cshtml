@@ -54,16 +54,18 @@
                                 <li v-for="user in usersToAdd">
                                     {{user}}<img src="~/images/delete.gif" v-bind:data-user="user" alt="delete" title="remove from selection" width="30" v-on:click="doNotAddUser($event)" />
                                 </li>
+                                <li><button v-on:click="addUsersToChat($event)" class="btn btn-success">Toevoegen</button></li>
                             </ul>
-                            <button v-on:click="addUsersToChat($event)" class="btn btn-primary">Toevoegen</button>
                             <hr />
                             <h2>Groupmembers:</h2>
                             <ul id="groupmembers">
                                 <li v-for="member in groupMembers">
-                                    {{member.userName}}<img src="~/images/delete.gif" v-bind:data-user="member.userName" 
-                                                            alt="delete" title="delete user from chat" width="30" v-on:click="deleteUserFromChat($event)"/>
+                                    <img src="~/images/delete.gif" v-bind:data-user="member.userName"
+                                         alt="delete" title="delete user from chat" width="30" v-on:click="deleteUserFromChat($event)" />
+                                    {{member.userName}}
                                 </li>
-                                <li><b>You: {{myUserName}}</b></li>
+                                @*<li><b>You: {{myUserName}}</b></li>*@
+                                <li><a href="LeaveChat/chatId/@(Model.Chat.Id)" class="btn btn-danger">Leave chat</a></li>
                             </ul>
                         </div>
                     </div>

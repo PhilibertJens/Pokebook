@@ -218,5 +218,17 @@ namespace Pokebook.web.Controllers
             }
             return new RedirectToActionResult("Index", "Home", null);
         }
+        
+        public async Task<IActionResult> LeaveChat(Guid chatId)
+        {
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
+
+            string uri = $"{baseuri}/UserChats/DeleteUserFromChat/{chatId}/{userId}";
+            var result = await WebApiHelper.DelCallAPI<Guid>(uri);
+            return new RedirectToActionResult("Index", "Home", null);
+        }
     }
 }
