@@ -259,6 +259,12 @@ var app = new Vue(
                             $('#myModal').modal('hide');
                         })
                         .catch(err => console.error('Fout: ' + err));
+            },
+            doNotAddUser: function (e) {
+                var self = this;
+                var clickedUser = e.target.getAttribute('data-user');
+                self.usersToAdd.pop(clickedUser);
+                self.users.push(clickedUser);
             }
         }
     });
