@@ -19,7 +19,7 @@ namespace Pokebook.web.Controllers
             Constants constants = new Constants();
             baseuri = $"https://localhost:{constants.Portnumber}/api";
         }
-        string baseuri;
+        readonly string baseuri;
 
         public Guid? CheckSession()
         {
@@ -39,9 +39,7 @@ namespace Pokebook.web.Controllers
 
             UserSimpleDTO currentUser = await GetUserWithId(userId);
 
-            uri = $"{baseuri}/users";
-            var allUsers = await WebApiHelper.GetApiResult<List<User>>(uri);
-            allUsers = await FilterUserList(allUsers, userId);
+            var allUsers = await FilterUserList(userId);
 
             ChatIndexVM vm = new ChatIndexVM
             {
@@ -59,36 +57,11 @@ namespace Pokebook.web.Controllers
             return await WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
         }
 
-        private async Task<List<User>> FilterUserList(List<User> allUsers, Guid userId)
+        private async Task<List<UserSimpleDTO>> FilterUserList(Guid userId)
         {
-            List<User> allOtherUsers = allUsers.Where(u => u.Id != userId).ToList();//eigen user verwijderen uit list
-
-            List<Guid> IdForOtherUsers = allUsers.Where(u => u.Id != userId)
-                                                 .Select(u => u.Id).ToList();//eigen userId verwijderen uit list
-
-            string uri = $"{baseuri}/chats/userId/{userId}";
-            List<Chat> chatListForUser = await WebApiHelper.GetApiResult<List<Chat>>(uri);//alle huidige chats van de user
-
-            var usersToRemoveById = new List<Guid>();
-            foreach(var chat in chatListForUser)
-            {
-                uri = $"{baseuri}/userchats/chatId/{chat.Id}";
-                List<UserChat> userChatListForChat = await WebApiHelper.GetApiResult<List<UserChat>>(uri);//alle userchats van deze chat.
-                //var userchats = chat.UserChats; --> kan niet door [JsonIgnore] in Chat class
-
-                foreach (var uc in userChatListForChat)
-                {
-                    if (IdForOtherUsers.Contains(uc.UserId)) usersToRemoveById.Add(uc.UserId);//id's van te verwijderen users
-                }
-            }
-
-            List<User> result = new List<User>();
-            foreach (var user in allOtherUsers)
-            {
-                if (!usersToRemoveById.Contains(user.Id)) result.Add(user);//wanneer de userid niet voorkomt in lijst komt hij in result
-            }
-            
-            return result;//enkel de gebruikers waarmee je nog geen gesprek bent gestart
+            string uri = $"{baseuri}/users/NewChatUsers/{userId}";
+            List<UserSimpleDTO> usersToStartChatWith = await WebApiHelper.GetApiResult<List<UserSimpleDTO>>(uri);
+            return usersToStartChatWith;
         }
 
         [HttpPost]
