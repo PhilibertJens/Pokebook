@@ -63,13 +63,32 @@ namespace Pokebook.api.Controllers
                 }
             }
             var addedUsers = unitOfWork.UserChats.AddRange(userChats);
+            List<UserSimpleDTO> list = new List<UserSimpleDTO>();
             if (addedUsers.Count() > 0)
             {
                 currentChat.NumberOfUsers += addedUsers.Count();
                 unitOfWork.Chats.Update(currentChat);
+                foreach(var uc in addedUsers)
+                    list.Add(new UserSimpleDTO { Id = uc.UserId, UserName = uc.User.UserName });
             }
             unitOfWork.Complete();
-            return Ok(addedUsers);
+            return Ok(list);
+        }
+
+        [HttpDelete]
+        [Route("DeleteUserFromChat/{chatId}/{userId}")]
+        public async Task<IActionResult> DeleteUserChat(Guid chatId, Guid userId)
+        {
+            UserChat deletedUserChat = await unitOfWork.UserChats.DeleteUserChat(chatId, userId);
+            if(deletedUserChat != null)
+            {
+                Chat currentChat = unitOfWork.Chats.FindById(chatId);
+                if (currentChat != null) {
+                    currentChat.NumberOfUsers -= 1;
+                    unitOfWork.Complete();
+                }
+            }
+            return Ok(chatId);
         }
     }
 }

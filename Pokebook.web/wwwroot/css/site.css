@@ -300,6 +300,14 @@ a .badge, .layoutBadge {
     display: none;
 }
 
+#usersToAdd li{
+    display: inline-block;
+}
+
+#usersToAdd li:last-child {
+    display: block;
+}
+
 @media screen and (max-width: 1000px) {
     #right {
         width: 75%;

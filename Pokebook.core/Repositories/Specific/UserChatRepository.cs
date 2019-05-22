@@ -31,6 +31,16 @@ namespace Pokebook.core.Repositories.Specific
                 .Where(uc => uc.ChatId.Equals(Id)).ToList();
         }
 
+        public async Task<UserChat> DeleteUserChat(Guid chatId, Guid userId)
+        {
+            UserChat toRemove = GetUserChatsForUser(userId).ToList()
+                            .Where(uc => uc.ChatId == chatId && uc.UserId == userId)
+                            .FirstOrDefault();
+            PokebookContext.Remove(toRemove);
+            await PokebookContext.SaveChangesAsync();
+            return toRemove;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

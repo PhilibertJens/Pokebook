@@ -162,5 +162,33 @@ namespace Pokebook.api.Controllers
             user.FavoritePokemonGame = userProfilePoke.FavoritePokemonGame;
             return Update(user);
         }
+
+        [HttpGet]
+        [Route("NewChatUsers/{userId}")]
+        public async Task<IActionResult> GetNewChatUsers(Guid userId)//Hier bepalen we de users waar je nog geen chat mee hebt
+        {
+            User me = unitOfWork.Users.FindById(userId);
+            List<string> individualUserNames = new List<string>();
+            var chatList = unitOfWork.Chats.FindChatsForUser(userId).Where(c => c.NumberOfUsers == 2).ToList();
+            foreach(var chat in chatList)
+            {
+                foreach(var uc in chat.UserChats)
+                {
+                    if (uc.User.UserName != me.UserName) individualUserNames.Add(uc.User.UserName);
+                }
+            }
+            individualUserNames.Add(me.UserName);
+            List<UserSimpleDTO> usersSimple = await unitOfWork.Users.GetUsersSimple();
+            for(int i=0; i<usersSimple.Count(); i++)
+            {
+                var cur = usersSimple[i];
+                if (individualUserNames.Contains(cur.UserName))
+                {
+                    usersSimple.RemoveAt(i);
+                    i--;
+                }
+            }
+            return Ok(usersSimple);
+        }
     }
 }

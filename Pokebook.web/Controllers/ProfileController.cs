@@ -21,7 +21,7 @@ namespace Pokebook.web.Controllers
             baseuri = $"https://localhost:{constants.Portnumber}/api";
         }
         
-        string baseuri;
+        readonly string baseuri;
 
         public Guid? CheckSession()
         {
@@ -116,9 +116,11 @@ namespace Pokebook.web.Controllers
                     FileName = imageUploadData.FileName
                 };
                 fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                var formData = new MultipartFormDataContent();
-                formData.Add(fileStreamContent);
-            
+                var formData = new MultipartFormDataContent
+                {
+                    fileStreamContent
+                };
+
                 HttpResponseMessage response = await httpClient.PostAsync(imageUploadData.Uri, formData);
                 responseFileName = await response.Content.ReadAsStringAsync();
             }

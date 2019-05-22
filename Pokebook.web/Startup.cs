@@ -109,6 +109,12 @@ namespace Pokebook.web
                 );
 
                 routes.MapRoute(
+                    name: "LeaveChat",
+                    template: "Chat/LeaveChat/chatId/{chatId}",
+                    defaults: new { Controller = "Chat", action = "LeaveChat" }
+                );
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
                     //template: "{controller=Home}/{action=Index}/{id?}");

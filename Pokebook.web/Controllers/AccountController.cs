@@ -19,7 +19,7 @@ namespace Pokebook.web.Controllers
             baseuri = $"https://localhost:{constants.Portnumber}/api";
         }
         
-        string baseuri;
+        readonly string baseuri;
         private PasswordHasher pH = new PasswordHasher();
 
         public IActionResult Login()

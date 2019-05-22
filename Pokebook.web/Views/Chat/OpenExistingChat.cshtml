@@ -48,9 +48,25 @@
                         </div>
                         <div class="tab-pane" id="2a">
                             @*<vc:user-list></vc:user-list>*@
+                            <h2>Add new users:</h2>
                             <partial name="Partial/UserListPartial" />
-                            <ul><li v-for="user in usersToAdd">{{user}}</li></ul>
-                            <button v-on:click="addUsersToChat($event)" class="btn btn-primary">Toevoegen</button>
+                            <ul id="usersToAdd">
+                                <li v-for="user in usersToAdd">
+                                    {{user}}<img src="~/images/delete.gif" v-bind:data-user="user" alt="delete" title="remove from selection" width="30" v-on:click="doNotAddUser($event)" />
+                                </li>
+                                <li><button v-on:click="addUsersToChat($event)" class="btn btn-success">Toevoegen</button></li>
+                            </ul>
+                            <hr />
+                            <h2>Groupmembers:</h2>
+                            <ul id="groupmembers">
+                                <li v-for="member in groupMembers">
+                                    <img src="~/images/delete.gif" v-bind:data-user="member.userName"
+                                         alt="delete" title="delete user from chat" width="30" v-on:click="deleteUserFromChat($event)" />
+                                    {{member.userName}}
+                                </li>
+                                @*<li><b>You: {{myUserName}}</b></li>*@
+                                <li><a href="LeaveChat/chatId/@(Model.Chat.Id)" class="btn btn-danger">Leave chat</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -96,8 +112,6 @@
                     }
                 }
             </ul>
-            @*<ul id="messagesList" class='speech-bubbles'>
-                </ul>*@
             <form method="post" class="speechForm" id="speech">
                 <div asp-validation-summary="ModelOnly"></div>
                 <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />

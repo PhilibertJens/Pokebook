@@ -11,5 +11,6 @@ namespace Pokebook.core.Repositories.Specific
     {
         IEnumerable<UserChat> GetUserChatsForUser(Guid id);
         IEnumerable<UserChat> GetUserChatsForChat(Guid id);
+        Task<UserChat> DeleteUserChat(Guid chatId, Guid userId);
     }
 }
