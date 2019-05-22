@@ -1,4 +1,4 @@
-# PE3 Team Rocket
+# EE Pokebook Team Rocket
 
 ASP.NET app with API / Library. Users can chat, post and talk about events in Pokémon.
 
