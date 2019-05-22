@@ -56,7 +56,15 @@
                                 </li>
                             </ul>
                             <button v-on:click="addUsersToChat($event)" class="btn btn-primary">Toevoegen</button>
-                            
+                            <hr />
+                            <h2>Groupmembers:</h2>
+                            <ul id="groupmembers">
+                                <li v-for="member in groupMembers">
+                                    {{member.userName}}<img src="~/images/delete.gif" v-bind:data-user="member.userName" 
+                                                            alt="delete" title="delete user from chat" width="30" v-on:click="deleteUserFromChat($event)"/>
+                                </li>
+                                <li><b>You: {{myUserName}}</b></li>
+                            </ul>
                         </div>
                     </div>
                 </div>

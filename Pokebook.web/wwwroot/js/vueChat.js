@@ -256,7 +256,8 @@ var app = new Vue(
                         .then(res => res.json())
                         .then(function (res) {
                             self.usersToAdd = [];
-                            $('#myModal').modal('hide');
+                            self.updateNumberOfUsers(res.length);
+                            for (var i = 0; i < res.length; i++) self.groupMembers.push(res[i]);
                         })
                         .catch(err => console.error('Fout: ' + err));
             },
@@ -265,6 +266,43 @@ var app = new Vue(
                 var clickedUser = e.target.getAttribute('data-user');
                 self.usersToAdd.pop(clickedUser);
                 self.users.push(clickedUser);
+            },
+            deleteUserFromChat: function (e) {
+                var self = this;
+                var clickedUser = e.target.getAttribute('data-user');
+                var ajaxHeaders = new Headers();
+                ajaxHeaders.append("Content-Type", "application/json");
+                var todelete = self.getMemberByUserName(clickedUser).id;
+                if (todelete !== null) {
+                    var ajaxConfig = {
+                        method: 'DELETE',
+                        headers: ajaxHeaders
+                    };
+                    let myRequest = new Request(`${apiURL}UserChats/DeleteUserFromChat/${self.chatId}/${todelete}`, ajaxConfig);
+                    fetch(myRequest)
+                        .then(res => res.json())
+                        .then(function (res) {
+                            self.users.push(clickedUser);
+                            self.groupMembers.pop(self.getMemberByUserName(clickedUser));
+                            self.updateNumberOfUsers(-1);
+                            console.log(el);
+                        })
+                        .catch(err => console.error('Fout: ' + err));
+                }
+            },
+            updateNumberOfUsers: function (value) {
+                var self = this;
+                var text = document.querySelectorAll('[data-id="' + self.chatId + '"] .numberOfUsers')[0].textContent;
+                var number = parseInt(text.slice(1, -1));
+                number += value;
+                document.querySelectorAll('[data-id="' + self.chatId + '"] .numberOfUsers')[0].innerHTML = "(" + number + ")";
+            },
+            getMemberByUserName: function (userName) {
+                var self = this;
+                for (var i = 0; i < self.groupMembers.length; i++) {
+                    if (self.groupMembers[i].userName === userName) return self.groupMembers[i];
+                }
+                return null;
             }
         }
     });
