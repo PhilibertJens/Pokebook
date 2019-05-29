@@ -69,5 +69,21 @@ namespace Pokebook.api.Controllers
             }
             return Ok("");
         }
+
+        [HttpGet]
+        [Route("MessagePicture/{filename}")]
+        public IActionResult MessagePicture(string filename)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", filename);
+            if (System.IO.File.Exists(image))
+            {
+                return PhysicalFile(image, "image/png");
+            }
+            else
+            {
+                image = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", "preview.png");
+                return PhysicalFile(image, "image/png");
+            }
+        }
     }
 }
