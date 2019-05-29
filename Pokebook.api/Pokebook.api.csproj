@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\ChatPictures\" />
-    <Folder Include="wwwroot\images\MessagePictures\" />
   </ItemGroup>
 
 </Project>
