@@ -457,7 +457,7 @@ h1 {
     display: none;
 }
 
-#fileLabel-profile, #fileLabel-cover {
+#fileLabel-profile, #fileLabel-cover, #fileLabel-messageImage {
     background-color: #7F9CCB;
     padding: 5px 10px;
     border-radius: 5px;
