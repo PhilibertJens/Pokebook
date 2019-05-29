@@ -31,22 +31,43 @@ var app = new Vue(
             self.chat = self.getChatById();
         },
         methods: {
-            sendMessage: function () {
-                var self = this;
-                var jsonObject = JSON.stringify({ chatId: self.chatId, senderId: self.userId, text: self.message, sendDate: self.getTime()});
-                // opslaan - ajax configuratie
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'POST',
-                    body: jsonObject,
-                    headers: ajaxHeaders
-                };
-                
-                let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json(), self.updateMessageCount())
-                    .catch(err => console.error('Fout: ' + err));
+            processSendMessage: function () {
+                //var self = this;
+                //var messageImage = self.addFormDataImage();
+                //if (self.message !== "") {
+                //    if (messageImage !== null) {
+                //        var config = messageImage;
+                //        let myRequest = new Request(`${apiURL}Messages/MessagePicture`, config);
+                //        fetch(myRequest)
+                //            .then(res => res.json())
+                //            .then(function (res) {
+                //                document.getElementById("newImage").value = "";
+                //                self.fileToUpload = '';
+                //                imageNameGlobal = res;
+                //                self.sendMessage(res);
+                //            })
+                //            .catch(err => console.error('Fout: ' + err));
+                //    }
+                //    else self.sendMessage(null);
+                //}
+            },
+            sendMessage: function (name) {
+                //var self = this;
+                //var jsonObject = JSON.stringify({ chatId: self.chatId, senderId: self.userId, text: self.message, sendDate: self.getTime(), imageName: name });
+
+                //// opslaan - ajax configuratie
+                //var ajaxHeaders = new Headers();
+                //ajaxHeaders.append("Content-Type", "application/json");
+                //var ajaxConfig = {
+                //    method: 'POST',
+                //    body: jsonObject,
+                //    headers: ajaxHeaders
+                //};
+
+                //let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
+                //fetch(myRequest)
+                //    .then(res => res.json(), self.updateMessageCount())
+                //    .catch(err => console.error('Fout: ' + err));
             },
             updateMessageCount: function () {
                 var self = this;
@@ -86,6 +107,7 @@ var app = new Vue(
                 //aanmaak nodige HTML elementen
                 var li = document.createElement("li");
                 var p = document.createElement("p");
+                var img = document.createElement("img");
                 var spanTime = document.createElement("span");
                 var spanLetter = document.createElement("span");
                 var br = document.createElement("br");
@@ -102,6 +124,10 @@ var app = new Vue(
 
                 //li opvullen met andere HTML elementen
                 if (message.senderId !== self.userId) li.appendChild(spanLetter);
+                if (message.imageName !== null) {
+                    img.src = "https://localhost:44321/api/messages/messagePicture/" + message.imageName;
+                    li.append(img);
+                }
                 li.appendChild(p);
                 if (message.senderId !== self.userId) li.appendChild(br);
                 li.appendChild(spanTime);
@@ -184,6 +210,7 @@ var app = new Vue(
             },
             prepareFileUpload: function () {
                 var self = this;
+                self.fileToUpload = "";
                 self.fileToUpload = self.$refs.file.files[0];
             },
             updateChatInfo: function (imageUploaded) {
@@ -303,6 +330,23 @@ var app = new Vue(
                     if (self.groupMembers[i].userName === userName) return self.groupMembers[i];
                 }
                 return null;
+            },
+            addFormDataImage: function () {
+                var self = this;
+                var data = new FormData();
+                data.append('file', self.fileToUpload);
+                if (self.fileToUpload !== "") {
+                    var ajaxConfig = {
+                        method: 'POST',
+                        body: data
+                    };
+                    return ajaxConfig;
+                }
+                return null;
             }
         }
     });
+
+document.querySelector('.chat #messageInput').scrollIntoView({
+    behavior: 'smooth'
+});

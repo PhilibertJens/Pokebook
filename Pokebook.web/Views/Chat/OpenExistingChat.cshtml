@@ -37,7 +37,7 @@
                                     <p>
                                         <span asp-validation-for="Chat.Image" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-chatImage" class="preview" v-bind:src="chatPreview" alt="your image" width="400"/>
+                                    <img id="preview-chatImage" class="preview" v-bind:src="chatPreview" alt="your image" width="400" />
                                 </div>
                                 <div>
                                     <button id="saveChatInfo" type="button" v-on:click="uploadChatImage($event)">
@@ -82,7 +82,7 @@
             <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal" />
             <vc:chat-list></vc:chat-list>
             <img v-bind:src="'https://localhost:44321/api/chats/ChatPicture/' + chatImage"
-                 onerror="this.src='/images/Pokemon_logo.svg.png'" width="500"/>
+                 onerror="this.src='/images/Pokemon_logo.svg.png'" width="500" />
         </div>
         <div class="col-md-8 messageDiv" id="right">
             <h2 id="ChatNameTitle">@Model.Chat.Name</h2>
@@ -96,6 +96,13 @@
                         if (message.Sender.UserName == Model.Me.UserName)
                         {
                             <li class="bubble-me">
+                                @{
+                                    if (message.ImageName != null)
+                                    {
+                                        <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
+                                             alt="@(message.ImageName)" title="@(message.ImageName)" width="200" /><br />
+                                    }
+                                }
                                 <p>@message.Text</p>
                                 <span class="time">@message.SendDate</span>
                             </li>
@@ -105,6 +112,13 @@
                             <li class="bubble-other">
                                 @*<span class='eersteLetter'>@message.Sender.UserName[0]</span>*@
                                 <span class='eersteLetter'>@message.Sender.UserName</span>
+                                @{
+                                    if (message.ImageName != null)
+                                    {
+                                        <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
+                                             alt="@(message.ImageName)" title="@(message.ImageName)" width="200" /><br />
+                                    }
+                                }
                                 <p>@message.Text</p><br />
                                 <span class="time">@message.SendDate</span>
                             </li>
@@ -112,13 +126,17 @@
                     }
                 }
             </ul>
-            <form method="post" class="speechForm" id="speech">
+            <form method="post" class="speechForm" id="speech" enctype="multipart/form-data" name="sendForm">
                 <div asp-validation-summary="ModelOnly"></div>
                 <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
                 <div class="form-group relative">
+                    <label for="newImage" id="fileLabel-messageImage" class="control-label">
+                        @*<input type="file" name="newImage" id="newImage" class="form-control" ref="file" v-on:change="prepareFileUpload()">*@
+                        <input type="file" name="newImage" id="newImage" class="form-control" ref="file">
+                    </label>
                     <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control" required></textarea>
                     <button type="submit" id="sendButton"
-                            v-on:click="sendMessage">
+                            v-on:click="processSendMessage">
                         <img src="~/images/send.png" />
                     </button><br />
                     <span asp-validation-for="Text" class="text-danger"></span>
@@ -131,8 +149,8 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/vue.js"></script>
-    <script src="~/js/vueChat.js"></script>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/vueChat.js"></script>
     <script src="~/js/chat.js"></script>
     <script src="~/js/preview.js"></script>
     @*<script src="~/lib/signalr/dist/browser/signalr.js"></script>*@

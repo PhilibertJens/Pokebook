@@ -8,9 +8,9 @@ namespace Pokebook.web.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string user, string message, Guid chatId)
+        public async Task SendMessage(string user, string message, Guid chatId, string imageName)
         {
-            await Clients.Group(chatId.ToString()).SendAsync("ReceiveMessage", user, message);
+            await Clients.Group(chatId.ToString()).SendAsync("ReceiveMessage", user, message, imageName);
             await Clients.Group(chatId.ToString()).SendAsync("ReceiveNotification", user, message, chatId);
         }
 

@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using Pokebook.core.Repositories;
 using Pokebook.core.Repositories.Specific;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Pokebook.api.Controllers
 {
@@ -14,10 +19,13 @@ namespace Pokebook.api.Controllers
     [ApiController]
     public class MessagesController : ControllerCrudBase<Message>
     {
-        public MessagesController(PokebookContext dbc, IMapper m, MessageRepository repo) :
+        public MessagesController(PokebookContext dbc, IMapper m, MessageRepository repo, IHostingEnvironment hostingEnvironment) :
             base(dbc,m,repo)
         {
+            _hostingEnvironment = hostingEnvironment;
         }
+
+        private IHostingEnvironment _hostingEnvironment;
 
         //api/Messages
         [HttpGet]
@@ -39,6 +47,43 @@ namespace Pokebook.api.Controllers
         public IActionResult GetMessageRange(Guid chatId, int startMessage, int numberOfMessages)
         {
             return Ok(unitOfWork.Messages.GetMessageRange(chatId, startMessage, numberOfMessages));
+        }
+
+        [HttpPost]
+        [Route("MessagePicture")]
+        [Consumes("application/json", "multipart/form-data")]
+        public async Task<IActionResult> UploadMessageImage([FromForm(Name = "file")] IFormFile formFile)
+        {
+            if (formFile != null)
+            {
+                string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
+                var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", uniqueFileName);
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+                return Ok(JsonConvert.SerializeObject(uniqueFileName));
+            }
+            return Ok("");
+        }
+
+        [HttpGet]
+        [Route("MessagePicture/{filename}")]
+        public IActionResult MessagePicture(string filename)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", filename);
+            if (System.IO.File.Exists(image))
+            {
+                return PhysicalFile(image, "image/png");
+            }
+            else
+            {
+                image = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", "preview.png");
+                return PhysicalFile(image, "image/png");
+            }
         }
     }
 }
