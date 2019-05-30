@@ -131,12 +131,10 @@
                 <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
                 <div class="form-group relative">
                     <label for="newImage" id="fileLabel-messageImage" class="control-label">
-                        @*<input type="file" name="newImage" id="newImage" class="form-control" ref="file" v-on:change="prepareFileUpload()">*@
                         <input type="file" name="newImage" id="newImage" class="form-control" ref="file">
                     </label>
                     <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control" required></textarea>
-                    <button type="submit" id="sendButton"
-                            v-on:click="processSendMessage">
+                    <button type="submit" id="sendButton">
                         <img src="~/images/send.png" />
                     </button><br />
                     <span asp-validation-for="Text" class="text-danger"></span>

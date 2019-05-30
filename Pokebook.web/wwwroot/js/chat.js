@@ -98,7 +98,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 
 function sendMessageQuery(user, message, chatId, image, userId) {
     console.log("We zitten hier. Message: " + message);
-    //if (message !== "") {
+    if (isValid(message, image)) {
         var jsonObject = JSON.stringify({ chatId: chatId, senderId: userId, text: message, sendDate: GetTime(), imageName: image });
 
         // opslaan - ajax configuratie
@@ -110,7 +110,7 @@ function sendMessageQuery(user, message, chatId, image, userId) {
             headers: ajaxHeaders
         };
 
-        let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
+        let myRequest = new Request(`${apiURL}Messages/NewMessage`, ajaxConfig);
         fetch(myRequest)
             .then(res => res.json())
             .catch(err => console.error('Fout: ' + err));
@@ -118,7 +118,11 @@ function sendMessageQuery(user, message, chatId, image, userId) {
         connection.invoke("SendMessage", user, message, chatId, image).catch(function (err) {
             return console.error(err.toString());
         });
-    //}
+    }
+}
+
+function isValid(message, image) {
+    return !(message === "" && image === null);
 }
 
 function GetTime() {

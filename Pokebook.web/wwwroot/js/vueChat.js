@@ -346,7 +346,3 @@ var app = new Vue(
             }
         }
     });
-
-document.querySelector('.chat #messageInput').scrollIntoView({
-    behavior: 'smooth'
-});

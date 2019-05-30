@@ -49,6 +49,30 @@ namespace Pokebook.api.Controllers
             return Ok(unitOfWork.Messages.GetMessageRange(chatId, startMessage, numberOfMessages));
         }
 
+        private bool IsValid(Message message)
+        {
+            if (message.Text == "" && message.ImageName == null) return false;
+            return true;
+        }
+
+        [HttpPost]
+        [Route("NewMessage")]
+        public IActionResult NewMessage(Message message)
+        {
+            if (IsValid(message))
+            {
+                Guid chatId = message.ChatId;
+                if (chatId != null)
+                {
+                    Chat chat = unitOfWork.Chats.FindById(chatId);
+                    chat.NumberOfMessages++;
+                    unitOfWork.Chats.Update(chat);
+                }
+                return Ok(Post(message));
+            }
+            return Ok("");
+        }
+
         [HttpPost]
         [Route("MessagePicture")]
         [Consumes("application/json", "multipart/form-data")]
