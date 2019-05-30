@@ -3,6 +3,8 @@
     $("#UploadedProfileImage").on('change', showProfileImagePreview);
     $("#UploadedCoverImage").on('change', showCoverImagePreview);
     $("#Chat_Image").on('change', showChatImagePreview);
+    $(".speech-bubbles").on('click', 'img', showModal);
+    $(".closeModal").on('click', closeModal);
 });
 
 function showProfileImagePreview() {
@@ -36,4 +38,20 @@ function showChatImagePreview() {
         };
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function showModal() {
+    var modal = document.getElementById("imageModal");
+    var img = $(this);
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+    modal.style.display = "block";
+    modalImg.src = img.attr('src');
+    captionText.innerHTML = img.attr('alt');
+}
+
+function closeModal() {
+    var modal = document.getElementById("imageModal");
+    modal.style.display = "none";
 }

@@ -38,6 +38,8 @@ connection.on("ReceiveMessage", function (user, message, imageName) {
     if (user !== me) li.appendChild(spanLetter);
     if (imageName !== null) {
         img.src = `${apiURL}messages/messagePicture/${imageName}`;
+        img.alt = imageName;
+        img.title = imageName;
         li.append(img);
     }
     li.appendChild(p);

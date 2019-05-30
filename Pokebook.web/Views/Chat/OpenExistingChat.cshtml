@@ -100,7 +100,7 @@
                                     if (message.ImageName != null)
                                     {
                                         <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
-                                             alt="@(message.ImageName)" title="@(message.ImageName)"/><br />
+                                             alt="@(message.ImageName)" title="@(message.ImageName)" /><br />
                                     }
                                 }
                                 <p>@message.Text</p>
@@ -116,7 +116,7 @@
                                     if (message.ImageName != null)
                                     {
                                         <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
-                                             alt="@(message.ImageName)" title="@(message.ImageName)"/><br />
+                                             alt="@(message.ImageName)" title="@(message.ImageName)" /><br />
                                     }
                                 }
                                 <p>@message.Text</p><br />
@@ -126,6 +126,12 @@
                     }
                 }
             </ul>
+            <!-- The Modal -->
+            <div id="imageModal" class="modal centered">
+                <span class="closeModal">&times;</span>
+                <img class="modal-content" id="img01">
+                <div id="caption"></div>
+            </div>
             <form method="post" class="speechForm" id="speech" enctype="multipart/form-data" name="sendForm">
                 <div asp-validation-summary="ModelOnly"></div>
                 <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
