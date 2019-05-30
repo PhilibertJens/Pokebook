@@ -76,6 +76,7 @@ namespace Pokebook.api.Controllers
         private bool IsImageValid(IFormFile formFile)
         {
             if (formFile == null) return false;
+            if (!formFile.ContentType.Contains("image")) return false;
             if (formFile.Length > 3145728) return false;
             return true;
         }

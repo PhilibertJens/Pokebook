@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label asp-for="Chat.Image" id="fileLabel-cover" class="control-label">
                                         Change cover picture
-                                        <input type="file" asp-for="Chat.Image" class="form-control" ref="file" v-on:change="prepareFileUpload()">
+                                        <input type="file" asp-for="Chat.Image" class="form-control" v-on:change="prepareFileUpload()">
                                     </label>
                                     <p>
                                         <span asp-validation-for="Chat.Image" class="text-danger"></span>

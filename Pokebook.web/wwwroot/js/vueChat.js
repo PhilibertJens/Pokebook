@@ -70,20 +70,20 @@ var app = new Vue(
                 //    .catch(err => console.error('Fout: ' + err));
             },
             updateMessageCount: function () {
-                var self = this;
-                var jsonObject = JSON.stringify({ chatId: self.chatId });
-                // opslaan - ajax configuratie
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'PUT',
-                    body: jsonObject,
-                    headers: ajaxHeaders
-                };
-                let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .catch(err => console.error('Fout: ' + err));
+                //var self = this;
+                //var jsonObject = JSON.stringify({ chatId: self.chatId });
+                //// opslaan - ajax configuratie
+                //var ajaxHeaders = new Headers();
+                //ajaxHeaders.append("Content-Type", "application/json");
+                //var ajaxConfig = {
+                //    method: 'PUT',
+                //    body: jsonObject,
+                //    headers: ajaxHeaders
+                //};
+                //let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
+                //fetch(myRequest)
+                //    .then(res => res.json())
+                //    .catch(err => console.error('Fout: ' + err));
             },
             getTime: function () {
                 var today = new Date();
@@ -190,6 +190,7 @@ var app = new Vue(
                 var self = this;
                 var data = new FormData();
                 data.append('file', self.fileToUpload);
+                console.log(self.fileToUpload);
                 if (self.fileToUpload !== "") {
                     var ajaxConfig = {
                         method: 'POST',
@@ -204,18 +205,18 @@ var app = new Vue(
                             document.getElementById("Chat_Image").value = "";
                             self.fileToUpload = '';
                             self.chatPreview = '/images/preview1.png';
-                            if (res.status !== 400) self.updateChatInfo(true);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                            if (res.status !== 400) self.updateChatInfo();//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
-                else self.updateChatInfo(false);
+                else self.updateChatInfo();
             },
             prepareFileUpload: function () {
                 var self = this;
                 self.fileToUpload = "";
-                self.fileToUpload = self.$refs.file.files[0];
+                self.fileToUpload = document.getElementById("Chat_Image").files[0];
             },
-            updateChatInfo: function (imageUploaded) {
+            updateChatInfo: function () {
                 var self = this;
                 document.getElementById("feedbackError").innerHTML = "";
                 if (self.validCheck()) {

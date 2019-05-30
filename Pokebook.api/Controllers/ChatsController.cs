@@ -82,12 +82,20 @@ namespace Pokebook.api.Controllers
             return Ok(Put(foundChat.Id, foundChat));// als er geen update is gebeurd komt er een Microsoft.AspNetCore.Mvc.NotFoundResult (statusCode 404) result
         }
 
+        private bool IsImageValid(IFormFile formFile)
+        {
+            if (formFile == null) return false;
+            if (!formFile.ContentType.Contains("image")) return false;
+            if (formFile.Length > 3145728) return false;
+            return true;
+        }
+
         [HttpPost]
         [Route("Uploads/ChatImage")]
         [Consumes("application/json", "multipart/form-data")]
         public async Task<IActionResult> UploadChatImage([FromForm(Name = "file")] IFormFile formFile)
         {
-            if(formFile != null)
+            if(IsImageValid(formFile))
             {
                 string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
                 var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/ChatPictures", uniqueFileName);
