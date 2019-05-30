@@ -243,6 +243,15 @@ a .badge, .layoutBadge {
     position: relative;
 }
 
+#fileLabel-messageImage {
+    width: 8%;
+    height: 100%;
+}
+
+#selectImage {
+    width: 100%;
+}
+
 .speechForm button {
     background-color: lightskyblue;
     border: none;
@@ -250,7 +259,8 @@ a .badge, .layoutBadge {
     display: inline-block;
     position: absolute;
     top: 10%;
-    right: 10%;
+    width: 10%;
+    /*right: 10%;*/
 }
 
 .speechForm button img {
@@ -308,9 +318,29 @@ a .badge, .layoutBadge {
     display: block;
 }
 
+.speech-bubbles img {
+    padding: 10px;
+    border-radius: 20px;
+    width: 50%;
+}
+
+#divPreview-messageImage p{
+    font-size: 2em;
+}
+
 @media screen and (max-width: 1000px) {
     #right {
         width: 75%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    #fileLabel-messageImage {
+        width: 20%;
+    }
+
+    .speechForm button{
+        top: 60%;
     }
 }
 
@@ -332,17 +362,22 @@ a .badge, .layoutBadge {
         width: 100%;
     }
 
+    .chat .form-control {
+        width: 100%;
+    }
+
+    #fileLabel-messageImage {
+        width: 20%;
+    }
+
     .speechForm button {
-        right: 5%;
+        left: 100%;
+        top: 47%;
+        width: 27%;
     }
 }
 
 @media screen and (max-width: 360px) {
-
-    .speechForm button {
-        right: 0;
-    }
-
     .preview {
         width: 300px;
     }
@@ -453,7 +488,7 @@ h1 {
     box-shadow: 0 0 5px rgba(0,0,0,0.7);
 }
 
-#UploadedProfileImage, #UploadedCoverImage {
+#UploadedProfileImage, #UploadedCoverImage, #Chat_Image, #newImage {
     display: none;
 }
 

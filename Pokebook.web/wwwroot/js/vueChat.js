@@ -70,20 +70,20 @@ var app = new Vue(
                 //    .catch(err => console.error('Fout: ' + err));
             },
             updateMessageCount: function () {
-                var self = this;
-                var jsonObject = JSON.stringify({ chatId: self.chatId });
-                // opslaan - ajax configuratie
-                var ajaxHeaders = new Headers();
-                ajaxHeaders.append("Content-Type", "application/json");
-                var ajaxConfig = {
-                    method: 'PUT',
-                    body: jsonObject,
-                    headers: ajaxHeaders
-                };
-                let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
-                fetch(myRequest)
-                    .then(res => res.json())
-                    .catch(err => console.error('Fout: ' + err));
+                //var self = this;
+                //var jsonObject = JSON.stringify({ chatId: self.chatId });
+                //// opslaan - ajax configuratie
+                //var ajaxHeaders = new Headers();
+                //ajaxHeaders.append("Content-Type", "application/json");
+                //var ajaxConfig = {
+                //    method: 'PUT',
+                //    body: jsonObject,
+                //    headers: ajaxHeaders
+                //};
+                //let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
+                //fetch(myRequest)
+                //    .then(res => res.json())
+                //    .catch(err => console.error('Fout: ' + err));
             },
             getTime: function () {
                 var today = new Date();
@@ -125,7 +125,9 @@ var app = new Vue(
                 //li opvullen met andere HTML elementen
                 if (message.senderId !== self.userId) li.appendChild(spanLetter);
                 if (message.imageName !== null) {
-                    img.src = "https://localhost:44321/api/messages/messagePicture/" + message.imageName;
+                    img.src = `${apiURL}messages/messagePicture/${message.imageName}`;
+                    img.alt = message.imageName;
+                    img.title = message.imageName;
                     li.append(img);
                 }
                 li.appendChild(p);
@@ -186,9 +188,10 @@ var app = new Vue(
             },
             uploadChatImage: function (e) {
                 var self = this;
-                var data = new FormData();
-                data.append('file', self.fileToUpload);
-                if (self.fileToUpload !== "") {
+                var errorOutput = self.isImageValid();//check als er een geldige image is.
+                if (errorOutput === "") {
+                    var data = new FormData();
+                    data.append('file', self.fileToUpload);
                     var ajaxConfig = {
                         method: 'POST',
                         body: data
@@ -202,18 +205,24 @@ var app = new Vue(
                             document.getElementById("Chat_Image").value = "";
                             self.fileToUpload = '';
                             self.chatPreview = '/images/preview1.png';
-                            if (res.status !== 400) self.updateChatInfo(true);//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
+                            if (res.status !== 400) self.updateChatInfo();//wanneer de image is geupload en de naam is ontvangen wordt de chatRow geupdate
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
-                else self.updateChatInfo(false);
+                else {
+                    if (errorOutput !== "" && errorOutput !== "no image selected") {
+                        //enkel wanneer er een image is worden de fouten ervan getoond
+                        document.getElementById("chatSettingsError").innerHTML = errorOutput;
+                    }
+                    self.updateChatInfo();
+                }
             },
             prepareFileUpload: function () {
                 var self = this;
                 self.fileToUpload = "";
-                self.fileToUpload = self.$refs.file.files[0];
+                self.fileToUpload = document.getElementById("Chat_Image").files[0];
             },
-            updateChatInfo: function (imageUploaded) {
+            updateChatInfo: function () {
                 var self = this;
                 document.getElementById("feedbackError").innerHTML = "";
                 if (self.validCheck()) {
@@ -256,6 +265,13 @@ var app = new Vue(
                 }
                 var el = document.getElementById('Chat_Name').value;
                 return el !== "";//returned true als de waarde niet leeg is
+            },
+            isImageValid: function () {
+                var self = this;
+                if (self.fileToUpload === undefined || self.fileToUpload === "") return "no image selected";
+                if (self.fileToUpload['type'].split('/')[0] !== 'image') return "no valid image";
+                if (self.fileToUpload.size > 3145728) return "image is larger than 3 MB";//max file size van 3MB
+                return "";
             },
             getSelectedUser: function (e) {
                 var self = this;
@@ -346,7 +362,3 @@ var app = new Vue(
             }
         }
     });
-
-document.querySelector('.chat #messageInput').scrollIntoView({
-    behavior: 'smooth'
-});

@@ -36,9 +36,10 @@ connection.on("ReceiveMessage", function (user, message, imageName) {
 
     //li opvullen met andere HTML elementen
     if (user !== me) li.appendChild(spanLetter);
-    //Je kunt hier niet nagaan welke image is geüpload
     if (imageName !== null) {
-        img.src = "https://localhost:44321/api/messages/messagePicture/" + imageName;
+        img.src = `${apiURL}messages/messagePicture/${imageName}`;
+        img.alt = imageName;
+        img.title = imageName;
         li.append(img);
     }
     li.appendChild(p);
@@ -58,18 +59,29 @@ connection.start().catch(function (err) {
     return console.error(err.toString());
 });
 
+function isImageValid(image) {
+    if (image === undefined) return "no image selected";
+    if (image['type'].split('/')[0] !== 'image') return "no valid image";
+    if (image.size > 3145728) return "image is larger than 3 MB";//max file size van 3MB
+    return "";
+}
+
 function requestFormData() {
     var data = new FormData();
-    var fileToUpload = document.forms['sendForm']['newImage'].files[0];
-    data.append('file', fileToUpload);
-    if (fileToUpload !== undefined) {
+    var fileToUpload = document.getElementById('newImage').files[0];
+    var errorOutput = isImageValid(fileToUpload);
+    if (errorOutput === "") {
+        data.append('file', fileToUpload);
         var ajaxConfig = {
             method: 'POST',
             body: data
         };
         return ajaxConfig;
     }
-    return null;
+    else {
+        document.getElementById("messageError").innerHTML = errorOutput;
+        return null;
+    }
 }
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
@@ -77,6 +89,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     var userId = document.getElementById("userId").value;
+    document.getElementById("messageError").innerHTML = "";
     var messageImage = requestFormData();
     if (messageImage !== null) {
         var config = messageImage;
@@ -86,6 +99,8 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             .then(function (res) {
                 document.getElementById("newImage").value = "";
                 document.forms['sendForm']['newImage'].files[0] = "";
+                $('#currentChatImage').toggle();
+                $('#divPreview-messageImage').toggle();
                 sendMessageQuery(user, message, chatId, res, userId);
             })
             .catch(err => console.error('Fout: ' + err));
@@ -97,8 +112,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 });
 
 function sendMessageQuery(user, message, chatId, image, userId) {
-    console.log("We zitten hier. Message: " + message);
-    //if (message !== "") {
+    if (isValid(message, image)) {
         var jsonObject = JSON.stringify({ chatId: chatId, senderId: userId, text: message, sendDate: GetTime(), imageName: image });
 
         // opslaan - ajax configuratie
@@ -110,7 +124,7 @@ function sendMessageQuery(user, message, chatId, image, userId) {
             headers: ajaxHeaders
         };
 
-        let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
+        let myRequest = new Request(`${apiURL}Messages/NewMessage`, ajaxConfig);
         fetch(myRequest)
             .then(res => res.json())
             .catch(err => console.error('Fout: ' + err));
@@ -118,7 +132,11 @@ function sendMessageQuery(user, message, chatId, image, userId) {
         connection.invoke("SendMessage", user, message, chatId, image).catch(function (err) {
             return console.error(err.toString());
         });
-    //}
+    }
+}
+
+function isValid(message, image) {
+    return !(message === "" && image === null);
 }
 
 function GetTime() {

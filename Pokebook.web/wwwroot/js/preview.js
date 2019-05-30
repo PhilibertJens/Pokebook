@@ -3,6 +3,10 @@
     $("#UploadedProfileImage").on('change', showProfileImagePreview);
     $("#UploadedCoverImage").on('change', showCoverImagePreview);
     $("#Chat_Image").on('change', showChatImagePreview);
+    $("#newImage").on('change', showMessageImagePreview);
+    $(".speech-bubbles").on('click', 'img', showModal);
+    $("#profilePicture").on('click', showModal);
+    $(".closeModal").on('click', closeModal);
 });
 
 function showProfileImagePreview() {
@@ -36,4 +40,33 @@ function showChatImagePreview() {
         };
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function showMessageImagePreview() {
+    var input = this;
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#preview-messageImage').attr('src', e.target.result);
+            $('#currentChatImage').toggle();
+            $('#divPreview-messageImage').toggle();
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function showModal() {
+    var modal = document.getElementById("imageModal");
+    var img = $(this);
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+    modal.style.display = "block";
+    modalImg.src = img.attr('src');
+    captionText.innerHTML = img.attr('alt');
+}
+
+function closeModal() {
+    var modal = document.getElementById("imageModal");
+    modal.style.display = "none";
 }

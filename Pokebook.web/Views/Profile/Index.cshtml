@@ -31,7 +31,7 @@
                                     <p>
                                         <span asp-validation-for="UploadedProfileImage" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-profile" class="preview" src="~/images/preview.png" alt="your image" width="400"/>
+                                    <img id="preview-profile" class="preview" src="~/images/preview.png" alt="your image" width="400" />
                                     <input type="hidden" asp-for="ProfilePicture" value="ProfilePicture" />
                                 </div>
                                 <div class="form-group">
@@ -49,7 +49,7 @@
                                     <p>
                                         <span asp-validation-for="UploadedCoverImage" class="text-danger"></span>
                                     </p>
-                                    <img id="preview-cover" class="preview" src="~/images/preview.png" alt="your image" width="400"/>
+                                    <img id="preview-cover" class="preview" src="~/images/preview.png" alt="your image" width="400" />
                                     <input type="hidden" asp-for="CoverPicture" value="CoverPicture" />
                                 </div>
                                 <div class="form-group">
@@ -146,28 +146,33 @@
         </article>
         <article id="friendInfo" hidden>
             <h3>Friends overview</h3>
-                @{
-                    foreach (var friend in Model.Friends)
-                    {
-                        <div>
-                            <a asp-action="UserProfile" asp-route-username="@(friend.UserName)">
-                                <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
-                                        title="open @friend.UserName profile" onerror="this.src='/images/default.png'"/><br/>
-                                <p>@friend.UserName</p>
-                                @*@{
+            @{
+                foreach (var friend in Model.Friends)
+                {
+                    <div>
+                        <a asp-action="UserProfile" asp-route-username="@(friend.UserName)">
+                            <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                                 title="open @friend.UserName profile" onerror="this.src='/images/default.png'" /><br />
+                            <p>@friend.UserName</p>
+                            @*@{
                                     if (friend.FirstName != null && friend.LastName !=null)
                                     {
                                         <p>(@friend.FirstName @friend.LastName)</p>
                                     }
                                 }*@
-                            </a>
-                        </div>
-                    }
+                        </a>
+                    </div>
                 }
+            }
         </article>
     </div>
 </div>
-
+<!-- The Modal -->
+<div id="imageModal" class="modal">
+    <span class="closeModal">&times;</span>
+    <img class="imageModal-content" id="img01">
+    <div id="caption"></div>
+</div>
 
 <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer venenatis sit amet risus nec ornare. Sed auctor sed odio vitae viverra. Morbi consectetur sem at nisl vehicula imperdiet. Morbi et libero non arcu euismod aliquet vitae eget elit. Nunc faucibus imperdiet nunc, at facilisis velit consectetur dapibus. Curabitur gravida nisi non eros ultrices, aliquam lobortis risus hendrerit. Nam quis dictum augue, eget pretium mauris.
