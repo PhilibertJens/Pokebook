@@ -60,15 +60,17 @@ connection.start().catch(function (err) {
 });
 
 function isImageValid(image) {
-    if (image === undefined) return false;
-    if (image.size > 3145728) return false;//max file size van 3MB
-    return true;
+    if (image === undefined) return "no image selected";
+    if (image['type'].split('/')[0] !== 'image') return "no valid image";
+    if (image.size > 3145728) return "image is larger than 3 MB";//max file size van 3MB
+    return "";
 }
 
 function requestFormData() {
     var data = new FormData();
     var fileToUpload = document.getElementById('newImage').files[0];
-    if (isImageValid(fileToUpload)) {
+    var errorOutput = isImageValid(fileToUpload);
+    if (errorOutput === "") {
         data.append('file', fileToUpload);
         var ajaxConfig = {
             method: 'POST',
@@ -76,7 +78,10 @@ function requestFormData() {
         };
         return ajaxConfig;
     }
-    else return null;
+    else {
+        document.getElementById("messageError").innerHTML = errorOutput;
+        return null;
+    }
 }
 
 document.getElementById("sendButton").addEventListener("click", function (event) {
@@ -84,6 +89,7 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     var message = document.getElementById("messageInput").value;
     var chatId = document.getElementById("chatId").value;
     var userId = document.getElementById("userId").value;
+    document.getElementById("messageError").innerHTML = "";
     var messageImage = requestFormData();
     if (messageImage !== null) {
         var config = messageImage;

@@ -39,6 +39,7 @@
                                     </p>
                                     <img id="preview-chatImage" class="preview" v-bind:src="chatPreview" alt="your image" width="400" />
                                 </div>
+                                <span id="chatSettingsError" class="text-danger"></span>
                                 <div>
                                     <button id="saveChatInfo" type="button" v-on:click="uploadChatImage($event)">
                                         Update chat info
@@ -143,7 +144,7 @@
                     <button type="submit" id="sendButton">
                         <img src="~/images/send.png" />
                     </button><br />
-                    <span asp-validation-for="Text" class="text-danger"></span>
+                    <span asp-validation-for="Text" id="messageError" class="text-danger"></span>
                 </div>
             </form>
         </div>

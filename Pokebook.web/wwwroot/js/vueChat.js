@@ -188,10 +188,10 @@ var app = new Vue(
             },
             uploadChatImage: function (e) {
                 var self = this;
-                var data = new FormData();
-                data.append('file', self.fileToUpload);
-                console.log(self.fileToUpload);
-                if (self.fileToUpload !== "") {
+                var errorOutput = self.isImageValid();//check als er een geldige image is.
+                if (errorOutput === "") {
+                    var data = new FormData();
+                    data.append('file', self.fileToUpload);
                     var ajaxConfig = {
                         method: 'POST',
                         body: data
@@ -209,7 +209,13 @@ var app = new Vue(
                         })
                         .catch(err => console.error('Fout: ' + err));
                 }
-                else self.updateChatInfo();
+                else {
+                    if (errorOutput !== "" && errorOutput !== "no image selected") {
+                        //enkel wanneer er een image is worden de fouten ervan getoond
+                        document.getElementById("chatSettingsError").innerHTML = errorOutput;
+                    }
+                    self.updateChatInfo();
+                }
             },
             prepareFileUpload: function () {
                 var self = this;
@@ -259,6 +265,13 @@ var app = new Vue(
                 }
                 var el = document.getElementById('Chat_Name').value;
                 return el !== "";//returned true als de waarde niet leeg is
+            },
+            isImageValid: function () {
+                var self = this;
+                if (self.fileToUpload === undefined || self.fileToUpload === "") return "no image selected";
+                if (self.fileToUpload['type'].split('/')[0] !== 'image') return "no valid image";
+                if (self.fileToUpload.size > 3145728) return "image is larger than 3 MB";//max file size van 3MB
+                return "";
             },
             getSelectedUser: function (e) {
                 var self = this;
