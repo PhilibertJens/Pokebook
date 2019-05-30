@@ -125,7 +125,7 @@ var app = new Vue(
                 //li opvullen met andere HTML elementen
                 if (message.senderId !== self.userId) li.appendChild(spanLetter);
                 if (message.imageName !== null) {
-                    img.src = "https://localhost:44321/api/messages/messagePicture/" + message.imageName;
+                    img.src = `${apiURL}messages/messagePicture/${message.imageName}`;
                     li.append(img);
                 }
                 li.appendChild(p);

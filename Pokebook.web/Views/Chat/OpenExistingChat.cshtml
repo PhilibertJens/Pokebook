@@ -100,7 +100,7 @@
                                     if (message.ImageName != null)
                                     {
                                         <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
-                                             alt="@(message.ImageName)" title="@(message.ImageName)" width="200" /><br />
+                                             alt="@(message.ImageName)" title="@(message.ImageName)"/><br />
                                     }
                                 }
                                 <p>@message.Text</p>
@@ -116,7 +116,7 @@
                                     if (message.ImageName != null)
                                     {
                                         <img src="https://localhost:44321/api/messages/messagePicture/@(message.ImageName)"
-                                             alt="@(message.ImageName)" title="@(message.ImageName)" width="200" /><br />
+                                             alt="@(message.ImageName)" title="@(message.ImageName)"/><br />
                                     }
                                 }
                                 <p>@message.Text</p><br />
@@ -151,6 +151,5 @@
     <script src="~/js/vueChat.js"></script>
     <script src="~/js/chat.js"></script>
     <script src="~/js/preview.js"></script>
-    @*<script src="~/lib/signalr/dist/browser/signalr.js"></script>*@
     @*<script src="~/js/chatNotification.js"></script>*@
 }

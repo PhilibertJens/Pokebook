@@ -36,9 +36,8 @@ connection.on("ReceiveMessage", function (user, message, imageName) {
 
     //li opvullen met andere HTML elementen
     if (user !== me) li.appendChild(spanLetter);
-    //Je kunt hier niet nagaan welke image is geüpload
     if (imageName !== null) {
-        img.src = "https://localhost:44321/api/messages/messagePicture/" + imageName;
+        img.src = `${apiURL}messages/messagePicture/${imageName}`;
         li.append(img);
     }
     li.appendChild(p);
