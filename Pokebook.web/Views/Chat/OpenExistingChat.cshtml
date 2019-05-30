@@ -136,12 +136,14 @@
             <form method="post" class="speechForm" id="speech" enctype="multipart/form-data" name="sendForm">
                 <div asp-validation-summary="ModelOnly"></div>
                 <input asp-for="@(Model.Chat.Id)" type="hidden" id="chatId" />
-                <div class="form-group relative">
-                    <label for="newImage" id="fileLabel-messageImage" class="control-label">
+                <div class="form-group relative row">
+
+                    <label for="newImage" id="fileLabel-messageImage" class="control-label col-md-2">
+                        <img src="~/images/addImage.png" id="selectImage"/>
                         <input type="file" name="newImage" id="newImage" class="form-control" ref="file">
                     </label>
-                    <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control" required></textarea>
-                    <button type="submit" id="sendButton">
+                    <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control col-md-8" required></textarea>
+                    <button type="submit" id="sendButton" class="col-md-2">
                         <img src="~/images/send.png" />
                     </button><br />
                     <span asp-validation-for="Text" id="messageError" class="text-danger"></span>
