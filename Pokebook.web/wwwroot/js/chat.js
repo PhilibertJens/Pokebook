@@ -58,18 +58,24 @@ connection.start().catch(function (err) {
     return console.error(err.toString());
 });
 
+function isImageValid(image) {
+    if (image === undefined) return false;
+    if (image.size > 3145728) return false;//max file size van 3MB
+    return true;
+}
+
 function requestFormData() {
     var data = new FormData();
-    var fileToUpload = document.forms['sendForm']['newImage'].files[0];
-    data.append('file', fileToUpload);
-    if (fileToUpload !== undefined) {
+    var fileToUpload = document.getElementById('newImage').files[0];
+    if (isImageValid(fileToUpload)) {
+        data.append('file', fileToUpload);
         var ajaxConfig = {
             method: 'POST',
             body: data
         };
         return ajaxConfig;
     }
-    return null;
+    else return null;
 }
 
 document.getElementById("sendButton").addEventListener("click", function (event) {

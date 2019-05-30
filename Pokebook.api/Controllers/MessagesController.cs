@@ -73,12 +73,19 @@ namespace Pokebook.api.Controllers
             return Ok("");
         }
 
+        private bool IsImageValid(IFormFile formFile)
+        {
+            if (formFile == null) return false;
+            if (formFile.Length > 3145728) return false;
+            return true;
+        }
+
         [HttpPost]
         [Route("MessagePicture")]
         [Consumes("application/json", "multipart/form-data")]
         public async Task<IActionResult> UploadMessageImage([FromForm(Name = "file")] IFormFile formFile)
         {
-            if (formFile != null)
+            if (IsImageValid(formFile))
             {
                 string uniqueFileName = Guid.NewGuid().ToString("N") + formFile.FileName;
                 var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "images/MessagePictures", uniqueFileName);
