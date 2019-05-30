@@ -83,7 +83,11 @@
             <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal" />
             <vc:chat-list></vc:chat-list>
             <img v-bind:src="'https://localhost:44321/api/chats/ChatPicture/' + chatImage"
-                 onerror="this.src='/images/Pokemon_logo.svg.png'" width="500" />
+                 onerror="this.src='/images/Pokemon_logo.svg.png'" width="500" id="currentChatImage"/>
+            <div id="divPreview-messageImage" hidden="hidden">
+                <p>Your image</p>
+                <img id="preview-messageImage" class="preview" v-bind:src="chatPreview" alt="your image" width="500" />
+            </div>
         </div>
         <div class="col-md-8 messageDiv" id="right">
             <h2 id="ChatNameTitle">@Model.Chat.Name</h2>

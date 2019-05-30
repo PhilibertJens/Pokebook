@@ -99,6 +99,8 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             .then(function (res) {
                 document.getElementById("newImage").value = "";
                 document.forms['sendForm']['newImage'].files[0] = "";
+                $('#currentChatImage').toggle();
+                $('#divPreview-messageImage').toggle();
                 sendMessageQuery(user, message, chatId, res, userId);
             })
             .catch(err => console.error('Fout: ' + err));
@@ -110,7 +112,6 @@ document.getElementById("sendButton").addEventListener("click", function (event)
 });
 
 function sendMessageQuery(user, message, chatId, image, userId) {
-    console.log("We zitten hier. Message: " + message);
     if (isValid(message, image)) {
         var jsonObject = JSON.stringify({ chatId: chatId, senderId: userId, text: message, sendDate: GetTime(), imageName: image });
 
