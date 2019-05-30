@@ -32,15 +32,15 @@
         @{
             if (Model.Friendship != null && Model.Friendship.Accepted)//dit hangt af als de user al een friend is (als er dus een friendship db row is)
             {
-                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="editFriendStatus($event)" alt="remove friend" title="remove friend"/>
+                <img src="~/images/removeFriend.png" id="removeFriend" v-on:click="editFriendStatus($event)" alt="remove friend" title="remove friend" />
             }
             else if (Model.Friendship != null && !Model.Friendship.Accepted)
             {
-                <img src="~/images/friendRequestSend.png" id="friendRequestSend" alt="request send" title="request send"/>
+                <img src="~/images/friendRequestSend.png" id="friendRequestSend" alt="request send" title="request send" />
             }
             else
             {
-                <img src="~/images/addFriend.png" id="addFriend" v-on:click="editFriendStatus($event)" alt="add friend" title="add friend"/>
+                <img src="~/images/addFriend.png" id="addFriend" v-on:click="editFriendStatus($event)" alt="add friend" title="add friend" />
             }
         }
 
@@ -75,7 +75,15 @@
     </div>
 </div>
 
+<!-- The Modal -->
+<div id="imageModal" class="modal">
+    <span class="closeModal">&times;</span>
+    <img class="imageModal-content" id="img01">
+    <div id="caption"></div>
+</div>
+
 @section scripts{
     <script src="~/js/vue.js"></script>
     <script src="~/js/vueFriendProfile.js"></script>
+    <script src="~/js/preview.js"></script>
 }

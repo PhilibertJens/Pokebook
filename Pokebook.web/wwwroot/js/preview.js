@@ -4,6 +4,7 @@
     $("#UploadedCoverImage").on('change', showCoverImagePreview);
     $("#Chat_Image").on('change', showChatImagePreview);
     $(".speech-bubbles").on('click', 'img', showModal);
+    $("#coverPicture").on('click', 'img', showModal);
     $(".closeModal").on('click', closeModal);
 });
 

@@ -1,22 +1,8 @@
-﻿/*body {
-    font-family: Arial, Helvetica, sans-serif;
-}*/
-
-#myImg {
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#myImg:hover {
-    opacity: 0.7;
-}
-
-/* The Modal (background) */
-.modal {
+﻿/* The Modal (background) */
+#imageModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 100; /* Sit on top */
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
@@ -28,7 +14,7 @@
 }
 
 /* Modal Content (image) */
-.modal-content {
+.imageModal-content {
     margin: auto;
     display: block;
     width: 80%;
@@ -48,7 +34,7 @@
 }
 
 /* Add Animation */
-.modal-content, #caption {
+.imageModal-content, #caption {
     -webkit-animation-name: zoom;
     -webkit-animation-duration: 0.6s;
     animation-name: zoom;
@@ -94,13 +80,13 @@
 }
 
 @media only screen and (max-width: 700px) {
-    .modal-content {
+    .imageModal-content {
         width: 100%;
     }
 }
 
 @media only screen and (max-width: 400px) {
-    .modal-content {
+    .imageModal-content {
         width: 60%;
     }
 }
