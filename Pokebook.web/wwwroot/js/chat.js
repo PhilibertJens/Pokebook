@@ -98,9 +98,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             .then(res => res.json())
             .then(function (res) {
                 document.getElementById("newImage").value = "";
-                document.forms['sendForm']['newImage'].files[0] = "";
-                $('#currentChatImage').toggle();
-                $('#divPreview-messageImage').toggle();
+                document.getElementById("newImage").files[0] = "";
+                document.getElementById("currentChatImage").style.display = "block";
+                document.getElementById("divPreview-messageImage").style.display = "none";
                 sendMessageQuery(user, message, chatId, res, userId);
             })
             .catch(err => console.error('Fout: ' + err));

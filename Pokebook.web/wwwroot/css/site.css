@@ -324,8 +324,26 @@ a .badge, .layoutBadge {
     width: 50%;
 }
 
-#divPreview-messageImage p{
+#divPreview-messageImage{
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 1em;
+    display: none;
+}
+
+#divPreview-messageImage p {
     font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+}
+
+#divPreview-messageImage img {
+    border-radius: 20px;
+    width: 100%;
+}
+
+#currentChatImage{
+    width: 100%;
 }
 
 @media screen and (max-width: 1000px) {
@@ -380,6 +398,11 @@ a .badge, .layoutBadge {
 @media screen and (max-width: 360px) {
     .preview {
         width: 300px;
+    }
+
+    #chatSettings{
+        position: relative;
+        top: 45px;
     }
 }
 
@@ -572,4 +595,9 @@ body{
 #friendInfo a {
     text-decoration: none;
     color: black;
+}
+
+.text-danger {
+    font-weight: bold;
+    font-size: 2em;
 }
