@@ -148,8 +148,18 @@ a .badge, .layoutBadge {
 }
 
 /*----Chat----*/
-#chat h2{
-    text-align:center;
+.firstMessage input {
+    display: inline-block;
+}
+
+@media screen and (max-width: 450px) {
+    .row .firstMessage input {
+        width: 88%;
+    }
+}
+
+#chat h2 {
+    text-align: center;
 }
 
 #chat li {
@@ -252,15 +262,18 @@ a .badge, .layoutBadge {
     width: 100%;
 }
 
-.speechForm button {
+.speechForm button, .firstMessageButton {
     background-color: lightskyblue;
     border: none;
     border-radius: 20px;
     display: inline-block;
-    position: absolute;
-    top: 10%;
     width: 10%;
     /*right: 10%;*/
+}
+
+.speechForm button {
+    position: absolute;
+    top: 10%;
 }
 
 .speechForm button img {
@@ -324,13 +337,34 @@ a .badge, .layoutBadge {
     width: 50%;
 }
 
-#divPreview-messageImage p{
+#divPreview-messageImage{
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 1em;
+    display: none;
+}
+
+#divPreview-messageImage p {
     font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+}
+
+#divPreview-messageImage img {
+    border-radius: 20px;
+    width: 100%;
+}
+
+#currentChatImage{
+    width: 100%;
 }
 
 @media screen and (max-width: 1000px) {
     #right {
         width: 75%;
+    }
+    #left {
+        width: 35%;
     }
 }
 
@@ -346,6 +380,7 @@ a .badge, .layoutBadge {
 
 @media screen and (max-width: 600px) {
     #left {
+        width: 100%;
         position: sticky;
         top: 0;
     }
@@ -377,9 +412,14 @@ a .badge, .layoutBadge {
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 380px) {
     .preview {
         width: 300px;
+    }
+
+    #chatSettings {
+        position: relative;
+        top: 45px;
     }
 }
 
@@ -572,4 +612,9 @@ body{
 #friendInfo a {
     text-decoration: none;
     color: black;
+}
+
+.text-danger {
+    font-weight: bold;
+    font-size: 20px;
 }

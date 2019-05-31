@@ -10,7 +10,7 @@ var app = new Vue(
         },
         created: function () {
             var self = this;
-            self.userId = document.getElementById("userId").value;
+            self.userId = document.querySelector('[data-userId]').getAttribute('data-userId');
             self.friendId = document.getElementById("friendId").value;
         },
         methods: {

@@ -10,10 +10,12 @@ var app = new Vue(
             firstname: '',
             lastname: '',
             favPoke: '',
-            favPokegame: ''
+            favPokegame: '',
+            userId: ''
         },
         created: function () {
             var self = this;
+            self.userId = document.querySelector('[data-userId]').getAttribute('data-userId');
             self.username = document.getElementsByName('UserName')[0].value;
             self.firstname = document.getElementsByName('FirstName')[0].value;
             self.lastname = document.getElementsByName('LastName')[0].value;
@@ -79,8 +81,7 @@ var app = new Vue(
                     if (items[i].textContent !== "") isValid = false;
                 }
                 if (isValid) {
-                    var userId = document.getElementById("userId").value;
-                    var profileObject = JSON.stringify({ id: userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
+                    var profileObject = JSON.stringify({ id: self.userId, userName: this.username, firstName: this.firstname, lastName: this.lastname });
                     // opslaan - ajax configuratie
                     var ajaxHeaders = new Headers();
                     ajaxHeaders.append("Content-Type", "application/json");
@@ -97,14 +98,14 @@ var app = new Vue(
                 }
             },
             savePokeInfo: function (e) {
+                var self = this;
                 items = document.querySelectorAll("#pokeInfo span");
                 var isValid = true;
                 for (i = 0; i < items.length; i++) {
                     if (items[i].textContent !== "") isValid = false;
                 }
-                if (isValid) {//pas wanneer er geen errormessage in de span staat
-                    var userId = document.getElementById("userId").value;
-                    var profileObject = JSON.stringify({ id: userId, favoritePokemon: this.favPoke, favoritePokemonGame: this.favPokegame });
+                if (isValid) {
+                    var profileObject = JSON.stringify({ id: self.userId, favoritePokemon: this.favPoke, favoritePokemonGame: this.favPokegame });
                     // opslaan - ajax configuratie
                     var ajaxHeaders = new Headers();
                     ajaxHeaders.append("Content-Type", "application/json");

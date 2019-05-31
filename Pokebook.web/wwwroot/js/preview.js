@@ -48,8 +48,8 @@ function showMessageImagePreview() {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#preview-messageImage').attr('src', e.target.result);
-            $('#currentChatImage').toggle();
-            $('#divPreview-messageImage').toggle();
+            $('#currentChatImage').hide();
+            $('#divPreview-messageImage').show();
         };
         reader.readAsDataURL(input.files[0]);
     }

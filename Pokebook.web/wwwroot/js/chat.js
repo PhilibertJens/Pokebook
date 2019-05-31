@@ -79,7 +79,8 @@ function requestFormData() {
         return ajaxConfig;
     }
     else {
-        document.getElementById("messageError").innerHTML = errorOutput;
+        if (errorOutput !== "no image selected")
+            document.getElementById("messageError").innerHTML = errorOutput;
         return null;
     }
 }
@@ -98,9 +99,9 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             .then(res => res.json())
             .then(function (res) {
                 document.getElementById("newImage").value = "";
-                document.forms['sendForm']['newImage'].files[0] = "";
-                $('#currentChatImage').toggle();
-                $('#divPreview-messageImage').toggle();
+                document.getElementById("newImage").files[0] = "";
+                document.getElementById("currentChatImage").style.display = "block";
+                document.getElementById("divPreview-messageImage").style.display = "none";
                 sendMessageQuery(user, message, chatId, res, userId);
             })
             .catch(err => console.error('Fout: ' + err));
@@ -135,7 +136,7 @@ function sendMessageQuery(user, message, chatId, image, userId) {
     }
 }
 
-function isValid(message, image) {
+function isValid(message, image) {//invalid als zowel de text als image empty zijn
     return !(message === "" && image === null);
 }
 

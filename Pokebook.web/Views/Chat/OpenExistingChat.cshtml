@@ -41,7 +41,7 @@
                                 </div>
                                 <span id="chatSettingsError" class="text-danger"></span>
                                 <div>
-                                    <button id="saveChatInfo" type="button" v-on:click="uploadChatImage($event)">
+                                    <button id="saveChatInfo" type="button" class="btn btn-success" v-on:click="uploadChatImage($event)">
                                         Update chat info
                                     </button>
                                 </div>
@@ -58,7 +58,7 @@
                                 <li><button v-on:click="addUsersToChat($event)" class="btn btn-success">Toevoegen</button></li>
                             </ul>
                             <hr />
-                            <h2>Groupmembers:</h2>
+                            <h2>Current groupmembers:</h2>
                             <ul id="groupmembers">
                                 <li v-for="member in groupMembers">
                                     <img src="~/images/delete.gif" v-bind:data-user="member.userName"
@@ -83,10 +83,10 @@
             <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal" />
             <vc:chat-list></vc:chat-list>
             <img v-bind:src="'https://localhost:44321/api/chats/ChatPicture/' + chatImage"
-                 onerror="this.src='/images/Pokemon_logo.svg.png'" width="500" id="currentChatImage"/>
-            <div id="divPreview-messageImage" hidden="hidden">
-                <p>Your image</p>
-                <img id="preview-messageImage" class="preview" v-bind:src="chatPreview" alt="your image" width="500" />
+                 onerror="this.src='/images/Pokemon_logo.svg.png'" id="currentChatImage"/>
+            <div id="divPreview-messageImage">
+                <p>Your message image</p>
+                <img id="preview-messageImage" class="preview" alt="your image" />
             </div>
         </div>
         <div class="col-md-8 messageDiv" id="right">
@@ -143,15 +143,15 @@
                 <div class="form-group relative row">
 
                     <label for="newImage" id="fileLabel-messageImage" class="control-label col-md-2">
-                        <img src="~/images/addImage.png" id="selectImage"/>
+                        <img src="~/images/addImage.png" id="selectImage" />
                         <input type="file" name="newImage" id="newImage" class="form-control" ref="file">
                     </label>
                     <textarea type="text" name="Text" id="messageInput" v-model="message" class="form-control col-md-8" required></textarea>
                     <button type="submit" id="sendButton" class="col-md-2">
                         <img src="~/images/send.png" />
                     </button><br />
-                    <span asp-validation-for="Text" id="messageError" class="text-danger"></span>
                 </div>
+                <span asp-validation-for="Text" id="messageError" class="text-danger"></span>
             </form>
         </div>
     </div>

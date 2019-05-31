@@ -49,6 +49,7 @@ namespace Pokebook.web.Controllers
             ProfileIndexVM vm = new ProfileIndexVM()
             {
                 me = user,
+                //Volgende properties moeten apart meegegeven worden voor jquery validatie
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
