@@ -79,7 +79,8 @@ function requestFormData() {
         return ajaxConfig;
     }
     else {
-        document.getElementById("messageError").innerHTML = errorOutput;
+        if (errorOutput !== "no image selected")
+            document.getElementById("messageError").innerHTML = errorOutput;
         return null;
     }
 }
@@ -135,7 +136,7 @@ function sendMessageQuery(user, message, chatId, image, userId) {
     }
 }
 
-function isValid(message, image) {
+function isValid(message, image) {//invalid als zowel de text als image empty zijn
     return !(message === "" && image === null);
 }
 

@@ -9,11 +9,12 @@ var app = new Vue(
             users: null,
             userId: '',
             me: null,
+            profilePicture: "default.png",//als de pagina laadt is de profielfoto nog niet opgevraagd
             numberOfRequests: ''
         },
         created: function() {
             var self = this;
-            self.userId = document.getElementById("userId").value;
+            self.userId = document.querySelector('[data-userId]').getAttribute('data-userId');
             self.getMyUserName();
             self.fetchFriendRequests();
         },
@@ -79,10 +80,12 @@ var app = new Vue(
             },
             getMyUserName: function () {
                 self = this;
-                fetch(`${apiURL}Users/Simple/${self.userId}`)
+                fetch(`${apiURL}Users/SimpleProfile/${self.userId}`)
                     .then(res => res.json())
                     .then(function (res) {
                         self.me = res;
+                        self.profilePicture = self.me.profilePicture;//Nu pas kunnen we de profielfoto tonen
+
                         self.getUsers();//de users worden pas opgevraagd wanneer de username is ontvangen
                     })
                     .catch(err => console.error('Fout: ' + err));

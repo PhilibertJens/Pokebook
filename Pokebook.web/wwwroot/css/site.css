@@ -350,6 +350,9 @@ a .badge, .layoutBadge {
     #right {
         width: 75%;
     }
+    #left {
+        width: 35%;
+    }
 }
 
 @media screen and (max-width: 800px) {
@@ -364,6 +367,7 @@ a .badge, .layoutBadge {
 
 @media screen and (max-width: 600px) {
     #left {
+        width: 100%;
         position: sticky;
         top: 0;
     }
@@ -395,12 +399,12 @@ a .badge, .layoutBadge {
     }
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 380px) {
     .preview {
         width: 300px;
     }
 
-    #chatSettings{
+    #chatSettings {
         position: relative;
         top: 45px;
     }
