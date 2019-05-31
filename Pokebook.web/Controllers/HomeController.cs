@@ -29,7 +29,7 @@ namespace Pokebook.web.Controllers
             else return null;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             Guid? userId = CheckSession();
             if (userId == null) return new RedirectToActionResult("Login", "Account", null);
