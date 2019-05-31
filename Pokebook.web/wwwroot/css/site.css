@@ -148,8 +148,18 @@ a .badge, .layoutBadge {
 }
 
 /*----Chat----*/
-#chat h2{
-    text-align:center;
+.firstMessage input {
+    display: inline-block;
+}
+
+@media screen and (max-width: 450px) {
+    .row .firstMessage input {
+        width: 88%;
+    }
+}
+
+#chat h2 {
+    text-align: center;
 }
 
 #chat li {
@@ -252,15 +262,18 @@ a .badge, .layoutBadge {
     width: 100%;
 }
 
-.speechForm button {
+.speechForm button, .firstMessageButton {
     background-color: lightskyblue;
     border: none;
     border-radius: 20px;
     display: inline-block;
-    position: absolute;
-    top: 10%;
     width: 10%;
     /*right: 10%;*/
+}
+
+.speechForm button {
+    position: absolute;
+    top: 10%;
 }
 
 .speechForm button img {
