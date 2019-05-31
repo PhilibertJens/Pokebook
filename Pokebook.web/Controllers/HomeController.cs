@@ -33,22 +33,7 @@ namespace Pokebook.web.Controllers
         {
             Guid? userId = CheckSession();
             if (userId == null) return new RedirectToActionResult("Login", "Account", null);
-            string uri = $"{baseuri}/users/{userId}";
-            User user = await WebApiHelper.GetApiResult<User>(uri);
-            List<User> friends = await GetFriends(user);
-            HomeIndexVM vm = new HomeIndexVM
-            {
-                Me = user
-            };
-            return View(vm);
-        }
-
-        public async Task<List<User>> GetFriends(User user)
-        {
-            string uri = $"{baseuri}/friendships/Get/{user.Id}";
-            List<FriendWithFriendshipDTO> friendships = await WebApiHelper.GetApiResult<List<FriendWithFriendshipDTO>>(uri);
-            return friendships.Where(f => f.Friendship.Accepted == false && f.Friendship.IdApprover == user.Id)
-                              .Select(f => f.Friend).ToList();
+            return View();
         }
 
         public IActionResult About()
