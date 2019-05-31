@@ -119,6 +119,13 @@ namespace Pokebook.api.Controllers
         }
 
         [HttpGet]
+        [Route("SimpleProfile/{id}")]
+        public async Task<IActionResult> GetSimpleProfile(Guid id)
+        {
+            return Ok(await unitOfWork.Users.GetUserSimpleProfile(id));
+        }
+
+        [HttpGet]
         [Route("Simple")]
         public async Task<IActionResult> GetSimpleUsers()
         {

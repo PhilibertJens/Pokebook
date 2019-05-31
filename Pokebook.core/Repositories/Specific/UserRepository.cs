@@ -66,6 +66,12 @@ namespace Pokebook.core.Repositories.Specific
             return userList;
         }
 
+        public async Task<UserSimpleProfileDTO> GetUserSimpleProfile(Guid Id)
+        {
+            return await PokebookContext.Users.Where(u => u.Id == Id)
+                                  .ProjectTo<UserSimpleProfileDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
         public List<User> GetRemainingUsers(Guid chatId)
         {
             var userList = GetChatUsers(chatId);
