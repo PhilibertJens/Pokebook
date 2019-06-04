@@ -8,7 +8,6 @@ var apiURL = 'https://localhost:44321/api/';
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 var chatId = document.getElementById("chatId").value;
 setTimeout(function () {//als er niet gewacht wordt dan wordt de JoinChat al gedaan voordat de chathub connection is gemaakt
-    //do something once
     connection.invoke("JoinChat", chatId).catch(function (err) {
         return console.error(err.toString());
     });
@@ -99,7 +98,6 @@ document.getElementById("sendButton").addEventListener("click", function (event)
             .then(res => res.json())
             .then(function (res) {
                 document.getElementById("newImage").value = "";
-                document.getElementById("newImage").files[0] = "";
                 document.getElementById("currentChatImage").style.display = "block";
                 document.getElementById("divPreview-messageImage").style.display = "none";
                 sendMessageQuery(user, message, chatId, res, userId);

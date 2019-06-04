@@ -31,60 +31,6 @@ var app = new Vue(
             self.chat = self.getChatById();
         },
         methods: {
-            processSendMessage: function () {
-                //var self = this;
-                //var messageImage = self.addFormDataImage();
-                //if (self.message !== "") {
-                //    if (messageImage !== null) {
-                //        var config = messageImage;
-                //        let myRequest = new Request(`${apiURL}Messages/MessagePicture`, config);
-                //        fetch(myRequest)
-                //            .then(res => res.json())
-                //            .then(function (res) {
-                //                document.getElementById("newImage").value = "";
-                //                self.fileToUpload = '';
-                //                imageNameGlobal = res;
-                //                self.sendMessage(res);
-                //            })
-                //            .catch(err => console.error('Fout: ' + err));
-                //    }
-                //    else self.sendMessage(null);
-                //}
-            },
-            sendMessage: function (name) {
-                //var self = this;
-                //var jsonObject = JSON.stringify({ chatId: self.chatId, senderId: self.userId, text: self.message, sendDate: self.getTime(), imageName: name });
-
-                //// opslaan - ajax configuratie
-                //var ajaxHeaders = new Headers();
-                //ajaxHeaders.append("Content-Type", "application/json");
-                //var ajaxConfig = {
-                //    method: 'POST',
-                //    body: jsonObject,
-                //    headers: ajaxHeaders
-                //};
-
-                //let myRequest = new Request(`${apiURL}Messages`, ajaxConfig);
-                //fetch(myRequest)
-                //    .then(res => res.json(), self.updateMessageCount())
-                //    .catch(err => console.error('Fout: ' + err));
-            },
-            updateMessageCount: function () {
-                //var self = this;
-                //var jsonObject = JSON.stringify({ chatId: self.chatId });
-                //// opslaan - ajax configuratie
-                //var ajaxHeaders = new Headers();
-                //ajaxHeaders.append("Content-Type", "application/json");
-                //var ajaxConfig = {
-                //    method: 'PUT',
-                //    body: jsonObject,
-                //    headers: ajaxHeaders
-                //};
-                //let myRequest = new Request(`${apiURL}Chats/Addition/${self.chatId}`, ajaxConfig);
-                //fetch(myRequest)
-                //    .then(res => res.json())
-                //    .catch(err => console.error('Fout: ' + err));
-            },
             getTime: function () {
                 var today = new Date();
                 var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
