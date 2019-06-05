@@ -17,17 +17,23 @@ namespace Pokebook.core.Data
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                     UserName = "TyrionLannister",
+                    FirstName = "Tyrion",
+                    LastName = "Lannister",
                     ProfilePicture = "Pikachu.png",
                     CoverPicture = "Mt._Molteau.png",
                     FavoritePokemon = "Pikachu",
-                    FavoritePokemonGame = "Pokemon Red"
+                    FavoritePokemonGame = "Pokemon Red",
+                    PasswordHash = "PW7h5Yl70M3o3LA9YQ5wUG+ycD7H01aXrDizkpC4lBX7hP/k"//test1234
                 },
                 new User
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
                     UserName = "JonSnow",
+                    FirstName = "Jon",
+                    LastName = "Snow",
                     ProfilePicture = "Magikarp.png",
-                    CoverPicture = "mountain.jpg"
+                    CoverPicture = "mountain.jpg",
+                    PasswordHash = "PW7h5Yl70M3o3LA9YQ5wUG+ycD7H01aXrDizkpC4lBX7hP/k"//test1234
                 }
             );
 
