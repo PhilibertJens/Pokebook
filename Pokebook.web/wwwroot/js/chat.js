@@ -15,8 +15,9 @@ setTimeout(function () {//als er niet gewacht wordt dan wordt de JoinChat al ged
 
 connection.on("ReceiveMessage", function (user, message, imageName) {
     //enkel users die in dezelfde group (chat) zitten zullen dit ontvangen
-    var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g,
-        "&gt;");
+    /*var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); 
+        --> is niet nodig. De data wordt sowieso niet als javascript gezien*/
+    var msg = message;
     var me = document.querySelector('[data-username]').getAttribute('data-username');
 
     //aanmaak nodige HTML elementen

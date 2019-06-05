@@ -74,11 +74,13 @@ namespace Pokebook.web.Controllers
             if (userdata.ProfilePicture == null && userdata.UploadedCoverImage == null) return null;//kan gebeuren als de user de html wijzigt
             if (userdata.CoverPicture == null && userdata.UploadedProfileImage == null) return null;//kan gebeuren als de user de html wijzigt
 
-            if (userdata.ProfilePicture != null && !userdata.UploadedProfileImage.ContentType.Contains("image"))
-                return null;
+            if (userdata.ProfilePicture != null && !userdata.UploadedProfileImage.ContentType.Contains("image")) return null;
 
-            if (userdata.CoverPicture != null && !userdata.UploadedCoverImage.ContentType.Contains("image"))
-                return null;
+            if (userdata.CoverPicture != null && !userdata.UploadedCoverImage.ContentType.Contains("image")) return null;
+
+            if (userdata.ProfilePicture != null && userdata.UploadedProfileImage.Length > 3145728) return null;//3 MB
+
+            if (userdata.CoverPicture != null && userdata.UploadedCoverImage.Length > 3145728) return null;//3 MB
 
             if (userdata.ProfilePicture == null)
             {
