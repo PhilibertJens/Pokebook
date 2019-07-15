@@ -1,4 +1,4 @@
-﻿var apiURL = 'https://localhost:44321/api/';
+﻿var apiURL = `https://${server.apiLanAddress}/api/`;
 
 var app = new Vue(
     {
