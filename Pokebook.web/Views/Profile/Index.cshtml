@@ -1,6 +1,7 @@
 ﻿@model ProfileIndexVM
 @{
     ViewData["Title"] = "Index";
+    Constants constants = new Constants();
 }
 
 <div>
@@ -68,12 +69,12 @@
         @*</div>*@
     </aside>
     <header id='coverPicture'
-            style='background-image: url(@Url.Content($"https://localhost:44321/api/users/CoverPicture/{Model.me.CoverPicture}")),
+            style='background-image: url(@Url.Content($"https://{constants.apiLanAddress}/api/users/CoverPicture/{Model.me.CoverPicture}")),
                                      url(/images/default.jpg)'>
         <section class='inner'>
             <div class="row">
                 <div class="col-md-11">
-                    <img src="https://localhost:44321/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
+                    <img src="https://@constants.apiLanAddress/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
                          onerror="this.src='/images/default.png'" id="profilePicture" />
                     <h2>@Model.me.UserName</h2>
                 </div>
