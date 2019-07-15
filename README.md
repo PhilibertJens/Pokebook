@@ -4,12 +4,18 @@ ASP.NET app with API / Library. Users can chat, post and talk about events in Po
 
 ## Getting started
 
-Clone [this](https://github.com/HBO5Informatica/1819-b03-3-ee-pokebook-team-rocket.git) repo to your local drive:
+- Clone [this](https://github.com/PhilibertJens/Pokebook.git) repo to your local drive:
 
 ```bash
 #!/bin/bash
-$ git clone https://github.com/HBO5Informatica/1819-b03-3-ee-pokebook-team-rocket.git
+$ git clone https://github.com/PhilibertJens/Pokebook.git
 ```
+- Set startup method to Multiple projects
+
+- Execute the migrations in Pokebook.core project
+
+## Host website in LAN
+To host the Pokebook in the LAN you can to download the Conveyor extension via Tools --> Extensions and Updates
 
 ## Using the repository pattern
 
