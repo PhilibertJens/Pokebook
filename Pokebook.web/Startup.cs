@@ -71,9 +71,13 @@ namespace Pokebook.web
             services.AddMemoryCache();
             services.AddSession(options =>
             {
+                options.Cookie.IsEssential = true;//nu zijn de session cookies beschikbaar in de lan
+            });
+            /*services.AddSession(options =>
+            {
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.HttpOnly = true;
-            });
+            });*/
             services.AddSignalR();
         }
 
