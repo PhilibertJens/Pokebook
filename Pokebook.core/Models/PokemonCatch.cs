@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pokebook.core.Models
 {
-    public class PokemonCatches: EntityBase
+    public class PokemonCatch: EntityBase
     {
         public Guid PokemonId { get; set; }
         public Guid UserId { get; set; }

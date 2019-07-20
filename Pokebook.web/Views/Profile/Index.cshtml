@@ -151,7 +151,7 @@
                 {
                     <div>
                         <a asp-action="UserProfile" asp-route-username="@(friend.UserName)">
-                            <img src="https://localhost:44321/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                            <img src="https://@constants.apiLanAddress/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
                                  title="open @friend.UserName profile" onerror="this.src='/images/default.png'" /><br />
                             <p>@friend.UserName</p>
                             @*@{
