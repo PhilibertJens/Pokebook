@@ -13,6 +13,7 @@ using Pokebook.web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pokebook.web.Hubs;
+using Pokebook.core.Data;
 
 namespace Pokebook.web
 {
@@ -35,7 +36,7 @@ namespace Pokebook.web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<PokebookContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("PokebookDb")));
             services.AddDefaultIdentity<IdentityUser>()
