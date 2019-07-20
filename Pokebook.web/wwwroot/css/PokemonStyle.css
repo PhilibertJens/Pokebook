@@ -1,0 +1,363 @@
+﻿/*Algemeen*/
+button {
+    outline: none;
+}
+
+/*Walkaround page*/
+.walkAround {
+    text-align: center;
+}
+
+.carousel {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.walkAround {
+    border-radius: 20px;
+    padding: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.walkAround .form-group {
+    display: inline-block;
+}
+
+.walkAround .col-md-12 {
+    position: fixed; /* of absolute */
+    top: 30%;
+    left: 25%;
+    background-color: ghostwhite;
+    border-radius: 35px;
+    display: inline-block;
+    width: 50%;
+    opacity: 0.9;
+    padding-bottom: 0.5em;
+    font-size: 1.5em;
+}
+
+.walkAround h3, .walkAround p, .walkAround form {
+    display: inline-block;
+}
+
+@media screen and (max-width: 1000px) {
+    .walkAround .col-md-12 {
+        width: 60%;
+        font-size: 1em;
+        left: 20%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .walkAround .col-md-12 {
+        width: 70%;
+        left: 15%;
+        position: absolute;
+    }
+}
+
+
+
+/*GeneratePokemon page*/
+.generatePokemon {
+    background-image: url("/images/Backgrounds/catching.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: inline-block;
+    width: 100%;
+    margin-top: 1em;
+}
+
+.generatePokemon img {
+    width: 25em;
+    display: block;
+    margin: 0 auto;
+}
+
+.generatePokemon h2 {
+    text-align: center;
+}
+
+.pokeball {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: none;
+    border: none;
+}
+
+.pokeball img {
+    width: 7em;
+}
+
+.pokeballMove {
+    position: absolute;
+    top: 250px;
+    left: 400px;
+}
+
+        /* Pokeball shake Animation */
+@keyframes shake {
+    0% {
+        transform: translate(0, 0) rotate(0);
+    }
+
+    20% {
+        transform: translate(-10px, 0) rotate(-20deg);
+    }
+
+    30% {
+        transform: translate(10px, 0) rotate(20deg);
+    }
+
+    50% {
+        transform: translate(-10px, 0) rotate(-10deg);
+    }
+
+    60% {
+        transform: translate(10px, 0) rotate(10deg);
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+.backgroundAfterThrow {
+    width: 1140px;
+    height: 450px;
+}
+
+.backgroundAfterThrow button img {
+    animation: shake 1.25s 3;/*de shake animatie wordt opgeroepen en wordt 3 keer uitgevoerd. 
+                               Doordat jquery na 2 seconden de CatchProcesser oproept 
+                               zal de shake maar 2 keer gebeuren*/
+}
+
+@media screen and (max-width: 650px) {/*gsm niet gekanteld*/
+
+    .generatePokemon{
+        margin-left: 1%;
+    }
+
+    .generatePokemon img{
+        width: 10em;
+    }
+
+    .pokeball img {
+        width: 4em;
+    }
+
+    .backgroundAfterThrow {
+        width: 610px;
+        height: 198px;
+        max-width: 100%;
+    }
+
+    .pokeballMove {
+        position: absolute;
+        top: 50px;
+        left: 250px;
+        transition: position 2s; /*werkt nog niet*/
+    }
+}
+
+@media screen and (max-width: 370px) {/*gsm gekanteld*/
+
+    .backgroundAfterThrow {
+        width: 330px;
+    }
+
+    .pokeballMove {
+        left: 100px;
+    }
+}
+
+
+
+/*Gotcha page*/
+.gotcha {
+    background-image: url("/images/Backgrounds/ProfessorOakHome.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.congrats, .gotcha a {
+    background-color: ghostwhite;
+    border-radius: 35px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+}
+
+.gotcha span {
+    font-size: 1.4em;
+}
+
+.gotcha a {
+    padding: 5px;
+    text-decoration: none;
+    color: red;
+    font-size: 1.5em;
+}
+
+@media screen and (max-width: 650px) { /* voor gsm in breedte*/
+
+    .gotcha .pokeballStar {
+        width: 3em;
+    }
+
+    .gotcha .star1, .gotcha .star2, .gotcha .star3 {
+        width: 1.5em;
+    }
+
+    .gotcha .caughtPokemon {
+        width: 6em;
+    }
+
+    .congrats {
+        width: 50%;
+    }
+
+    .gotcha .congrats {
+        font-size: 0.7em;
+    }
+
+    .gotcha h2 {
+        font-size: 20px;
+    }
+
+    .gotcha a {
+        padding: 5px;
+        text-decoration: none;
+        color: red;
+        font-size: 1em;
+    }
+}
+         /* Pokeball star animation */
+.animateStars .star1{
+    animation: star1 1.25s;
+}
+
+.animateStars .star2 {
+    animation: star2 1.25s;
+}
+
+.animateStars .star3 {
+    animation: star3 1.25s;
+}
+
+.stars img {
+    opacity: 0;
+    width: 50px;
+    display: inline-block;
+}
+
+.caughtPokemon{
+    opacity: 0;
+    width: 250px;
+}
+
+@keyframes star1 {
+    0% {
+        opacity: 1;
+        transform: rotate(0);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: rotate(-45deg)scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(-60deg) scale(1);
+    }
+}
+
+@keyframes star2 {
+    0% {
+        opacity: 1;
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes star3 {
+    0% {
+        opacity: 1;
+        transform: rotate(0);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    80% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(60deg) scale(1);
+    }
+}
+
+
+
+/*RegisterSuccess page*/
+.welcome {
+    background-color: ghostwhite;
+    padding-bottom: 1em;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.welcome a {
+    font-family: PokemonGB;
+    font-size: 2em;
+    text-decoration: none;
+    color: black;
+}
+
+.welcome img {
+    width: 50%;
+}
+
+@font-face {
+    font-family: PokemonGB;
+    src: url('/fonts/Pokemon_GB.ttf');
+}
