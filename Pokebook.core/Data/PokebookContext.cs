@@ -27,6 +27,9 @@ namespace Pokebook.core.Data
         public DbSet<Type> Types { get; set; }
         public DbSet<Move> Moves { get; set; }
         public DbSet<PokemonCatch> PokemonCatches { get; set; }
+        public DbSet<TypeAdvantage> TypeAdvantages { get; set; }
+        public DbSet<PokemonMove> PokemonMoves { get; set; }
+        public DbSet<PokemonEvolution> PokemonEvolutions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -75,12 +78,6 @@ namespace Pokebook.core.Data
             modelBuilder.Entity<PokemonType>()
                 .HasKey(pt => new { pt.PokemonId, pt.TypeId });
 
-            modelBuilder.Entity<Type>()
-                .HasMany(t => t.Advantages);
-
-            modelBuilder.Entity<Type>()
-                .HasMany(t => t.Disadvantages);
-
             modelBuilder.Entity<PokemonType>()
                 .HasOne(pt => pt.Pokemon)
                 .WithMany(p => p.PokemonTypes)
@@ -91,8 +88,63 @@ namespace Pokebook.core.Data
                 .WithMany(t => t.PokemonTypes)
                 .HasForeignKey(pt => pt.TypeId);
 
+            modelBuilder.Entity<PokemonMove>()
+                .HasKey(pm => new { pm.PokemonId, pm.MoveId });
+
+            modelBuilder.Entity<PokemonMove>()
+                .HasOne(pm => pm.Pokemon)
+                .WithMany(p => p.PokemonMoves)
+                .HasForeignKey(pm => pm.PokemonId);
+
+            modelBuilder.Entity<PokemonMove>()
+                .HasOne(pm => pm.Move)
+                .WithMany(t => t.PokemonMoves)
+                .HasForeignKey(pm => pm.MoveId);
+
             modelBuilder.Entity<PokemonUser>()
                 .HasKey(pu => new { pu.PokemonId, pu.UserId });
+
+            /*Evolutions*/
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.PokemonEvolutions)
+                .WithOne(pe => pe.Evolution);
+
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.PokemonPreEvolutions)
+                .WithOne(pe => pe.BasePokemon);
+
+            modelBuilder.Entity<PokemonEvolution>()
+                .HasOne(pe => pe.Evolution)
+                .WithMany(e => e.PokemonEvolutions)
+                .HasForeignKey(pe => pe.EvolutionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PokemonEvolution>()
+                .HasOne(pe => pe.BasePokemon)
+                .WithMany(e => e.PokemonPreEvolutions)
+                .HasForeignKey(pe => pe.BasePokemonId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            /*Advantages en disadvantages*/
+            modelBuilder.Entity<Type>()
+                .HasMany(t => t.AdvantagesOver)
+                .WithOne(a => a.AdvantageType);
+
+            modelBuilder.Entity<Type>()
+                .HasMany(t => t.DisadvantagesOver)
+                .WithOne(d => d.DisadvantageType);
+
+            modelBuilder.Entity<TypeAdvantage>()
+                .HasOne(ta => ta.AdvantageType)
+                .WithMany(t => t.AdvantagesOver)
+                .HasForeignKey(ta => ta.AdvantageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TypeAdvantage>()
+                .HasOne(ta => ta.DisadvantageType)
+                .WithMany(t => t.DisadvantagesOver)
+                .HasForeignKey(ta => ta.DisadvantageTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             DataSeeder.Seed(modelBuilder);
         }
