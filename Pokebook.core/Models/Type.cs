@@ -10,7 +10,7 @@ namespace Pokebook.core.Models
         public ICollection<PokemonType> PokemonTypes { get; set; }
         public string Colour { get; set; }
 
-        public ICollection<Type> Advantages { get; set; }
-        public ICollection<Type> Disadvantages { get; set; }
+        public ICollection<TypeAdvantage> AdvantagesOver { get; set; }
+        public ICollection<TypeAdvantage> DisadvantagesOver { get; set; }
     }
 }

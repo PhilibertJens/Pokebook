@@ -12,7 +12,8 @@ namespace Pokebook.core.Models
         public string ImgUrl { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public ICollection<Pokemon> Evolutions { get; set; }
+        public ICollection<PokemonEvolution> PokemonEvolutions { get; set; }
+        public ICollection<PokemonEvolution> PokemonPreEvolutions { get; set; }
         public ICollection<PokemonType> PokemonTypes { get; set; }
 
         /*sjabloon data*/
@@ -24,6 +25,6 @@ namespace Pokebook.core.Models
         public float MaxWeight { get; set; }
         public float MinHeight { get; set; }
         public float MaxHeight { get; set; }
-        public ICollection<Move> Moves { get; set; }
+        public ICollection<PokemonMove> PokemonMoves { get; set; }
     }
 }
