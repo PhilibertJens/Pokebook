@@ -125,6 +125,9 @@ namespace Pokebook.core.Data
                 .HasForeignKey(pe => pe.BasePokemonId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<PokemonEvolution>()
+                .HasKey(pe => new { pe.BasePokemonId, pe.EvolutionId });
+
             /*Advantages en disadvantages*/
             modelBuilder.Entity<Type>()
                 .HasMany(t => t.AdvantagesOver)
@@ -145,6 +148,9 @@ namespace Pokebook.core.Data
                 .WithMany(t => t.DisadvantagesOver)
                 .HasForeignKey(ta => ta.DisadvantageTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TypeAdvantage>()
+                .HasKey(ta => new { ta.AdvantageTypeId, ta.DisadvantageTypeId });
 
             DataSeeder.Seed(modelBuilder);
         }
