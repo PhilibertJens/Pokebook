@@ -151,6 +151,19 @@ namespace Pokebook.web.Controllers
 
                 var me = pokebookContext.Users
                     .Where(u => u.UserName == user.UserName).FirstOrDefault();
+
+                PokemonCatch pokemonCatch = new PokemonCatch
+                {
+                    PokemonId = getPokemon.Id,
+                    UserId = me.Id,
+                    HP = getPokemon.MinHP,
+                    CP = getPokemon.MinCP,
+                    Height = getPokemon.MinHeight,
+                    Weight = getPokemon.MinWeight
+                };
+                pokebookContext.PokemonCatches.Add(pokemonCatch);
+                //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
+
                 try
                 {
                     var alreadyCaught = pokebookContext.PokemonUsers

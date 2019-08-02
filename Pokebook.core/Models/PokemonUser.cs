@@ -8,7 +8,8 @@ namespace Pokebook.core.Models
     {
         public Guid UserId { get; set; }
         public Guid PokemonId { get; set; }
-        public Pokemon Pokemon { get; set; }
+        public Pokemon Pokemon { get; set; } //Dit moet nog veranderen
+        //public PokemonCatch CaughtPokemon { get; set; }
         public User User { get; set; }
         public short Catches { get; set; }
     }
