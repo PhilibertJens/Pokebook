@@ -857,14 +857,16 @@ namespace Pokebook.core.Data
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                     Name = "Hydro Pump",
                     Description = "Deals damage with no additional effect.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000B")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
                     Name = "Razor Leaf",
                     Description = "Deals damage and has an increased critical hit ratio.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000C")
                 },
                 new Move
                 {
