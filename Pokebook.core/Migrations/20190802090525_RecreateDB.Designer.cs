@@ -10,8 +10,8 @@ using Pokebook.core.Data;
 namespace Pokebook.core.Migrations
 {
     [DbContext(typeof(PokebookContext))]
-    [Migration("20190731073216_FixTypeAdvantages2")]
-    partial class FixTypeAdvantages2
+    [Migration("20190802090525_RecreateDB")]
+    partial class RecreateDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,8 +56,8 @@ namespace Pokebook.core.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            CreateDate = new DateTime(2019, 7, 31, 9, 32, 16, 7, DateTimeKind.Local).AddTicks(8255),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 927, DateTimeKind.Local).AddTicks(8887),
+                            CreateDate = new DateTime(2019, 8, 2, 11, 5, 24, 574, DateTimeKind.Local).AddTicks(1085),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 359, DateTimeKind.Local).AddTicks(9357),
                             CreatorId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Awesome Chat",
                             NumberOfMessages = 0,
@@ -66,8 +66,8 @@ namespace Pokebook.core.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            CreateDate = new DateTime(2019, 7, 31, 7, 32, 16, 8, DateTimeKind.Local).AddTicks(9036),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 927, DateTimeKind.Local).AddTicks(9005),
+                            CreateDate = new DateTime(2019, 8, 2, 9, 5, 24, 575, DateTimeKind.Local).AddTicks(2936),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 359, DateTimeKind.Local).AddTicks(9487),
                             CreatorId = new Guid("00000000-0000-0000-0000-000000000000"),
                             Name = "Another awesome Chat",
                             NumberOfMessages = 0,
@@ -103,7 +103,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Accepted = true,
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(2732),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(3076),
                             IdApprover = new Guid("00000000-0000-0000-0000-000000000002"),
                             IdRequester = new Guid("00000000-0000-0000-0000-000000000001")
                         },
@@ -111,7 +111,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             Accepted = false,
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(2812),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(3151),
                             IdApprover = new Guid("63ed99a2-e0dc-46d5-4c0c-08d6bce3eda7"),
                             IdRequester = new Guid("00000000-0000-0000-0000-000000000001")
                         });
@@ -149,7 +149,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(3887),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(4456),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000001"),
                             Text = "Hello Jon. This is Tyrion"
@@ -158,7 +158,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(3959),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(4731),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000002"),
                             Text = "Hello Tyrion. I'm Jon"
@@ -167,7 +167,7 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000003"),
                             ChatId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(4019),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(4965),
                             SendDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SenderId = new Guid("00000000-0000-0000-0000-000000000001"),
                             Text = "This is a chat with myself. Is this even possible?"
@@ -187,17 +187,105 @@ namespace Pokebook.core.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("PokemonCatchId");
-
-                    b.Property<Guid?>("PokemonId");
+                    b.Property<Guid>("TypeId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PokemonCatchId");
-
-                    b.HasIndex("PokemonId");
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Moves");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6608),
+                            Description = "Deals damage with no additional effect.",
+                            Generation = "1",
+                            Name = "Hydro Pump",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000b")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6684),
+                            Description = "Deals damage and has an increased critical hit ratio.",
+                            Generation = "1",
+                            Name = "Razor Leaf",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000c")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6747),
+                            Description = "Deals damage and has a 10% chance of burning the target.",
+                            Generation = "1",
+                            Name = "Flamethrower",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000a")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000004"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6806),
+                            Description = "Deals damage and has a 10% chance of paralyzing the target.",
+                            Generation = "1",
+                            Name = "Thunderbold",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000d")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000005"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6867),
+                            Description = "Deals damage with no additional effect in battle.",
+                            Generation = "1",
+                            Name = "Cut",
+                            TypeId = new Guid("00000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000006"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6929),
+                            Description = "The user of Fly will fly up high on the first turn, disappearing from view and becoming invulnerable to most attacks. On the second turn, Fly deals damage.",
+                            Generation = "1",
+                            Name = "Fly",
+                            TypeId = new Guid("00000000-0000-0000-0000-000000000003")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000007"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(6986),
+                            Description = "The user of Solar Beam will absorb light on the first turn. On the second turn, Solar Beam deals damage.",
+                            Generation = "1",
+                            Name = "Solar Beam",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000c")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000008"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(7044),
+                            Description = "Lowers the target's Speed by two stages.",
+                            Generation = "1",
+                            Name = "String Shot",
+                            TypeId = new Guid("00000000-0000-0000-0000-000000000007")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000009"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(7102),
+                            Description = "Deals damage and has a 10% chance of confusing the target.",
+                            Generation = "1",
+                            Name = "Psybeam",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000e")
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000010"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(7157),
+                            Description = "Deals damage and has a 10% chance of freezing the target.",
+                            Generation = "1",
+                            Name = "Ice Beam",
+                            TypeId = new Guid("00000000-0000-0000-0000-00000000000f")
+                        });
                 });
 
             modelBuilder.Entity("Pokebook.core.Models.Pokemon", b =>
@@ -235,11 +323,7 @@ namespace Pokebook.core.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("PokemonId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PokemonId");
 
                     b.ToTable("Pokemons");
 
@@ -247,494 +331,494 @@ namespace Pokebook.core.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6198),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9233),
                             Description = "It bears the seed of a plant on its back from birth. The seed slowly develops. Researchers are unsure whether to classify Bulbasaur as a plant or animal. Bulbasaur are extremely calm and very difficult to capture in the wild. ",
                             HasAllolanForm = false,
                             ImgUrl = "Bulbasaur.png",
                             Location = "Starter",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 850,
+                            MaxHP = 60,
+                            MaxHeight = 0.7f,
+                            MaxWeight = 6.9f,
+                            MinCP = 10,
+                            MinHP = 30,
+                            MinHeight = 0.2f,
+                            MinWeight = 2f,
                             NDex = (short)1,
                             Name = "Bulbasaur"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6323),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9357),
                             Description = "When the bulb on its back grows large, it appears to lose the ability to stand on its hind leg",
                             HasAllolanForm = false,
                             ImgUrl = "Ivysaur.png",
                             Location = "Evolve Bulbasaur",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1200,
+                            MaxHP = 80,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 9.9f,
+                            MinCP = 300,
+                            MinHP = 50,
+                            MinHeight = 0.5f,
+                            MinWeight = 5f,
                             NDex = (short)2,
                             Name = "Ivysaur"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000003"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6422),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9467),
                             Description = "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight.",
                             HasAllolanForm = false,
                             ImgUrl = "Venusaur.png",
                             Location = "Evolve Ivysaur",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 2500,
+                            MaxHP = 120,
+                            MaxHeight = 14f,
+                            MaxWeight = 70f,
+                            MinCP = 800,
+                            MinHP = 70,
+                            MinHeight = 7.2f,
+                            MinWeight = 25f,
                             NDex = (short)3,
                             Name = "Venusaur"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6516),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9565),
                             Description = "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.",
                             HasAllolanForm = false,
                             ImgUrl = "Charmander.png",
                             Location = "Starter",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 850,
+                            MaxHP = 60,
+                            MaxHeight = 0.7f,
+                            MaxWeight = 6.9f,
+                            MinCP = 10,
+                            MinHP = 30,
+                            MinHeight = 0.2f,
+                            MinWeight = 2f,
                             NDex = (short)4,
                             Name = "Charmander"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000005"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6616),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9665),
                             Description = "When it swings its burning tail, it elevates the temperature to unbearably high levels.",
                             HasAllolanForm = false,
                             ImgUrl = "Charmeleon.png",
                             Location = "Evolve Charmander",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1200,
+                            MaxHP = 80,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 9.9f,
+                            MinCP = 300,
+                            MinHP = 50,
+                            MinHeight = 0.5f,
+                            MinWeight = 5f,
                             NDex = (short)5,
                             Name = "Charmeleon"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000006"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6709),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9769),
                             Description = "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally.",
                             HasAllolanForm = false,
                             ImgUrl = "Charizard.png",
                             Location = "Evolve Charmeleon",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 2500,
+                            MaxHP = 120,
+                            MaxHeight = 14f,
+                            MaxWeight = 70f,
+                            MinCP = 800,
+                            MinHP = 70,
+                            MinHeight = 7.2f,
+                            MinWeight = 25f,
                             NDex = (short)6,
                             Name = "Charizard"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6806),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9867),
                             Description = "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.",
                             HasAllolanForm = false,
                             ImgUrl = "Squirtle.png",
                             Location = "Starter",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 850,
+                            MaxHP = 60,
+                            MaxHeight = 0.7f,
+                            MaxWeight = 6.9f,
+                            MinCP = 10,
+                            MinHP = 30,
+                            MinHeight = 0.2f,
+                            MinWeight = 2f,
                             NDex = (short)7,
                             Name = "Squirtle"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000008"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6900),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 362, DateTimeKind.Local).AddTicks(9970),
                             Description = "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance",
                             HasAllolanForm = false,
                             ImgUrl = "Wartortle.png",
                             Location = "Evolve Squirtle",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1200,
+                            MaxHP = 80,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 9.9f,
+                            MinCP = 300,
+                            MinHP = 50,
+                            MinHeight = 0.5f,
+                            MinWeight = 5f,
                             NDex = (short)8,
                             Name = "Wartortle"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000009"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(6992),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(70),
                             Description = "A brutal Pokémon with pressurized water jets on its shell. They are used for high speed tackles.",
                             HasAllolanForm = false,
                             ImgUrl = "Blastoise.png",
                             Location = "evolve Wartortle",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 2500,
+                            MaxHP = 120,
+                            MaxHeight = 14f,
+                            MaxWeight = 70f,
+                            MinCP = 800,
+                            MinHP = 70,
+                            MinHeight = 7.2f,
+                            MinWeight = 25f,
                             NDex = (short)9,
                             Name = "Blastoise"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000010"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7091),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(167),
                             Description = "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
                             HasAllolanForm = false,
                             ImgUrl = "Caterpie.png",
                             Location = "Routes 2, 24 and 25,Viridian Forest",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 500,
+                            MaxHP = 50,
+                            MaxHeight = 0.7f,
+                            MaxWeight = 1.5f,
+                            MinCP = 10,
+                            MinHP = 20,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.2f,
                             NDex = (short)10,
                             Name = "Caterpie"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000011"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7183),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(269),
                             Description = "This Pokémon is vulnerable to attack while its shell is soft, exposing its weak and tender body",
                             HasAllolanForm = false,
                             ImgUrl = "Metapod.png",
                             Location = "Routes 24 and 25, Viridian Forest or evolve Caterpie",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 400,
+                            MaxHP = 25,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 1f,
+                            MinCP = 10,
+                            MinHP = 20,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)11,
                             Name = "Metapod"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000012"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7273),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(591),
                             Description = "In battle, it flaps its wings at high speed to release highly toxic dust into the air.",
                             HasAllolanForm = false,
                             ImgUrl = "Butterfree.png",
                             Location = "Evolve Metapod",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1800,
+                            MaxHP = 100,
+                            MaxHeight = 1.7f,
+                            MaxWeight = 1f,
+                            MinCP = 10,
+                            MinHP = 40,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)12,
                             Name = "Butterfree"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000013"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7369),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(700),
                             Description = "Often found in forests, eating leaves. It has a sharp venomous stinger on its head.",
                             HasAllolanForm = false,
                             ImgUrl = "Weedle.png",
                             Location = "Routes 2, 24, and 25, Viridian Forest",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 500,
+                            MaxHP = 50,
+                            MaxHeight = 0.7f,
+                            MaxWeight = 1.5f,
+                            MinCP = 10,
+                            MinHP = 20,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.2f,
                             NDex = (short)13,
                             Name = "Weedle"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000014"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7460),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(993),
                             Description = "Almost incapable of moving, this Pokémon can only harden its shell to protect itself from predators.",
                             HasAllolanForm = false,
                             ImgUrl = "Kakuna.png",
                             Location = "Routes 24 and 25, Viridian Forest",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 400,
+                            MaxHP = 25,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 1f,
+                            MinCP = 10,
+                            MinHP = 20,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)14,
                             Name = "Kakuna"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000015"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7555),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(1258),
                             Description = "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail.",
                             HasAllolanForm = false,
                             ImgUrl = "Beedrill.png",
                             Location = "Evolve Kakuna",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1800,
+                            MaxHP = 100,
+                            MaxHeight = 1.7f,
+                            MaxWeight = 1f,
+                            MinCP = 10,
+                            MinHP = 40,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)15,
                             Name = "Beedrill"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000019"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7645),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(1749),
                             Description = "Is a small, quadruped rodent Pokémon. Its most notable feature is its large teeth.",
                             HasAllolanForm = true,
                             ImgUrl = "Rattata.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 680,
+                            MaxHP = 60,
+                            MaxHeight = 0.5f,
+                            MaxWeight = 1f,
+                            MinCP = 10,
+                            MinHP = 10,
+                            MinHeight = 0.1f,
+                            MinWeight = 0.5f,
                             NDex = (short)19,
                             Name = "Rattata"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000106"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7737),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(1989),
                             Description = "Is a humanoid Pokémon with an ovoid body. Hitmonlee's legs freely contract and stretch similar to a coiled spring.",
                             HasAllolanForm = false,
                             ImgUrl = "Hitmonlee.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 2000,
+                            MaxHP = 100,
+                            MaxHeight = 1.7f,
+                            MaxWeight = 1f,
+                            MinCP = 30,
+                            MinHP = 40,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)106,
                             Name = "Hitmonlee"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000016"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7833),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2090),
                             Description = "Has an extremely sharp sense of direction and homing instincts.",
                             HasAllolanForm = false,
                             ImgUrl = "Pidgey.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1000,
+                            MaxHP = 60,
+                            MaxHeight = 0.6f,
+                            MaxWeight = 1.8f,
+                            MinCP = 10,
+                            MinHP = 10,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)16,
                             Name = "Pidgey"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000109"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(7923),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2187),
                             Description = "Creates gases within its body by mixing toxins with garbage, and produces more gas in higher temperatures.",
                             HasAllolanForm = false,
                             ImgUrl = "Koffing.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1650,
+                            MaxHP = 100,
+                            MaxHeight = 1.8f,
+                            MaxWeight = 3f,
+                            MinCP = 10,
+                            MinHP = 40,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)109,
                             Name = "Koffing"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000050"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8019),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2283),
                             Description = "Is a tiny, brown Pokémon that seems to be perpetually buried within the earth, leaving only its head visible.",
                             HasAllolanForm = true,
                             ImgUrl = "Diglett.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1250,
+                            MaxHP = 70,
+                            MaxHeight = 1.2f,
+                            MaxWeight = 1.8f,
+                            MinCP = 10,
+                            MinHP = 20,
+                            MinHeight = 0.2f,
+                            MinWeight = 0.5f,
                             NDex = (short)50,
                             Name = "Diglett"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000095"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8109),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2383),
                             Description = "Resembles a giant chain of gray boulders that become smaller towards the tail.",
                             HasAllolanForm = false,
                             ImgUrl = "Onix.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 2300,
+                            MaxHP = 120,
+                            MaxHeight = 4.7f,
+                            MaxWeight = 400f,
+                            MinCP = 100,
+                            MinHP = 50,
+                            MinHeight = 2.2f,
+                            MinWeight = 200f,
                             NDex = (short)95,
                             Name = "Onix"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000092"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8200),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2480),
                             Description = "Has no true form, due to 95% of its body being poisonous gas.",
                             HasAllolanForm = false,
                             ImgUrl = "Gastly.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1500,
+                            MaxHP = 100,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 2f,
+                            MinCP = 10,
+                            MinHP = 40,
+                            MinHeight = 0.5f,
+                            MinWeight = 0.5f,
                             NDex = (short)92,
                             Name = "Gastly"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000025"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8294),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2580),
                             Description = "Is covered in yellow fur with two horizontal brown stripes on its back.",
                             HasAllolanForm = true,
                             ImgUrl = "Pikachu.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1500,
+                            MaxHP = 80,
+                            MaxHeight = 0.9f,
+                            MaxWeight = 3.5f,
+                            MinCP = 50,
+                            MinHP = 40,
+                            MinHeight = 0.4f,
+                            MinWeight = 1.5f,
                             NDex = (short)25,
                             Name = "Pikachu"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000150"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8385),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2678),
                             Description = "Is a Pokémon created by science. It is a bipedal, humanoid creature with some feline features.",
                             HasAllolanForm = false,
                             ImgUrl = "Mewtwo.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 3200,
+                            MaxHP = 150,
+                            MaxHeight = 2f,
+                            MaxWeight = 35f,
+                            MinCP = 1000,
+                            MinHP = 90,
+                            MinHeight = 1.6f,
+                            MinWeight = 17.5f,
                             NDex = (short)150,
                             Name = "Mewtwo"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000087"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8480),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2774),
                             Description = "Has a snowy white, furry body, which renders it virtually invisible in snowy conditions.",
                             HasAllolanForm = false,
                             ImgUrl = "Dewgong.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 1800,
+                            MaxHP = 100,
+                            MaxHeight = 2.8f,
+                            MaxWeight = 60f,
+                            MinCP = 30,
+                            MinHP = 50,
+                            MinHeight = 1.5f,
+                            MinWeight = 30f,
                             NDex = (short)87,
                             Name = "Dewgong"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000147"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 930, DateTimeKind.Local).AddTicks(8571),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(2876),
                             Description = "is filled with life energy. Dratini is constantly growing, and can thus reach lengths of over six feet.",
                             HasAllolanForm = false,
                             ImgUrl = "Dratini.png",
                             Location = "Somewhere",
-                            MaxCP = 0,
-                            MaxHP = 0,
-                            MaxHeight = 0f,
-                            MaxWeight = 0f,
-                            MinCP = 0,
-                            MinHP = 0,
-                            MinHeight = 0f,
-                            MinWeight = 0f,
+                            MaxCP = 950,
+                            MaxHP = 60,
+                            MaxHeight = 1.5f,
+                            MaxWeight = 25f,
+                            MinCP = 30,
+                            MinHP = 40,
+                            MinHeight = 0.6f,
+                            MinWeight = 7.5f,
                             NDex = (short)147,
                             Name = "Dratini"
                         });
@@ -768,6 +852,257 @@ namespace Pokebook.core.Migrations
                     b.ToTable("PokemonCatches");
                 });
 
+            modelBuilder.Entity("Pokebook.core.Models.PokemonEvolution", b =>
+                {
+                    b.Property<Guid>("BasePokemonId");
+
+                    b.Property<Guid>("EvolutionId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("BasePokemonId", "EvolutionId");
+
+                    b.HasIndex("EvolutionId");
+
+                    b.ToTable("PokemonEvolutions");
+
+                    b.HasData(
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9715),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9777),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000004"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000005"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9833),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000005"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000006"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9883),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9939),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000009"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 363, DateTimeKind.Local).AddTicks(9989),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000010"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000011"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(39),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000011"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000012"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(87),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000013"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000014"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(138),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            BasePokemonId = new Guid("00000000-0000-0000-0000-000000000014"),
+                            EvolutionId = new Guid("00000000-0000-0000-0000-000000000015"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(187),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("Pokebook.core.Models.PokemonMove", b =>
+                {
+                    b.Property<Guid>("PokemonId");
+
+                    b.Property<Guid>("MoveId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("PokemonId", "MoveId");
+
+                    b.HasIndex("MoveId");
+
+                    b.ToTable("PokemonMoves");
+
+                    b.HasData(
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1293),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1353),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000004"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1403),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000025"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000004"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1452),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1501),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1550),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1598),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000016"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000006"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1650),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000019"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000005"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1700),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000005"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1748),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000006"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(1990),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2040),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000009"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2278),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000010"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2498),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000011"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2556),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000012"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000008"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2744),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000150"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000009"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(2795),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            PokemonId = new Guid("00000000-0000-0000-0000-000000000087"),
+                            MoveId = new Guid("00000000-0000-0000-0000-000000000010"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(3041),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
+                });
+
+            modelBuilder.Entity("Pokebook.core.Models.PokemonMoveCatch", b =>
+                {
+                    b.Property<Guid>("PokemonId");
+
+                    b.Property<Guid>("MoveId");
+
+                    b.Property<DateTime?>("Created");
+
+                    b.Property<Guid>("Id");
+
+                    b.HasKey("PokemonId", "MoveId");
+
+                    b.HasIndex("MoveId");
+
+                    b.ToTable("PokemonMoveCatches");
+                });
+
             modelBuilder.Entity("Pokebook.core.Models.PokemonType", b =>
                 {
                     b.Property<Guid>("PokemonId");
@@ -789,266 +1124,266 @@ namespace Pokebook.core.Migrations
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000001"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8585),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6720),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000001"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8653),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6782),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000002"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8704),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6835),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000002"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8754),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6888),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000003"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8802),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6937),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000003"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8847),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(6985),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000004"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8892),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7034),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000005"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8936),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7081),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000006"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(8981),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7129),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000006"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000003"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9030),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7177),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000007"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9074),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7230),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000008"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9118),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7278),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000009"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9162),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7326),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000010"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9205),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7374),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000011"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9248),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7421),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000012"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9292),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7468),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000012"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000003"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9342),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7516),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000013"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9391),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7568),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000013"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9436),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7616),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000014"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9481),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7663),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000014"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9525),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7710),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000015"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000007"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9568),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7758),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000015"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9612),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7805),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000019"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9661),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7852),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000106"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9705),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7905),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000016"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000003"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9749),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(7952),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000016"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9793),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8000),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000109"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9837),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8047),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000050"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000005"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9880),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8096),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000095"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000006"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9924),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8143),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000095"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000005"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 931, DateTimeKind.Local).AddTicks(9973),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8191),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000092"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000008"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(17),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8243),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000092"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(61),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8291),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000025"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000d"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(105),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8338),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000150"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000e"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(149),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8385),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000087"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000f"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(193),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8434),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000087"),
                             TypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(236),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8481),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             PokemonId = new Guid("00000000-0000-0000-0000-000000000147"),
                             TypeId = new Guid("00000000-0000-0000-0000-000000000010"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(284),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 364, DateTimeKind.Local).AddTicks(8535),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
@@ -1081,13 +1416,9 @@ namespace Pokebook.core.Migrations
 
                     b.Property<DateTime?>("Created");
 
-                    b.Property<Guid?>("MoveId");
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MoveId");
 
                     b.ToTable("Types");
 
@@ -1096,160 +1427,217 @@ namespace Pokebook.core.Migrations
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             Colour = "#A8A878",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3320),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(3641),
                             Name = "Normal"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             Colour = "#C03028",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3382),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(3718),
                             Name = "Fighting"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000003"),
                             Colour = "#A890F0",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3433),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(3777),
                             Name = "Flying"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000004"),
                             Colour = "#A040A0",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3482),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(3897),
                             Name = "Poison"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000005"),
                             Colour = "#E0C068",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3531),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4099),
                             Name = "Ground"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000006"),
                             Colour = "#B8A038",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3586),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4153),
                             Name = "Rock"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000007"),
                             Colour = "#A8B820",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3634),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4349),
                             Name = "Bug"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000008"),
                             Colour = "#705898",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3681),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4401),
                             Name = "Ghost"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000009"),
                             Colour = "#B8B8D0",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3729),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4454),
                             Name = "Steel"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000a"),
                             Colour = "#F08030",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3776),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4505),
                             Name = "Fire"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000b"),
                             Colour = "#6890F0",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3823),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4598),
                             Name = "Water"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000c"),
                             Colour = "#78C850",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3870),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4650),
                             Name = "Grass"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000d"),
                             Colour = "#F8D030",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3920),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4701),
                             Name = "Electric"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000e"),
                             Colour = "#F85888",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(3969),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4753),
                             Name = "Psychic"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-00000000000f"),
                             Colour = "#98D8D8",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(4016),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4804),
                             Name = "Ice"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000010"),
                             Colour = "#7038F8",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(4063),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4856),
                             Name = "Dragon"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000011"),
                             Colour = "#705848",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(4110),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(4908),
                             Name = "Dark"
                         },
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000012"),
                             Colour = "#EE99AC",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(4157),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(5000),
                             Name = "Fairy"
                         });
                 });
 
             modelBuilder.Entity("Pokebook.core.Models.TypeAdvantage", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("AdvantageTypeId");
+
+                    b.Property<Guid>("DisadvantageTypeId");
 
                     b.Property<DateTime?>("Created");
 
-                    b.Property<Guid>("TypeId");
+                    b.Property<Guid>("Id");
 
-                    b.HasKey("Id");
+                    b.HasKey("AdvantageTypeId", "DisadvantageTypeId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("DisadvantageTypeId");
 
                     b.ToTable("TypeAdvantages");
-                });
 
-            modelBuilder.Entity("Pokebook.core.Models.TypeDisadvantage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("Created");
-
-                    b.Property<Guid>("TypeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("TypeDisadvantages");
+                    b.HasData(
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7305),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7362),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7411),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000d"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7457),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000b"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-000000000006"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7505),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000f"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000c"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7591),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-000000000006"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000d"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7638),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000e"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7684),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000a"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7730),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            AdvantageTypeId = new Guid("00000000-0000-0000-0000-000000000007"),
+                            DisadvantageTypeId = new Guid("00000000-0000-0000-0000-00000000000e"),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 365, DateTimeKind.Local).AddTicks(7776),
+                            Id = new Guid("00000000-0000-0000-0000-000000000000")
+                        });
                 });
 
             modelBuilder.Entity("Pokebook.core.Models.User", b =>
@@ -1309,7 +1697,7 @@ namespace Pokebook.core.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
                             AccessFailedCount = 0,
                             CoverPicture = "Mt._Molteau.png",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(7232),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 366, DateTimeKind.Local).AddTicks(1073),
                             EmailConfirmed = false,
                             FavoritePokemon = "Pikachu",
                             FavoritePokemonGame = "Pokemon Red",
@@ -1329,7 +1717,7 @@ namespace Pokebook.core.Migrations
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
                             AccessFailedCount = 0,
                             CoverPicture = "mountain.jpg",
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(7380),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 366, DateTimeKind.Local).AddTicks(1259),
                             EmailConfirmed = false,
                             FirstName = "Jon",
                             LastName = "Snow",
@@ -1365,21 +1753,21 @@ namespace Pokebook.core.Migrations
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000001"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(8331),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 366, DateTimeKind.Local).AddTicks(2410),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(8384),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 366, DateTimeKind.Local).AddTicks(2464),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         },
                         new
                         {
                             ChatId = new Guid("00000000-0000-0000-0000-000000000002"),
                             UserId = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Created = new DateTime(2019, 7, 31, 9, 32, 16, 932, DateTimeKind.Local).AddTicks(8430),
+                            Created = new DateTime(2019, 8, 2, 11, 5, 25, 366, DateTimeKind.Local).AddTicks(2548),
                             Id = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
@@ -1406,20 +1794,10 @@ namespace Pokebook.core.Migrations
 
             modelBuilder.Entity("Pokebook.core.Models.Move", b =>
                 {
-                    b.HasOne("Pokebook.core.Models.PokemonCatch")
-                        .WithMany("Moves")
-                        .HasForeignKey("PokemonCatchId");
-
-                    b.HasOne("Pokebook.core.Models.Pokemon")
-                        .WithMany("Moves")
-                        .HasForeignKey("PokemonId");
-                });
-
-            modelBuilder.Entity("Pokebook.core.Models.Pokemon", b =>
-                {
-                    b.HasOne("Pokebook.core.Models.Pokemon")
-                        .WithMany("Evolutions")
-                        .HasForeignKey("PokemonId");
+                    b.HasOne("Pokebook.core.Models.Type", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Pokebook.core.Models.PokemonCatch", b =>
@@ -1432,6 +1810,45 @@ namespace Pokebook.core.Migrations
                     b.HasOne("Pokebook.core.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Pokebook.core.Models.PokemonEvolution", b =>
+                {
+                    b.HasOne("Pokebook.core.Models.Pokemon", "BasePokemon")
+                        .WithMany("PokemonPreEvolutions")
+                        .HasForeignKey("BasePokemonId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Pokebook.core.Models.Pokemon", "Evolution")
+                        .WithMany("PokemonEvolutions")
+                        .HasForeignKey("EvolutionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Pokebook.core.Models.PokemonMove", b =>
+                {
+                    b.HasOne("Pokebook.core.Models.Move", "Move")
+                        .WithMany("PokemonMoves")
+                        .HasForeignKey("MoveId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Pokebook.core.Models.Pokemon", "Pokemon")
+                        .WithMany("PokemonMoves")
+                        .HasForeignKey("PokemonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Pokebook.core.Models.PokemonMoveCatch", b =>
+                {
+                    b.HasOne("Pokebook.core.Models.Move", "Move")
+                        .WithMany("PokemonMoveCatches")
+                        .HasForeignKey("MoveId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Pokebook.core.Models.PokemonCatch", "Pokemon")
+                        .WithMany("PokemonMoveCatches")
+                        .HasForeignKey("PokemonId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -1461,27 +1878,17 @@ namespace Pokebook.core.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Pokebook.core.Models.Type", b =>
-                {
-                    b.HasOne("Pokebook.core.Models.Move")
-                        .WithMany("Types")
-                        .HasForeignKey("MoveId");
-                });
-
             modelBuilder.Entity("Pokebook.core.Models.TypeAdvantage", b =>
                 {
-                    b.HasOne("Pokebook.core.Models.Type", "Type")
-                        .WithMany("Advantages")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                    b.HasOne("Pokebook.core.Models.Type", "AdvantageType")
+                        .WithMany("AdvantagesOver")
+                        .HasForeignKey("AdvantageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity("Pokebook.core.Models.TypeDisadvantage", b =>
-                {
-                    b.HasOne("Pokebook.core.Models.Type", "Type")
-                        .WithMany("Disadvantages")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Pokebook.core.Models.Type", "DisadvantageType")
+                        .WithMany("DisadvantagesOver")
+                        .HasForeignKey("DisadvantageTypeId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Pokebook.core.Models.UserChat", b =>

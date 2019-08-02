@@ -18,6 +18,6 @@ namespace Pokebook.core.Models
         /*Navigation properties*/
         public Pokemon Pokemon { get; set; }
         public User User { get; set; }
-        public ICollection<Move> Moves { get; set; }
+        public ICollection<PokemonMoveCatch> PokemonMoveCatches { get; set; }
     }
 }
