@@ -871,54 +871,62 @@ namespace Pokebook.core.Data
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
                     Name = "Flamethrower",
                     Description = "Deals damage and has a 10% chance of burning the target.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000A")
                 },new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
                     Name = "Thunderbold",
                     Description = "Deals damage and has a 10% chance of paralyzing the target.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000D")
                 },new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000005"),
                     Name = "Cut",
                     Description = "Deals damage with no additional effect in battle.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-000000000001")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000006"),
                     Name = "Fly",
                     Description = "The user of Fly will fly up high on the first turn, disappearing from view and becoming invulnerable to most attacks. On the second turn, Fly deals damage.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-000000000003")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000007"),
                     Name = "Solar Beam",
                     Description = "The user of Solar Beam will absorb light on the first turn. On the second turn, Solar Beam deals damage.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000C")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000008"),
                     Name = "String Shot",
                     Description = "Lowers the target's Speed by two stages.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-000000000007")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000009"),
                     Name = "Psybeam",
                     Description = "Deals damage and has a 10% chance of confusing the target.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000E")
                 },
                 new Move
                 {
                     Id = Guid.Parse("00000000-0000-0000-0000-000000000010"),
                     Name = "Ice Beam",
                     Description = "Deals damage and has a 10% chance of freezing the target.",
-                    Generation = "1"
+                    Generation = "1",
+                    TypeId = Guid.Parse("00000000-0000-0000-0000-00000000000F")
                 }
             );
 
