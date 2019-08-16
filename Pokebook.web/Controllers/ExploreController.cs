@@ -107,18 +107,10 @@ namespace Pokebook.web.Controllers
                 .Where(t => t.Name == pokemonData.Type).FirstOrDefault();
             if (pokemonData.Name == null)//er is nog geen pokemon gegenereerd. Is dit wel zo zal de bovenstaande terug getoond worden
                 appearedPokemon = await LetPokemonAppear(getType, user.Id);
-            else
-            {
-                //serializedPokemon = HttpContext.Session.GetString("PokemonData");
-                //pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-                appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
-            }
+            else appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
 
             string uri = $"{baseuri}/Pokemons/GetById/{appearedPokemon.PokemonId}";
             template = await WebApiHelper.GetApiResult<Pokemon>(uri);
-
-            /*appearedPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
 
             appearedPokemon.Pokemon = template;
             ExploreCatchVm vm = new ExploreCatchVm();
@@ -126,19 +118,6 @@ namespace Pokebook.web.Controllers
             vm.CheatingWarning = pokemonData.CheatingWarning;
             vm.UserName = user.UserName;
             return View(vm);
-        }
-
-        public PokemonCatch GetPokemonCatchObject(Guid pokemonId, Guid userId, int HP, int CP, float height, float weight)
-        {
-            return new PokemonCatch
-            {
-                PokemonId = pokemonId,
-                UserId = userId,
-                HP = HP,
-                CP = CP,
-                Height = height,
-                Weight = weight
-            };
         }
 
         public async Task<IActionResult> CatchProcesser()
@@ -154,8 +133,6 @@ namespace Pokebook.web.Controllers
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
             var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-            /*var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
 
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
@@ -169,7 +146,6 @@ namespace Pokebook.web.Controllers
                 string serializedPokemonData = JsonConvert.SerializeObject(pokemonData);
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 
-                //pokebookContext.PokemonCatches.Add(appearedPokemon);
                 uri = $"{baseuri}/PokemonCatches/Add";
                 var AddedPokemon = await WebApiHelper.PostCallAPI<PokemonCatch, PokemonCatch>(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
@@ -216,8 +192,6 @@ namespace Pokebook.web.Controllers
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
             var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-            /*var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
 
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
@@ -251,9 +225,6 @@ namespace Pokebook.web.Controllers
                 return new RedirectToActionResult("GeneratePokemon", "Explore", null);
             }
 
-            /*var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
-
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
             PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
@@ -265,6 +236,19 @@ namespace Pokebook.web.Controllers
             HttpContext.Session.Remove("PokemonData");//om minder geheugen in te nemen op de server.
                                                       //Ook om een Redirect te forceren bij terugkeer naar de vorige pagina
             return View(vm);
+        }
+
+        public PokemonCatch GetPokemonCatchObject(Guid pokemonId, Guid userId, int HP, int CP, float height, float weight)
+        {
+            return new PokemonCatch
+            {
+                PokemonId = pokemonId,
+                UserId = userId,
+                HP = HP,
+                CP = CP,
+                Height = height,
+                Weight = weight
+            };
         }
 
         private bool UserNameErrorCheck(string userName)
