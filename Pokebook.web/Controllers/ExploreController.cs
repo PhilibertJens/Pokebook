@@ -87,7 +87,8 @@ namespace Pokebook.web.Controllers
 
         public async Task<IActionResult> GeneratePokemon()
         {
-            Pokemon appearedPokemon;
+            PokemonCatch appearedPokemon;
+            Pokemon template;
             PokemonSessionData pokemonData;
             string serializedPokemon;
 
@@ -105,25 +106,39 @@ namespace Pokebook.web.Controllers
             var getType = pokebookContext.Types
                 .Where(t => t.Name == pokemonData.Type).FirstOrDefault();
             if (pokemonData.Name == null)//er is nog geen pokemon gegenereerd. Is dit wel zo zal de bovenstaande terug getoond worden
+                appearedPokemon = await LetPokemonAppear(getType, user.Id);
+            else
             {
-                appearedPokemon = await LetPokemonAppear(getType);
-                serializedPokemon = HttpContext.Session.GetString("PokemonData");
-                pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
+                //serializedPokemon = HttpContext.Session.GetString("PokemonData");
+                //pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
+                appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
             }
 
-            string uri = $"{baseuri}/Pokemons/name/{pokemonData.Name}";
-            appearedPokemon = await WebApiHelper.GetApiResult<Pokemon>(uri);
+            string uri = $"{baseuri}/Pokemons/GetById/{appearedPokemon.PokemonId}";
+            template = await WebApiHelper.GetApiResult<Pokemon>(uri);
 
             /*appearedPokemon = pokebookContext.Pokemons
                     .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
 
+            appearedPokemon.Pokemon = template;
             ExploreCatchVm vm = new ExploreCatchVm();
             vm.AppearedPokemon = appearedPokemon;
-            vm.HP = pokemonData.HP;
-            vm.Moves = pokemonData.Moves;
             vm.CheatingWarning = pokemonData.CheatingWarning;
             vm.UserName = user.UserName;
             return View(vm);
+        }
+
+        public PokemonCatch GetPokemonCatchObject(Guid pokemonId, Guid userId, int HP, int CP, float height, float weight)
+        {
+            return new PokemonCatch
+            {
+                PokemonId = pokemonId,
+                UserId = userId,
+                HP = HP,
+                CP = CP,
+                Height = height,
+                Weight = weight
+            };
         }
 
         public async Task<IActionResult> CatchProcesser()
@@ -139,8 +154,13 @@ namespace Pokebook.web.Controllers
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
             var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-            var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();
+            /*var getPokemon = pokebookContext.Pokemons
+                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
+
+            string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
+            Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
+            PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
+            appearedPokemon.Pokemon = template;
 
             int luckyNumber = random.Next(0, 2);
             if (luckyNumber == 1)//50% dat de pokemon is gevangen.
@@ -149,33 +169,23 @@ namespace Pokebook.web.Controllers
                 string serializedPokemonData = JsonConvert.SerializeObject(pokemonData);
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 
-                var me = pokebookContext.Users
-                    .Where(u => u.UserName == user.UserName).FirstOrDefault();
-
-                PokemonCatch pokemonCatch = new PokemonCatch
-                {
-                    PokemonId = getPokemon.Id,
-                    UserId = me.Id,
-                    HP = getPokemon.MinHP,
-                    CP = getPokemon.MinCP,
-                    Height = getPokemon.MinHeight,
-                    Weight = getPokemon.MinWeight
-                };
-                pokebookContext.PokemonCatches.Add(pokemonCatch);
+                //pokebookContext.PokemonCatches.Add(appearedPokemon);
+                uri = $"{baseuri}/PokemonCatches/Add";
+                var AddedPokemon = await WebApiHelper.PostCallAPI<PokemonCatch, PokemonCatch>(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
 
                 try
                 {
                     var alreadyCaught = pokebookContext.PokemonUsers
-                                   .Where(pu => pu.UserId == me.Id && pu.PokemonId == getPokemon.Id).FirstOrDefault(); //user heeft resp pokemon al gevangen
+                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault(); //user heeft resp pokemon al gevangen
                     alreadyCaught.Catches++;
                 }
                 catch (NullReferenceException)
                 {//als de user nog geen pokemon van dit type heeft
                     PokemonUser pokemonUser = new PokemonUser()
                     {
-                        PokemonId = getPokemon.Id,
-                        UserId = me.Id,
+                        PokemonId = pokemonData.Id,
+                        UserId = userId,
                         Catches = 1
                     };
                     pokebookContext.PokemonUsers.Add(pokemonUser);
@@ -206,13 +216,16 @@ namespace Pokebook.web.Controllers
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
             var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-            var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();
+            /*var getPokemon = pokebookContext.Pokemons
+                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
+
+            string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
+            Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
+            PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
+            appearedPokemon.Pokemon = template;
 
             ExploreCatchVm vm = new ExploreCatchVm();
-            vm.AppearedPokemon = getPokemon;
-            vm.HP = pokemonData.HP;
-            vm.Moves = pokemonData.Moves;
+            vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
             return View(vm);
         }
@@ -238,12 +251,16 @@ namespace Pokebook.web.Controllers
                 return new RedirectToActionResult("GeneratePokemon", "Explore", null);
             }
 
-            var getPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();
+            /*var getPokemon = pokebookContext.Pokemons
+                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
+
+            string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
+            Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
+            PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
+            appearedPokemon.Pokemon = template;
+
             ExploreCatchVm vm = new ExploreCatchVm();
-            vm.AppearedPokemon = getPokemon;
-            vm.HP = pokemonData.HP;
-            vm.Moves = pokemonData.Moves;
+            vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
             HttpContext.Session.Remove("PokemonData");//om minder geheugen in te nemen op de server.
                                                       //Ook om een Redirect te forceren bij terugkeer naar de vorige pagina
@@ -266,7 +283,7 @@ namespace Pokebook.web.Controllers
             return await WebApiHelper.GetApiResult<UserSimpleDTO>(uri);
         }
 
-        private async Task<Pokemon> LetPokemonAppear(Type type)
+        private async Task<PokemonCatch> LetPokemonAppear(Type type, Guid userId)
         {
             var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
                                             .Include(pt => pt.Pokemon)
@@ -281,16 +298,23 @@ namespace Pokebook.web.Controllers
                 int listItem = random.Next(0, max);
                 var appearedPokemon = givePokemonType[listItem];//geeft een Pokemon met type. Moet omgezet worden naar een Pokemon
                                                                 //HttpContext.Session.SetString("AppearedPokemon", appearedPokemon.Pokemon.Name);
+
+                string uri = $"{baseuri}/PokemonCatches/CreateFromTemplate/{appearedPokemon.Pokemon.Name}/{userId}";
+                PokemonCatch generatedPokemon = await WebApiHelper.GetApiResult<PokemonCatch>(uri);
+
                 string serializedPokemon = HttpContext.Session.GetString("PokemonData");
                 var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
                 pokemonData.Name = appearedPokemon.Pokemon.Name;
                 pokemonData.Id = appearedPokemon.Pokemon.Id;
-                pokemonData.HP = 50; //dit wordt random bepaald
+                pokemonData.HP = generatedPokemon.HP;
+                pokemonData.CP = generatedPokemon.CP;
+                pokemonData.Height = generatedPokemon.Height;
+                pokemonData.Weight = generatedPokemon.Weight;
                 pokemonData.Moves = new List<string> { "Bite", "Shadowball" };//dit wordt bepaald per type
                 string serializedPokemonData = JsonConvert.SerializeObject(pokemonData);
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 
-                return appearedPokemon.Pokemon;
+                return generatedPokemon;
             }
             else return null;
         }
