@@ -24,6 +24,20 @@ namespace Pokebook.api.Controllers
         private IHostingEnvironment _hostingEnvironment;
 
 
+        // GET: api/Pokemons
+        [HttpGet]
+        public override IActionResult Get(Guid id)
+        {
+            return Ok(unitOfWork.Pokemons.FindById(id));
+        }
 
+        // GET: api/Pokemons/name
+        [HttpGet]
+        [Route("name/{name}")]
+        public async Task<IActionResult> GetByName(string name)
+        {
+            var test = await unitOfWork.Pokemons.GetByName(name);
+            return Ok(test);
+        }
     }
 }
