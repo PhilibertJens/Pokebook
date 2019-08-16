@@ -21,6 +21,8 @@ namespace Pokebook.core.Repositories
             UserChats = new UserChatRepository(context, mapper);
             Users = new UserRepository(context, mapper);
             Friendships = new FriendshipRepository(context, mapper);
+            Pokemons = new PokemonRepository(context, mapper);
+            PokemonCatches = new PokemonCatchRepository(context, mapper);
         }
 
         public IChatRepository Chats { get; }
@@ -28,6 +30,8 @@ namespace Pokebook.core.Repositories
         public IUserChatRepository UserChats { get; }
         public IUserRepository Users { get; }
         public IFriendshipRepository Friendships { get; }
+        public IPokemonRepository Pokemons { get; }
+        public IPokemonCatchRepository PokemonCatches { get; }
 
         public int Complete()
         {

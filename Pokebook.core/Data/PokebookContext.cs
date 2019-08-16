@@ -34,9 +34,10 @@ namespace Pokebook.core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Chat
             modelBuilder.Entity<Chat>()
-                .HasMany(c => c.UserChats)
-                .WithOne(uc => uc.Chat);
+                   .HasMany(c => c.UserChats)
+                   .WithOne(uc => uc.Chat);
 
             modelBuilder.Entity<Chat>()
                 .HasMany(c => c.Messages)
@@ -68,7 +69,8 @@ namespace Pokebook.core.Data
             modelBuilder.Entity<Friendship>()
                 .Property(f => f.Created)
                     .HasDefaultValueSql("GETDATE()")
-                    .ValueGeneratedOnAddOrUpdate();
+                    .ValueGeneratedOnAddOrUpdate(); 
+            #endregion
 
             modelBuilder.Entity<PokemonType>()
                 .HasKey(pt => new { pt.PokemonId, pt.TypeId });
@@ -85,6 +87,11 @@ namespace Pokebook.core.Data
 
             modelBuilder.Entity<PokemonUser>()
                 .HasKey(pu => new { pu.PokemonId, pu.UserId });
+
+            modelBuilder.Entity<PokemonCatch>()
+                .HasOne(pc => pc.User)
+                .WithMany(t => t.PokemonCatches)
+                .HasForeignKey(pc => pc.UserId);
 
             /*Pokemon Moves link voor Pokemon sjabloon*/
             modelBuilder.Entity<PokemonMove>()
@@ -114,10 +121,10 @@ namespace Pokebook.core.Data
                 .WithMany(m => m.PokemonMoveCatches)
                 .HasForeignKey(pmc => pmc.MoveId);
 
-            /*Evolutions*/
+            #region Evolutions
             modelBuilder.Entity<Pokemon>()
-                .HasMany(p => p.PokemonEvolutions)
-                .WithOne(pe => pe.Evolution);
+                    .HasMany(p => p.PokemonEvolutions)
+                    .WithOne(pe => pe.Evolution);
 
             modelBuilder.Entity<Pokemon>()
                 .HasMany(p => p.PokemonPreEvolutions)
@@ -137,11 +144,12 @@ namespace Pokebook.core.Data
 
             modelBuilder.Entity<PokemonEvolution>()
                 .HasKey(pe => new { pe.BasePokemonId, pe.EvolutionId });
+            #endregion
 
-            /*Advantages en disadvantages*/
+            #region Advantages
             modelBuilder.Entity<Type>()
-                .HasMany(t => t.AdvantagesOver)
-                .WithOne(a => a.AdvantageType);
+                    .HasMany(t => t.AdvantagesOver)
+                    .WithOne(a => a.AdvantageType);
 
             modelBuilder.Entity<Type>()
                 .HasMany(t => t.DisadvantagesOver)
@@ -160,7 +168,8 @@ namespace Pokebook.core.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<TypeAdvantage>()
-                .HasKey(ta => new { ta.AdvantageTypeId, ta.DisadvantageTypeId });
+                .HasKey(ta => new { ta.AdvantageTypeId, ta.DisadvantageTypeId }); 
+            #endregion
 
             DataSeeder.Seed(modelBuilder);
         }
