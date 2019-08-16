@@ -26,6 +26,7 @@ namespace Pokebook.api.Controllers
 
         // GET: api/Pokemons
         [HttpGet]
+        [Route("GetById/{id}")]
         public override IActionResult Get(Guid id)
         {
             return Ok(unitOfWork.Pokemons.FindById(id));
@@ -36,8 +37,8 @@ namespace Pokebook.api.Controllers
         [Route("name/{name}")]
         public async Task<IActionResult> GetByName(string name)
         {
-            var test = await unitOfWork.Pokemons.GetByName(name);
-            return Ok(test);
+            var pokemon = await unitOfWork.Pokemons.GetByName(name);
+            return Ok(pokemon);
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Pokebook.core.Repositories
             UserChats = new UserChatRepository(context, mapper);
             Users = new UserRepository(context, mapper);
             Friendships = new FriendshipRepository(context, mapper);
-            PokemonCatches = new PokemonCatchRepository(context, mapper);
             Pokemons = new PokemonRepository(context, mapper);
+            PokemonCatches = new PokemonCatchRepository(context, mapper);
         }
 
         public IChatRepository Chats { get; }
