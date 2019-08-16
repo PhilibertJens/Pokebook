@@ -43,8 +43,7 @@ namespace Pokebook.web.Controllers
             Guid? tempUserId = CheckSession();
             if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
             else userId = (Guid)tempUserId;
-            //string userName = HttpContext.Session.GetString("Username");
-            //if (userName == null) return new RedirectToActionResult("Login", "Account", null);
+            
             HttpContext.Session.Remove("PokemonData");
             var listEnvironments = new List<SelectListItem> {
                 new SelectListItem { Value = "0", Text = "== Where are you? ==" },
@@ -90,7 +89,7 @@ namespace Pokebook.web.Controllers
         {
             Pokemon appearedPokemon;
             PokemonSessionData pokemonData;
-            string serializedPokemon, userName;
+            string serializedPokemon;
 
             Guid userId;
             Guid? tempUserId = CheckSession();
@@ -98,8 +97,7 @@ namespace Pokebook.web.Controllers
             else userId = (Guid)tempUserId;
 
             UserSimpleDTO user = await GetUserWithId(userId);
-            //userName = HttpContext.Session.GetString("Username");
-            //if (UserNameErrorCheck(userName)) return new RedirectToActionResult("Login", "Account", null);
+            
             serializedPokemon = HttpContext.Session.GetString("PokemonData");
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
@@ -113,8 +111,11 @@ namespace Pokebook.web.Controllers
                 pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
             }
 
-            appearedPokemon = pokebookContext.Pokemons
-                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();
+            string uri = $"{baseuri}/Pokemons/name/{pokemonData.Name}";
+            appearedPokemon = await WebApiHelper.GetApiResult<Pokemon>(uri);
+
+            /*appearedPokemon = pokebookContext.Pokemons
+                    .Where(p => p.Name == pokemonData.Name).FirstOrDefault();*/
 
             ExploreCatchVm vm = new ExploreCatchVm();
             vm.AppearedPokemon = appearedPokemon;
@@ -133,8 +134,7 @@ namespace Pokebook.web.Controllers
             else userId = (Guid)tempUserId;
 
             UserSimpleDTO user = await GetUserWithId(userId);
-            //string userName = HttpContext.Session.GetString("Username");
-            //if (UserNameErrorCheck(userName)) return new RedirectToActionResult("Login", "Account", null);
+            
             string serializedPokemon = HttpContext.Session.GetString("PokemonData");
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
@@ -201,8 +201,7 @@ namespace Pokebook.web.Controllers
             else userId = (Guid)tempUserId;
 
             UserSimpleDTO user = await GetUserWithId(userId);
-            //string userName = HttpContext.Session.GetString("Username");
-            //if (UserNameErrorCheck(userName)) return new RedirectToActionResult("Login", "Account", null);
+            
             string serializedPokemon = HttpContext.Session.GetString("PokemonData");
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
@@ -226,8 +225,7 @@ namespace Pokebook.web.Controllers
             else userId = (Guid)tempUserId;
 
             UserSimpleDTO user = await GetUserWithId(userId);
-            //string userName = HttpContext.Session.GetString("Username");
-            //if (UserNameErrorCheck(userName)) return new RedirectToActionResult("Login", "Account", null);
+            
             string serializedPokemon = HttpContext.Session.GetString("PokemonData");
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
             var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
