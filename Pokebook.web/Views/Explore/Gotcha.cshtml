@@ -10,9 +10,9 @@
 
         <div>Congratulations <span>@Model.UserName!</span></div>
 
-        <p>You caught @Model.AppearedPokemon.Name</p>
+        <p>You caught @Model.AppearedPokemon.Pokemon.Name</p>
     </div>
-    <img src="~/images/PokeImages/@(Model.AppearedPokemon.ImgUrl)" class="caughtPokemon" alt="@Model.AppearedPokemon.Name" title="Caugth @Model.AppearedPokemon.Name" /><br />
+    <img src="~/images/PokeImages/@(Model.AppearedPokemon.Pokemon.ImgUrl)" class="caughtPokemon" alt="@Model.AppearedPokemon.Pokemon.Name" title="Caugth @Model.AppearedPokemon.Pokemon.Name" /><br />
     <button type="submit" class="pokeball noclick" title="Go Pokeball!">
         <div class="stars">
             <img src="~/images/star.png" class="star1" />
