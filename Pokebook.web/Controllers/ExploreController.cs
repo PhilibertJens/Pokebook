@@ -71,11 +71,11 @@ namespace Pokebook.web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult WalkAround(ExploreWalkAroundVm userData)//bevat een omgeving en tijdstip
+        public async Task<IActionResult> WalkAround(ExploreWalkAroundVm userData)//bevat een omgeving en tijdstip
         {
             if (ModelState.IsValid)
             {
-                Type foundType = FindType(userData.SelectedEnvironmentId, userData.SelectedDayTimeId);
+                Type foundType = await FindType(userData.SelectedEnvironmentId, userData.SelectedDayTimeId);
                 PokemonSessionData pokemonData = new PokemonSessionData();
                 pokemonData.Type = foundType.Name;
                 string serializedPokemonData = JsonConvert.SerializeObject(pokemonData);
@@ -103,13 +103,17 @@ namespace Pokebook.web.Controllers
             if (PokemonErrorCheck(serializedPokemon)) return new RedirectToActionResult("Walkaround", "Explore", null);
 
             pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-            var getType = pokebookContext.Types
-                .Where(t => t.Name == pokemonData.Type).FirstOrDefault();
+
+            string uri = $"{baseuri}/Types/TypeName/{pokemonData.Type}";
+            var getType = await WebApiHelper.GetApiResult<Type>(uri);
+
+            /*getType = pokebookContext.Types
+                .Where(t => t.Name == pokemonData.Type).FirstOrDefault();*/
             if (pokemonData.Name == null)//er is nog geen pokemon gegenereerd. Is dit wel zo zal de bovenstaande terug getoond worden
                 appearedPokemon = await LetPokemonAppear(getType, user.Id);
             else appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
 
-            string uri = $"{baseuri}/Pokemons/GetById/{appearedPokemon.PokemonId}";
+            uri = $"{baseuri}/Pokemons/GetById/{appearedPokemon.PokemonId}";
             template = await WebApiHelper.GetApiResult<Pokemon>(uri);
 
             appearedPokemon.Pokemon = template;
@@ -152,8 +156,10 @@ namespace Pokebook.web.Controllers
 
                 try
                 {
-                    var alreadyCaught = pokebookContext.PokemonUsers
-                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault(); //user heeft resp pokemon al gevangen
+                    uri = $"{baseuri}/PokemonUsers/GetById/{pokemonData.Id}/{userId}";
+                    PokemonUser alreadyCaught = await WebApiHelper.GetApiResult<PokemonUser>(uri);//user heeft resp pokemon al gevangen
+                    /*var alreadyCaught = pokebookContext.PokemonUsers
+                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault();*/
                     alreadyCaught.Catches++;
                 }
                 catch (NullReferenceException)
@@ -164,9 +170,12 @@ namespace Pokebook.web.Controllers
                         UserId = userId,
                         Catches = 1
                     };
-                    pokebookContext.PokemonUsers.Add(pokemonUser);
+
+                    uri = $"{baseuri}/PokemonUsers/Add";
+                    await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
+                    //pokebookContext.PokemonUsers.Add(pokemonUser);
                 }
-                await pokebookContext.SaveChangesAsync();
+                //await pokebookContext.SaveChangesAsync();
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }
             else
@@ -269,6 +278,10 @@ namespace Pokebook.web.Controllers
 
         private async Task<PokemonCatch> LetPokemonAppear(Type type, Guid userId)
         {
+            //Er moet een PokemonType Controller gemaakt worden met repo. Zo kunnen we onderstaande code verwijderen.
+            //Dan kan de pokebookContext hier volledig verwijderd worden.
+
+
             var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
                                             .Include(pt => pt.Pokemon)
                                             .ThenInclude(p => p.PokemonTypes)
@@ -303,7 +316,7 @@ namespace Pokebook.web.Controllers
             else return null;
         }
 
-        private Type FindType(int environmentId, int timeId)
+        private async Task<Type> FindType(int environmentId, int timeId)
         {
             List<List<string>> environments = new List<List<string>>()
             {
@@ -330,8 +343,12 @@ namespace Pokebook.web.Controllers
             foreach (string type in typesPerDaytime) summary.Add(type);
 
             string selectedType = summary[random.Next(0, summary.Count())];
-            var getType = pokebookContext.Types
-                .Where(t => t.Name == selectedType).FirstOrDefault();
+
+            string uri = $"{baseuri}/Types/TypeName/{selectedType}";
+            var getType = await WebApiHelper.GetApiResult<Type>(uri);
+
+            /*var getType = pokebookContext.Types
+                .Where(t => t.Name == selectedType).FirstOrDefault();*/
             return getType;
         }
     }

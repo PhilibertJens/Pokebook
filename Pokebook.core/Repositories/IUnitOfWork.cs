@@ -17,6 +17,9 @@ namespace Pokebook.core.Repositories
         IFriendshipRepository Friendships { get; }
         IPokemonRepository Pokemons { get; }
         IPokemonCatchRepository PokemonCatches { get; }
+        ITypeRepository Types { get; }
+        IMoveRepository Moves { get; }
+        IPokemonUserRepository PokemonUsers { get; }
         int Complete();
     }
 }
