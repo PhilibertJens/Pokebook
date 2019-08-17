@@ -7,5 +7,6 @@ namespace Pokebook.core.Repositories.Specific
 {
     public interface IPokemonUserRepository: IRepository<PokemonUser>
     {
+        PokemonUser GetPokemonUserById(Guid pokemonId, Guid userId);
     }
 }

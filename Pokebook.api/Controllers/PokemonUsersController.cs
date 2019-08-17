@@ -23,6 +23,13 @@ namespace Pokebook.api.Controllers
 
         private IHostingEnvironment _hostingEnvironment;
 
+        [HttpGet]
+        [Route("GetById/{pokemonId}/{userId}")]
+        public IActionResult GetPokemonUserById(Guid pokemonId, Guid userId)
+        {
+            return Ok(unitOfWork.PokemonUsers.GetPokemonUserById(pokemonId, userId));
+        }
+
         [HttpPost]
         [Route("add")]
         public IActionResult AddPokemonUser(PokemonUser pokemonUser)

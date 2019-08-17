@@ -156,8 +156,10 @@ namespace Pokebook.web.Controllers
 
                 try
                 {
-                    var alreadyCaught = pokebookContext.PokemonUsers
-                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault(); //user heeft resp pokemon al gevangen
+                    uri = $"{baseuri}/PokemonUsers/GetById/{pokemonData.Id}/{userId}";
+                    PokemonUser alreadyCaught = await WebApiHelper.GetApiResult<PokemonUser>(uri);//user heeft resp pokemon al gevangen
+                    /*var alreadyCaught = pokebookContext.PokemonUsers
+                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault();*/
                     alreadyCaught.Catches++;
                 }
                 catch (NullReferenceException)
@@ -168,9 +170,12 @@ namespace Pokebook.web.Controllers
                         UserId = userId,
                         Catches = 1
                     };
-                    pokebookContext.PokemonUsers.Add(pokemonUser);
+
+                    uri = $"{baseuri}/PokemonUsers/Add";
+                    await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
+                    //pokebookContext.PokemonUsers.Add(pokemonUser);
                 }
-                await pokebookContext.SaveChangesAsync();
+                //await pokebookContext.SaveChangesAsync();
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }
             else
@@ -273,6 +278,10 @@ namespace Pokebook.web.Controllers
 
         private async Task<PokemonCatch> LetPokemonAppear(Type type, Guid userId)
         {
+            //Er moet een PokemonType Controller gemaakt worden met repo. Zo kunnen we onderstaande code verwijderen.
+            //Dan kan de pokebookContext hier volledig verwijderd worden.
+
+
             var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
                                             .Include(pt => pt.Pokemon)
                                             .ThenInclude(p => p.PokemonTypes)
