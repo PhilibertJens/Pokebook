@@ -27,5 +27,21 @@ namespace Pokebook.api.Controllers
         {
             return Ok(unitOfWork.Types.ListAll());
         }
+
+        // GET: api/Types/Id
+        [HttpGet]
+        [Route("/{Id}")]
+        public IActionResult GetTypeById(Guid Id)
+        {
+            return Ok(unitOfWork.Types.FindById(Id));
+        }
+
+        // GET: api/Types/typeName/typeName
+        [HttpGet]
+        [Route("typeName/{typeName}")]
+        public async Task<IActionResult> GetTypeByName(string typeName)
+        {
+            return Ok(await unitOfWork.Types.FindTypeByTypeNameAsync(typeName));
+        }
     }
 }
