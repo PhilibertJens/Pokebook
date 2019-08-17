@@ -23,6 +23,7 @@ namespace Pokebook.core.Repositories
             Friendships = new FriendshipRepository(context, mapper);
             Pokemons = new PokemonRepository(context, mapper);
             PokemonCatches = new PokemonCatchRepository(context, mapper);
+            Types = new TypeRepository(context, mapper);
         }
 
         public IChatRepository Chats { get; }
@@ -32,6 +33,7 @@ namespace Pokebook.core.Repositories
         public IFriendshipRepository Friendships { get; }
         public IPokemonRepository Pokemons { get; }
         public IPokemonCatchRepository PokemonCatches { get; }
+        public ITypeRepository Types { get; }
 
         public int Complete()
         {
