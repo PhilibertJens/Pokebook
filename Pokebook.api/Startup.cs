@@ -43,6 +43,7 @@ namespace Pokebook.api
             services.AddScoped<PokemonRepository>();
             services.AddScoped<PokemonCatchRepository>();
             services.AddScoped<TypeRepository>();
+            services.AddScoped<MoveRepository>();
             services.AddScoped<UnitOfWork>();
             
         }
