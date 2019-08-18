@@ -23,10 +23,10 @@ namespace Pokebook.web.Controllers
             Constants constants = new Constants();
             baseuri = $"https://localhost:{constants.Portnumber}/api";
             random = new Random();
-            pokebookContext = context;
+            //pokebookContext = context;
         }
 
-        private PokebookContext pokebookContext;
+        //private PokebookContext pokebookContext;
         readonly string baseuri;
         private Random random;
 
@@ -282,27 +282,30 @@ namespace Pokebook.web.Controllers
             //Dan kan de pokebookContext hier volledig verwijderd worden.
 
 
-            var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
+            /*var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
                                             .Include(pt => pt.Pokemon)
                                             .ThenInclude(p => p.PokemonTypes)
                                             .Where(p => p.Type.Name.ToLower() == type.Name.ToLower())
                                             .Include(pt => pt.Type)
                                             .ThenInclude(t => t.PokemonTypes)
-                                            .ToListAsync();
-            int max = givePokemonType.Count();
+                                            .ToListAsync();*/
+
+            string uri = $"{baseuri}/PokemonTypes/GetByTypeName/{type.Name}";
+            var GetPokemonWithType = await WebApiHelper.GetApiResult<List<Pokemon>>(uri);
+
+            int max = GetPokemonWithType.Count();
             if (max != 0)
             {
                 int listItem = random.Next(0, max);
-                var appearedPokemon = givePokemonType[listItem];//geeft een Pokemon met type. Moet omgezet worden naar een Pokemon
-                                                                //HttpContext.Session.SetString("AppearedPokemon", appearedPokemon.Pokemon.Name);
+                var appearedPokemon = GetPokemonWithType[listItem];
 
-                string uri = $"{baseuri}/PokemonCatches/CreateFromTemplate/{appearedPokemon.Pokemon.Name}/{userId}";
+                uri = $"{baseuri}/PokemonCatches/CreateFromTemplate/{appearedPokemon.Name}/{userId}";
                 PokemonCatch generatedPokemon = await WebApiHelper.GetApiResult<PokemonCatch>(uri);
 
                 string serializedPokemon = HttpContext.Session.GetString("PokemonData");
                 var pokemonData = JsonConvert.DeserializeObject<PokemonSessionData>(serializedPokemon);
-                pokemonData.Name = appearedPokemon.Pokemon.Name;
-                pokemonData.Id = appearedPokemon.Pokemon.Id;
+                pokemonData.Name = appearedPokemon.Name;
+                pokemonData.Id = appearedPokemon.Id;
                 pokemonData.HP = generatedPokemon.HP;
                 pokemonData.CP = generatedPokemon.CP;
                 pokemonData.Height = generatedPokemon.Height;
