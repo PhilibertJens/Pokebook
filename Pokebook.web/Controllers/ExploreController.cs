@@ -23,10 +23,8 @@ namespace Pokebook.web.Controllers
             Constants constants = new Constants();
             baseuri = $"https://localhost:{constants.Portnumber}/api";
             random = new Random();
-            //pokebookContext = context;
         }
-
-        //private PokebookContext pokebookContext;
+        
         readonly string baseuri;
         private Random random;
 
@@ -106,9 +104,7 @@ namespace Pokebook.web.Controllers
 
             string uri = $"{baseuri}/Types/TypeName/{pokemonData.Type}";
             var getType = await WebApiHelper.GetApiResult<Type>(uri);
-
-            /*getType = pokebookContext.Types
-                .Where(t => t.Name == pokemonData.Type).FirstOrDefault();*/
+            
             if (pokemonData.Name == null)//er is nog geen pokemon gegenereerd. Is dit wel zo zal de bovenstaande terug getoond worden
                 appearedPokemon = await LetPokemonAppear(getType, user.Id);
             else appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, pokemonData.Height, pokemonData.Weight);
@@ -158,8 +154,6 @@ namespace Pokebook.web.Controllers
                 {
                     uri = $"{baseuri}/PokemonUsers/GetById/{pokemonData.Id}/{userId}";
                     PokemonUser alreadyCaught = await WebApiHelper.GetApiResult<PokemonUser>(uri);//user heeft resp pokemon al gevangen
-                    /*var alreadyCaught = pokebookContext.PokemonUsers
-                                   .Where(pu => pu.UserId == userId && pu.PokemonId == pokemonData.Id).FirstOrDefault();*/
                     alreadyCaught.Catches++;
                 }
                 catch (NullReferenceException)
@@ -173,9 +167,7 @@ namespace Pokebook.web.Controllers
 
                     uri = $"{baseuri}/PokemonUsers/Add";
                     await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
-                    //pokebookContext.PokemonUsers.Add(pokemonUser);
                 }
-                //await pokebookContext.SaveChangesAsync();
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }
             else
@@ -278,18 +270,6 @@ namespace Pokebook.web.Controllers
 
         private async Task<PokemonCatch> LetPokemonAppear(Type type, Guid userId)
         {
-            //Er moet een PokemonType Controller gemaakt worden met repo. Zo kunnen we onderstaande code verwijderen.
-            //Dan kan de pokebookContext hier volledig verwijderd worden.
-
-
-            /*var givePokemonType = await pokebookContext.Set<PokemonType>()//een join van Pokemon, PokemonType en Type
-                                            .Include(pt => pt.Pokemon)
-                                            .ThenInclude(p => p.PokemonTypes)
-                                            .Where(p => p.Type.Name.ToLower() == type.Name.ToLower())
-                                            .Include(pt => pt.Type)
-                                            .ThenInclude(t => t.PokemonTypes)
-                                            .ToListAsync();*/
-
             string uri = $"{baseuri}/PokemonTypes/GetByTypeName/{type.Name}";
             var GetPokemonWithType = await WebApiHelper.GetApiResult<List<Pokemon>>(uri);
 
@@ -349,9 +329,7 @@ namespace Pokebook.web.Controllers
 
             string uri = $"{baseuri}/Types/TypeName/{selectedType}";
             var getType = await WebApiHelper.GetApiResult<Type>(uri);
-
-            /*var getType = pokebookContext.Types
-                .Where(t => t.Name == selectedType).FirstOrDefault();*/
+            
             return getType;
         }
     }
