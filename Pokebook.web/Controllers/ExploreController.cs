@@ -153,18 +153,8 @@ namespace Pokebook.web.Controllers
                 appearedPokemon.Pokemon = null;
                 appearedPokemon.User = null;
 
-                /*using (var httpClient = new HttpClient())
-                {
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(appearedPokemon), Encoding.UTF8, "application/json");
-
-                    using (var response = await httpClient.PostAsync(uri, content))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        var test = JsonConvert.DeserializeObject<PokemonCatch>(apiResponse);
-                    }
-                }*/
-
                 var AddedPokemon = await WebApiHelper.PostCallAPI<PokemonCatch, PokemonCatch>(uri, appearedPokemon);
+                //var AddedPokemon = await WebApiHelperPost.PostAsync(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
 
                 try
@@ -184,6 +174,7 @@ namespace Pokebook.web.Controllers
 
                     uri = $"{baseuri}/PokemonUsers/Add";
                     await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
+                    //await WebApiHelperPost.PostAsync(uri, pokemonUser);
                 }
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }
