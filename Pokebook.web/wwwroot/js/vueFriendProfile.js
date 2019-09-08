@@ -1,4 +1,4 @@
-﻿var apiURL = `https://${server.apiLanAddress}/api/`;
+﻿var apiURL = `${server.apiClientSideAddress}/api/`;
 
 var app = new Vue(
     {

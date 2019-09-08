@@ -69,12 +69,12 @@
         @*</div>*@
     </aside>
     <header id='coverPicture'
-            style='background-image: url(@Url.Content($"https://{constants.apiLanAddress}/api/users/CoverPicture/{Model.me.CoverPicture}")),
+            style='background-image: url(@Url.Content($"{constants.ApiClientSideAddress}/api/users/CoverPicture/{Model.me.CoverPicture}")),
                                      url(/images/default.jpg)'>
         <section class='inner'>
             <div class="row">
                 <div class="col-md-11">
-                    <img src="https://@constants.apiLanAddress/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
+                    <img src="@constants.ApiClientSideAddress/api/users/ProfilePicture/@(Model.me.ProfilePicture)" alt="@Model.me.ProfilePicture"
                          onerror="this.src='/images/default.png'" id="profilePicture" />
                     <h2>@Model.me.UserName</h2>
                 </div>
@@ -151,7 +151,7 @@
                 {
                     <div>
                         <a asp-action="UserProfile" asp-route-username="@(friend.UserName)">
-                            <img src="https://@constants.apiLanAddress/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
+                            <img src="@constants.ApiClientSideAddress/api/users/ProfilePicture/@(friend.ProfilePicture)" alt="@friend.ProfilePicture"
                                  title="open @friend.UserName profile" onerror="this.src='/images/default.png'" /><br />
                             <p>@friend.UserName</p>
                             @*@{

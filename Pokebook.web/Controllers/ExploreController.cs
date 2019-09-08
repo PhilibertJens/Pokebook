@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +23,8 @@ namespace Pokebook.web.Controllers
         public ExploreController(PokebookContext context)
         {
             Constants constants = new Constants();
-            baseuri = $"https://localhost:{constants.Portnumber}/api";
+            //baseuri = $"https://localhost:{constants.Portnumber}/api";
+            baseuri = $"{constants.ApiServerSideAddress}/api";
             random = new Random();
         }
         
@@ -147,6 +150,20 @@ namespace Pokebook.web.Controllers
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 
                 uri = $"{baseuri}/PokemonCatches/Add";
+                appearedPokemon.Pokemon = null;
+                appearedPokemon.User = null;
+
+                /*using (var httpClient = new HttpClient())
+                {
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(appearedPokemon), Encoding.UTF8, "application/json");
+
+                    using (var response = await httpClient.PostAsync(uri, content))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        var test = JsonConvert.DeserializeObject<PokemonCatch>(apiResponse);
+                    }
+                }*/
+
                 var AddedPokemon = await WebApiHelper.PostCallAPI<PokemonCatch, PokemonCatch>(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
 

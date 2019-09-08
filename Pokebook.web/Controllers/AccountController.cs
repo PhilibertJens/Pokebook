@@ -16,7 +16,7 @@ namespace Pokebook.web.Controllers
         public AccountController()
         {
             Constants constants = new Constants();
-            baseuri = $"https://localhost:{constants.Portnumber}/api";
+            baseuri = $"{constants.ApiServerSideAddress}/api";
         }
         
         readonly string baseuri;

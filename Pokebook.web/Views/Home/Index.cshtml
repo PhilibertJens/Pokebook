@@ -15,7 +15,7 @@
                     <h3>{{ loadingMessage }}</h3>
                     <div class="row" v-for="friend in friendRequests">
                         <div class="col-md-4">
-                            <img v-bind:src="'https://@(constants.apiLanAddress)/api/users/ProfilePicture/' + friend.profilePicture"
+                            <img v-bind:src="'@(constants.ApiClientSideAddress)/api/users/ProfilePicture/' + friend.profilePicture"
                                  v-bind:alt="'friend.ProfilePicture'" onerror="this.src='/images/default.png'" id="RequestProfilePicture" />
                         </div>
                         <div class="col-md-4">
@@ -37,8 +37,10 @@
     <aside class="col-md-3 sideBar">
         <div class="nav-icons">
             <a asp-controller="Profile" asp-action="index">
-                <img v-bind:src="'https://@(constants.apiLanAddress)/api/users/ProfilePicture/' + profilePicture"
-                     v-bind:alt="profilePicture" onerror="this.src='/images/default.png'" id="profilePicture" />
+                <!--<img v-bind:src="'@(constants.ApiClientSideAddress)/api/users/ProfilePicture/' + profilePicture"
+         v-bind:alt="profilePicture" onerror="this.src='/images/default.png'" id="profilePicture" />-->
+                <img v-bind:src="'@(constants.ApiClientSideAddress)/api/users/ProfilePicture/' + profilePicture"
+                     v-bind:alt="profilePicture" id="profilePicture" />
             </a>
             <img src="~/images/friendRequests.png" alt="Friend Requests" title="Friend Requests"
                  id="friendRequests" data-toggle="modal" data-target="#myModal" />

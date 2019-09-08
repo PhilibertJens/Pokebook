@@ -1,4 +1,4 @@
-﻿var apiURL = `https://${server.apiLanAddress}/api/`;
+﻿var apiURL = `${server.apiClientSideAddress}/api/`;
 
 var app = new Vue(
     {
@@ -85,7 +85,7 @@ var app = new Vue(
                     .then(function (res) {
                         self.me = res;
                         self.profilePicture = self.me.profilePicture;//Nu pas kunnen we de profielfoto tonen
-
+                        console.log(self.profilePicture);
                         self.getUsers();//de users worden pas opgevraagd wanneer de username is ontvangen
                     })
                     .catch(err => console.error('Fout: ' + err));

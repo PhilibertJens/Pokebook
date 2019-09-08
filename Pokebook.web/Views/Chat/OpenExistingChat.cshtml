@@ -82,7 +82,7 @@
         <div class="col-md-4" id="left">
             <img src="~/images/info.png" alt="Chat settings" title="Chat Settings" id="chatSettings" data-toggle="modal" data-target="#myModal" />
             <vc:chat-list></vc:chat-list>
-            <img v-bind:src="'https://@(constants.apiLanAddress)/api/chats/ChatPicture/' + chatImage"
+            <img v-bind:src="'@(constants.ApiClientSideAddress)/api/chats/ChatPicture/' + chatImage"
                  onerror="this.src='/images/Pokemon_logo.svg.png'" id="currentChatImage" />
             <div id="divPreview-messageImage">
                 <p>Your message image</p>
@@ -104,7 +104,7 @@
                                 @{
                                     if (message.ImageName != null)
                                     {
-                                        <img src="https://@(constants.apiLanAddress)/api/messages/messagePicture/@(message.ImageName)"
+                                        <img src="@(constants.ApiClientSideAddress)/api/messages/messagePicture/@(message.ImageName)"
                                              alt="@(message.ImageName)" title="@(message.ImageName)" /><br />
                                     }
                                 }
@@ -120,7 +120,7 @@
                                 @{
                                     if (message.ImageName != null)
                                     {
-                                        <img src="https://@(constants.apiLanAddress)/api/messages/messagePicture/@(message.ImageName)"
+                                        <img src="@(constants.ApiClientSideAddress)/api/messages/messagePicture/@(message.ImageName)"
                                              alt="@(message.ImageName)" title="@(message.ImageName)" /><br />
                                     }
                                 }
