@@ -45,6 +45,7 @@ namespace Pokebook.api.Controllers
         public IActionResult AddPokemonCatch(PokemonCatch pokemon)
         {
             pokemon.Pokemon = null;//als dit niet gebeurt verschijnt er een duplicated insert error bij de Pokemons tabel
+            //pokemon.User = null;
             return Ok(Post(pokemon));
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +23,8 @@ namespace Pokebook.web.Controllers
         public ExploreController(PokebookContext context)
         {
             Constants constants = new Constants();
-            baseuri = $"https://localhost:{constants.Portnumber}/api";
+            //baseuri = $"https://localhost:{constants.Portnumber}/api";
+            baseuri = $"{constants.ApiServerSideAddress}/api";
             random = new Random();
         }
         
@@ -147,7 +150,11 @@ namespace Pokebook.web.Controllers
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 
                 uri = $"{baseuri}/PokemonCatches/Add";
+                appearedPokemon.Pokemon = null;
+                appearedPokemon.User = null;
+
                 var AddedPokemon = await WebApiHelper.PostCallAPI<PokemonCatch, PokemonCatch>(uri, appearedPokemon);
+                //var AddedPokemon = await WebApiHelperPost.PostAsync(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
 
                 try
@@ -167,6 +174,7 @@ namespace Pokebook.web.Controllers
 
                     uri = $"{baseuri}/PokemonUsers/Add";
                     await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
+                    //await WebApiHelperPost.PostAsync(uri, pokemonUser);
                 }
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }

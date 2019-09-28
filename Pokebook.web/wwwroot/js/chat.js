@@ -2,7 +2,7 @@
     behavior: 'smooth'
 });
 
-var apiURL = `https://${server.apiLanAddress}/api/`;
+var apiURL = `${server.apiClientSideAddress}/api/`;
 
 "use strict";
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();

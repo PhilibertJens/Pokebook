@@ -14,7 +14,7 @@ namespace Pokebook.web.Components
         public ShowUsernameViewComponent()
         {
             Constants constants = new Constants();
-            baseuri = $"https://localhost:{constants.Portnumber}/api";
+            baseuri = $"{constants.ApiServerSideAddress}/api";
         }
 
         string baseuri;
