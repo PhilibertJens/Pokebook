@@ -28,8 +28,13 @@ namespace Pokebook.api.Controllers
         [Route("GetMyPokemon/{userId}")]
         public async Task<IActionResult> GetMyPokemon(Guid userId)
         {
-            var myPokemon = await unitOfWork.PokemonCatches.GetAllCaughtPokemon(userId);
-            return Ok(myPokemon);
+            var myCaughtPokemon = await unitOfWork.PokemonCatches.GetAllCaughtPokemon(userId);
+            foreach (var pokemon in myCaughtPokemon)
+            {
+                Guid pokemonId = pokemon.PokemonId;
+                pokemon.Pokemon = await unitOfWork.Pokemons.GetWithType(pokemon.PokemonId);
+            }
+            return Ok(myCaughtPokemon);
         }
 
         // GET: api/PokemonCatches/CreateFromTemplate/name/userId

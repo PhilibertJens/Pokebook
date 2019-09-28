@@ -19,7 +19,10 @@ namespace Pokebook.core.Repositories.Specific
 
         public async Task<List<PokemonCatch>> GetAllCaughtPokemon(Guid userId)
         {
-            return await PokebookContext.PokemonCatches.Where(pc => pc.UserId == userId).ToListAsync();
+            var pokemonList = await PokebookContext.PokemonCatches
+                        .Where(pc => pc.UserId == userId).ToListAsync();
+
+            return pokemonList;//de Pokemon property is null doordat er geen include gebeurt
         }
 
         public Task<PokemonCatch> CreateByName(string name)
