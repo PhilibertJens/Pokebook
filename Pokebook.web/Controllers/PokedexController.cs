@@ -65,24 +65,22 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        /*public async Task<IActionResult> Pokemon(short ndex)
+        public async Task<IActionResult> Pokemon(short ndex)
         {
-            string userName = HttpContext.Session.GetString("Username");
-            if (userName == null) return new RedirectToActionResult("Login", "Account", null);
+            Guid userId;
+            Guid? tempUserId = CheckSession();
+            if (tempUserId == null) return new RedirectToActionResult("Login", "Account", null);
+            else userId = (Guid)tempUserId;
 
-            var thisPoke = await pokemonContext.Pokemons
-                .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type)
-                .Where(p => p.NDex == ndex)
-                .FirstOrDefaultAsync();
+            UserSimpleDTO user = await GetUserWithId(userId);
 
-            thisPoke.PokemonUsers = await pokemonContext.PokemonUsers
-                .Include(pu => pu.User)
-                .Where(pu => pu.PokemonId == thisPoke.Id && pu.User.UserName == userName)
-                .ToListAsync();
+            string uri = $"{baseuri}/Pokemons/GetByNdex/{ndex}";
+            Pokemon thisPoke = await WebApiHelper.GetApiResult<Pokemon>(uri);
 
-            short catches;
-            if (thisPoke.PokemonUsers.FirstOrDefault() == null) catches = 0;
-            else catches = thisPoke.PokemonUsers.FirstOrDefault().Catches;
+            uri = $"{baseuri}/PokemonUsers/GetById/{thisPoke.Id}/{user.Id}";
+            PokemonUser pokemonUser = await WebApiHelper.GetApiResult<PokemonUser>(uri);
+            short numberOfCatches = 0;
+            if (pokemonUser != null) numberOfCatches = pokemonUser.Catches;
 
             StringBuilder sb = new StringBuilder();
             var colors = new string[2];
@@ -93,7 +91,7 @@ namespace Pokebook.web.Controllers
             PokedexPokemonVM vm = new PokedexPokemonVM
             {
                 SelectedPokemon = thisPoke,
-                Catches = catches,
+                Catches = numberOfCatches,
                 Colors = colors,
                 Sb = sb
             };
@@ -101,7 +99,7 @@ namespace Pokebook.web.Controllers
             return View(vm);
         }
 
-        public IActionResult Error(int? statusCode) //refactor to simplicity/more use
+        /*public IActionResult Error(int? statusCode) //refactor to simplicity/more use
         {
             string userName = HttpContext.Session.GetString("Username");
             if (userName == null) return new RedirectToActionResult("Login", "Account", null);
