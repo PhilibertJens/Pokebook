@@ -8,7 +8,7 @@
             colors[0] = pokemon.Pokemon.PokemonTypes.FirstOrDefault().Type.Colour;
             colors[1] = (pokemon.Pokemon.PokemonTypes.Count < 2) ? colors[0] : pokemon.Pokemon.PokemonTypes.ElementAtOrDefault(1).Type.Colour;
             <div class="pokecell" style="background: linear-gradient(90deg, @colors[0] 50%, @colors[1] 50%);">
-                <a title="@pokemon.Pokemon.Name" asp-controller="Home" asp-action="Pokemon" asp-route-ndex="@pokemon.Pokemon.NDex">
+                <a title="@pokemon.Pokemon.Name" asp-controller="Pokedex" asp-action="Pokemon" asp-route-ndex="@pokemon.Pokemon.NDex">
                     <img src="~/images/PokeImages/@pokemon.Pokemon.ImgUrl" alt="@pokemon.Pokemon.Name" />
                 </a>
             </div>

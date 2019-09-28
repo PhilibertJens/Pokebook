@@ -1,0 +1,27 @@
+﻿@model PokedexPokemonVM
+
+<div class="pokeview">
+    <a asp-action="index" class="return">&lt;&lt;Return to Pokédex</a>
+    <div class="pokedetail">
+        <div class="poke-img" style="background: linear-gradient(90deg, @Model.Colors[0] 50%, @Model.Colors[1] 50%);">
+            <img src="~/images/PokeImages/@Model.SelectedPokemon.ImgUrl" alt="@Model.SelectedPokemon.Name" />
+        </div>
+        <div class="poke-meta">
+            <div class="poke-item">
+                <p><b>Name: </b>@Model.SelectedPokemon.Name</p>
+            </div>
+            <div class="poke-item">
+                <p><b>Caught: </b>@Model.Catches.ToString()</p>
+            </div>
+            <div class="poke-item">
+                <p><b>ID: </b>@Model.SelectedPokemon.NDex.ToString().PadLeft(3, '0')</p>
+            </div>
+            <div class="poke-item">
+                <p><b>Type(s): </b>@Model.Sb.ToString()</p>
+            </div>
+            <div class="poke-item">
+                <p><b>Descr: </b>@Model.SelectedPokemon.Description </p>
+            </div>
+        </div>
+    </div>
+</div>
