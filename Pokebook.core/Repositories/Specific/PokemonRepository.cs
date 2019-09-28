@@ -50,6 +50,22 @@ namespace Pokebook.core.Repositories.Specific
             return allPokemon;
         }
 
+        public async Task<Pokemon> GetByNdex(int ndex)
+        {
+            var pokemon = await PokebookContext.Pokemons
+                .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type)
+                .Where(p => p.NDex == ndex)
+                .FirstOrDefaultAsync();
+
+            foreach (var type in pokemon.PokemonTypes)
+            {//serialize error vermijden
+                type.Pokemon = null;
+                type.Type.PokemonTypes = null;
+            }
+
+            return pokemon;
+        }
+
         public async Task<Pokemon> GetByName(string name)
         {
             return await PokebookContext.Pokemons.Where(p => p.Name == name).FirstOrDefaultAsync();
