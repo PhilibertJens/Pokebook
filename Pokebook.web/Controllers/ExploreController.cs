@@ -20,7 +20,7 @@ namespace Pokebook.web.Controllers
 {
     public class ExploreController : Controller
     {
-        public ExploreController(PokebookContext context)
+        public ExploreController()
         {
             Constants constants = new Constants();
             //baseuri = $"https://localhost:{constants.Portnumber}/api";
