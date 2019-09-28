@@ -120,6 +120,12 @@ namespace Pokebook.web
                 );
 
                 routes.MapRoute(
+                    name: "pokeDetail",
+                    template: "Pokemon/{ndex}",
+                    defaults: new { controller = "Pokedex", action = "Pokemon" }
+                    );
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
                     //template: "{controller=Home}/{action=Index}/{id?}");

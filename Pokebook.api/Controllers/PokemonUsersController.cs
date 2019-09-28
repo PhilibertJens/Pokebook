@@ -36,5 +36,15 @@ namespace Pokebook.api.Controllers
         {
             return Ok(Post(pokemonUser));
         }
+
+        [HttpPut]
+        [Route("UpdateAdd")]
+        public IActionResult Update(PokemonUser pokemonUser)
+        {
+            pokemonUser.Catches++;
+            unitOfWork.PokemonUsers.Update(pokemonUser);
+            unitOfWork.Complete();
+            return Ok(pokemonUser);
+        }
     }
 }

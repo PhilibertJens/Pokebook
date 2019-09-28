@@ -1,0 +1,17 @@
+﻿@model PokedexIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Pokédex of @Model.Username</h2>
+<p>Hey trainer. Here you can see your progress</p>
+<div class="poke-grid">
+    <div class="pokeview">
+        <h3>Your caught Pokémon: @Model.AllCaughtPokemon.Count() / @Model.AllPokemonWithTypeInfo.Distinct().Count()</h3>
+        <partial name="Partial/PokemonCatchesListViewPartial" model="Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex)" />
+    </div>
+    <div class="pokeview">
+        <h3>Number of Pokemon: @Model.AllPokemonWithTypeInfo.Distinct().Count()</h3>
+        <partial name="Partial/PokemonListViewPartial" model="Model.AllPokemonWithTypeInfo.OrderBy(p => p.NDex).Distinct()" />
+    </div>
+</div>

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +15,14 @@ namespace Pokebook.core.Repositories.Specific
         public PokemonCatchRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
 
+        }
+
+        public async Task<List<PokemonCatch>> GetAllCaughtPokemon(Guid userId)
+        {
+            var pokemonList = await PokebookContext.PokemonCatches
+                        .Where(pc => pc.UserId == userId).ToListAsync();
+
+            return pokemonList;//de Pokemon property is null doordat er geen include gebeurt
         }
 
         public Task<PokemonCatch> CreateByName(string name)

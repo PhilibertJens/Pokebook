@@ -20,7 +20,7 @@ namespace Pokebook.web.Controllers
 {
     public class ExploreController : Controller
     {
-        public ExploreController(PokebookContext context)
+        public ExploreController()
         {
             Constants constants = new Constants();
             //baseuri = $"https://localhost:{constants.Portnumber}/api";
@@ -157,14 +157,10 @@ namespace Pokebook.web.Controllers
                 //var AddedPokemon = await WebApiHelperPost.PostAsync(uri, appearedPokemon);
                 //moves moeten hier ook toegevoegd worden als records in PokemonMoveCatches
 
-                try
+                uri = $"{baseuri}/PokemonUsers/GetById/{pokemonData.Id}/{userId}";
+                PokemonUser alreadyCaught = await WebApiHelper.GetApiResult<PokemonUser>(uri);//user heeft resp pokemon al gevangen
+                if(alreadyCaught == null)
                 {
-                    uri = $"{baseuri}/PokemonUsers/GetById/{pokemonData.Id}/{userId}";
-                    PokemonUser alreadyCaught = await WebApiHelper.GetApiResult<PokemonUser>(uri);//user heeft resp pokemon al gevangen
-                    alreadyCaught.Catches++;
-                }
-                catch (NullReferenceException)
-                {//als de user nog geen pokemon van dit type heeft
                     PokemonUser pokemonUser = new PokemonUser()
                     {
                         PokemonId = pokemonData.Id,
@@ -175,6 +171,11 @@ namespace Pokebook.web.Controllers
                     uri = $"{baseuri}/PokemonUsers/Add";
                     await WebApiHelper.PostCallAPI<PokemonUser, PokemonUser>(uri, pokemonUser);
                     //await WebApiHelperPost.PostAsync(uri, pokemonUser);
+                }
+                else
+                {
+                    uri = $"{baseuri}/PokemonUsers/UpdateAdd";
+                    await WebApiHelper.PutCallAPI<PokemonUser, PokemonUser>(uri, alreadyCaught);
                 }
                 return new RedirectToActionResult("Gotcha", "Explore", null);
             }
