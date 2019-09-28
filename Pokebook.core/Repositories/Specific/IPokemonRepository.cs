@@ -9,5 +9,6 @@ namespace Pokebook.core.Repositories.Specific
     public interface IPokemonRepository : IRepository<Pokemon>
     {
         Task<Pokemon> GetByName(string name);
+        Task<List<Pokemon>> GetAllWithType();
     }
 }

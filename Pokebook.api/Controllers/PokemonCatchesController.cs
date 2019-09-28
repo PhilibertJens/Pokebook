@@ -23,14 +23,16 @@ namespace Pokebook.api.Controllers
 
         private IHostingEnvironment _hostingEnvironment;
 
-        // GET: api/PokemonCatches
+        // GET: api/PokemonCatches/GetMyPokemon/userId
         [HttpGet]
-        public override IActionResult Get(Guid id)
+        [Route("GetMyPokemon/{userId}")]
+        public async Task<IActionResult> GetMyPokemon(Guid userId)
         {
-            return Ok(unitOfWork.Pokemons.FindById(id));
+            var myPokemon = await unitOfWork.PokemonCatches.GetAllCaughtPokemon(userId);
+            return Ok(myPokemon);
         }
 
-        // GET: api/PokemonCatches/name
+        // GET: api/PokemonCatches/CreateFromTemplate/name/userId
         [HttpGet]
         [Route("CreateFromTemplate/{name}/{userId}")]
         public async Task<IActionResult> CreateFromTemplate(string name, Guid userId)

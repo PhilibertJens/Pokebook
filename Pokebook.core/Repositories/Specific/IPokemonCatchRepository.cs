@@ -8,6 +8,7 @@ namespace Pokebook.core.Repositories.Specific
 {
     public interface IPokemonCatchRepository : IRepository<PokemonCatch>
     {
+        Task<List<PokemonCatch>> GetAllCaughtPokemon(Guid userId);
         Task<PokemonCatch> CreateByName(string name);
         PokemonCatch CreateFromTemplate(Pokemon template, Guid userId);
     }

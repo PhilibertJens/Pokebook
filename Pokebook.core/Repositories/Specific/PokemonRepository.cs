@@ -17,6 +17,26 @@ namespace Pokebook.core.Repositories.Specific
 
         }
 
+        public async Task<List<Pokemon>> GetAllWithType()
+        {
+            var allPokemon = await PokebookContext.Pokemons
+                                .Include(p => p.PokemonTypes)
+                                .ThenInclude(pt => pt.Type).ToListAsync();
+
+            var tempPokemon = new List<Pokemon>();
+            foreach (var pokemon in allPokemon)
+            {
+                var types = pokemon.PokemonTypes;
+                foreach(var type in types)
+                {
+                    type.Pokemon = null;
+                    type.Type.PokemonTypes = null;
+                }
+            }
+
+            return allPokemon;
+        }
+
         public async Task<Pokemon> GetByName(string name)
         {
             return await PokebookContext.Pokemons.Where(p => p.Name == name).FirstOrDefaultAsync();
