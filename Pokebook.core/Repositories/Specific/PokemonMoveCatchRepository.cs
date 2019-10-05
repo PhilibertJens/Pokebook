@@ -10,16 +10,11 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
-    public class MoveRepository : MappingRepository<Move>, IMoveRepository
+    public class PokemonMoveCatchRepository : MappingRepository<PokemonMoveCatch>, IPokemonMoveCatchRepository
     {
-        public MoveRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
+        public PokemonMoveCatchRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
 
-        }
-
-        public Task<Move> GetByType(Guid typeId)
-        {
-            return PokebookContext.Moves.Where(m => m.TypeId == typeId).FirstOrDefaultAsync();
         }
 
         public PokebookContext PokebookContext

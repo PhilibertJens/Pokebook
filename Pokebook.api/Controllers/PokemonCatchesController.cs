@@ -37,12 +37,12 @@ namespace Pokebook.api.Controllers
             return Ok(myCaughtPokemon);
         }
 
-        // GET: api/PokemonCatches/CreateFromTemplate/name/userId
+        // GET: api/PokemonCatches/CreateFromTemplate/pokemonId/userId
         [HttpGet]
-        [Route("CreateFromTemplate/{name}/{userId}")]
-        public async Task<IActionResult> CreateFromTemplate(string name, Guid userId)
+        [Route("CreateFromTemplate/{pokemonId}/{userId}")]
+        public async Task<IActionResult> CreateFromTemplate(Guid pokemonId, Guid userId)
         {
-            Pokemon template = await unitOfWork.Pokemons.GetByName(name);
+            Pokemon template = await unitOfWork.Pokemons.GetFullPokemon(pokemonId);
             var createdPokemon = unitOfWork.PokemonCatches.CreateFromTemplate(template, userId);
             return Ok(createdPokemon);
         }
@@ -52,8 +52,11 @@ namespace Pokebook.api.Controllers
         public IActionResult AddPokemonCatch(PokemonCatch pokemon)
         {
             pokemon.Pokemon = null;//als dit niet gebeurt verschijnt er een duplicated insert error bij de Pokemons tabel
-            //pokemon.User = null;
-            return Ok(Post(pokemon));
+            pokemon.User = null;
+            pokemon.PokemonMoveCatches = null;
+            Guid id = unitOfWork.PokemonCatches.AddPokemonCatch(pokemon);
+            //return Ok(Post(pokemon)); --> returned een empty PokemonCatch, we hebben de id echter nodig
+            return Ok(id);
         }
     }
 }

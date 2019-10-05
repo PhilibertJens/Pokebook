@@ -71,6 +71,44 @@ namespace Pokebook.core.Repositories.Specific
             return await PokebookContext.Pokemons.Where(p => p.Name == name).FirstOrDefaultAsync();
         }
 
+        public async Task<Pokemon> GetFullPokemon(Guid id)
+        {
+            /*
+             select p.id, p.Name, p.ImgUrl, pAsEv.BasePokemonId, pAsPre.EvolutionId
+             from Pokemons p
+             join PokemonEvolutions pAsEv on p.Id = pAsEv.EvolutionId --> p is de evolved form. We vragen de base form op --> charmander
+             join PokemonEvolutions pAsPre on p.Id = pAsPre.BasePokemonId --> p is de base form. We vragen de evolved form op --> charizard
+             where p.Name = 'Charmeleon'
+             */
+
+            Pokemon pokemon = await PokebookContext.Pokemons.Where(p => p.Id == id)
+                                        .Include(p => p.PokemonMoves).ThenInclude(pm => pm.Move)
+                                        .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type)
+                                        .Include(p => p.PokemonEvolutions).ThenInclude(pe => pe.Evolution)
+                                        .Include(p => p.PokemonPreEvolutions).ThenInclude(pre => pre.BasePokemon)
+                                        .FirstOrDefaultAsync();
+
+            pokemon = AvoidSerializeError(pokemon);
+            return pokemon;
+        }
+
+        private Pokemon AvoidSerializeError(Pokemon pokemon)
+        {
+            foreach (PokemonEvolution pe in pokemon.PokemonEvolutions) pe.Evolution = null;
+            foreach (PokemonEvolution pre in pokemon.PokemonPreEvolutions) pre.BasePokemon = null;
+            foreach (PokemonType pt in pokemon.PokemonTypes)
+            {
+                pt.Type.PokemonTypes = null;
+                pt.Pokemon = null;
+            }
+            foreach (PokemonMove pm in pokemon.PokemonMoves)
+            {
+                pm.Move.PokemonMoves = null;
+                pm.Pokemon = null;
+            }
+            return pokemon;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

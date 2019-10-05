@@ -14,20 +14,13 @@ namespace Pokebook.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PokemonTypesController : ControllerCrudBase<PokemonType>
+    public class PokemonMovesController : ControllerCrudBase<PokemonMove>
     {
-        public PokemonTypesController(PokebookContext dbc, IMapper m, PokemonTypeRepository repo, IHostingEnvironment hostingEnvironment) : base(dbc, m, repo)
+        public PokemonMovesController(PokebookContext dbc, IMapper m, PokemonMoveRepository repo, IHostingEnvironment hostingEnvironment) : base(dbc, m, repo)
         {
             _hostingEnvironment = hostingEnvironment;
         }
 
         private IHostingEnvironment _hostingEnvironment;
-
-        [HttpGet]
-        [Route("GetByTypeName/{typeName}")]
-        public async Task<IActionResult> GetPokemonTypeListByTypeName(string typeName)
-        {
-            return Ok(await unitOfWork.PokemonTypes.GetPokemonListByTypeName(typeName));
-        }
     }
 }

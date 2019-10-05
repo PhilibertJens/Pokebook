@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
-    public interface IMoveRepository : IRepository<Move>
+    public interface IPokemonMoveRepository : IRepository<PokemonMove>
     {
-        Task<Move> GetByType(Guid typeId);
+        //Task<List<PokemonMove>> GetAllPokemonMovesWithMoves();
     }
 }

@@ -10,17 +10,16 @@ using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
-    public class MoveRepository : MappingRepository<Move>, IMoveRepository
+    public class PokemonMoveRepository : MappingRepository<PokemonMove>, IPokemonMoveRepository
     {
-        public MoveRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
+        public PokemonMoveRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
-
         }
 
-        public Task<Move> GetByType(Guid typeId)
+        /*public async Task<List<PokemonMove>> GetAllPokemonMovesWithMoves()
         {
-            return PokebookContext.Moves.Where(m => m.TypeId == typeId).FirstOrDefaultAsync();
-        }
+            return await PokebookContext.PokemonMoves.Include(pm => pm.Move).ToListAsync();
+        }*/
 
         public PokebookContext PokebookContext
         {

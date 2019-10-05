@@ -14,8 +14,10 @@ namespace Pokebook.core.Repositories.Specific
     {
         public PokemonCatchRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
-
+            random = new Random();
         }
+
+        private Random random;
 
         public async Task<List<PokemonCatch>> GetAllCaughtPokemon(Guid userId)
         {
@@ -42,11 +44,34 @@ namespace Pokebook.core.Repositories.Specific
                     HP = GetRandomValue(template.MinHP, template.MaxHP),
                     CP = GetRandomValue(template.MinCP, template.MaxCP),
                     Height = GetRandomValue(template.MinHeight, template.MaxHeight),
-                    Weight = GetRandomValue(template.MinWeight, template.MaxWeight)
+                    Weight = GetRandomValue(template.MinWeight, template.MaxWeight),
+                    PokemonMoveCatches = GetRandomMoveFromList(template.PokemonMoves)
                 };
                 pokemonCatch = pokemon;
             }
             return pokemonCatch;
+        }
+
+        private ICollection<PokemonMoveCatch> GetRandomMoveFromList(ICollection<PokemonMove> pokemonMoves)
+        {
+            int listItem = random.Next(0, pokemonMoves.Count);
+            List<PokemonMoveCatch> list;
+            if (pokemonMoves.Count > 0)
+            {
+                PokemonMove pokemonMove = pokemonMoves.ElementAt(listItem);
+                PokemonMoveCatch moveCatch = new PokemonMoveCatch
+                {
+                    Move = pokemonMove.Move,
+                    MoveId = pokemonMove.MoveId,
+                    //PokemonId = pokemonMove.PokemonId
+                };
+                list = new List<PokemonMoveCatch>
+                {
+                    moveCatch
+                };
+            }
+            else list = new List<PokemonMoveCatch>();
+            return list;
         }
 
         public int GetRandomValue(int min, int max)
@@ -60,6 +85,13 @@ namespace Pokebook.core.Repositories.Specific
             Random rand = new Random();
             double value = min + rand.NextDouble() * (max - min);
             return (float)value;
+        }
+
+        public Guid AddPokemonCatch(PokemonCatch pokemon)
+        {
+            PokebookContext.PokemonCatches.Add(pokemon);
+            PokebookContext.SaveChanges();
+            return pokemon.Id;
         }
 
         public PokebookContext PokebookContext

@@ -14,10 +14,7 @@ namespace Pokebook.core.Repositories.Specific
     {
         public PokemonTypeRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
-            this.context = context;
         }
-
-        private PokebookContext context;
         
         public async Task<List<Pokemon>> GetPokemonListByTypeName(string typeName)
         {

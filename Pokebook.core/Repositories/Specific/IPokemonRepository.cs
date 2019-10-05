@@ -12,5 +12,6 @@ namespace Pokebook.core.Repositories.Specific
         Task<Pokemon> GetByNdex(int ndex);
         Task<Pokemon> GetWithType(Guid id);
         Task<List<Pokemon>> GetAllWithType();
+        Task<Pokemon> GetFullPokemon(Guid id);
     }
 }
