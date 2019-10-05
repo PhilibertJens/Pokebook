@@ -81,7 +81,7 @@ namespace Pokebook.core.Repositories.Specific
              where p.Name = 'Charmeleon'
              */
 
-            Pokemon pokemon = await PokebookContext.Pokemons.Where(p => p.Id == Guid.Parse("00000000-0000-0000-0000-000000000005"))
+            Pokemon pokemon = await PokebookContext.Pokemons.Where(p => p.Id == id)
                                         .Include(p => p.PokemonMoves).ThenInclude(pm => pm.Move)
                                         .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type)
                                         .Include(p => p.PokemonEvolutions).ThenInclude(pe => pe.Evolution)

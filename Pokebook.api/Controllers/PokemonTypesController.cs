@@ -25,10 +25,9 @@ namespace Pokebook.api.Controllers
 
         [HttpGet]
         [Route("GetByTypeName/{typeName}")]
-        public async Task<IActionResult> GetPokemonTypeListByTypeNameAsync(string typeName)
+        public async Task<IActionResult> GetPokemonTypeListByTypeName(string typeName)
         {
-            var test = await unitOfWork.PokemonTypes.GetPokemonListByTypeName(typeName);
-            return Ok(test);
+            return Ok(await unitOfWork.PokemonTypes.GetPokemonListByTypeName(typeName));
         }
     }
 }

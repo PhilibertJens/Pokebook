@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using Pokebook.core.Repositories.Specific;
+using Type = Pokebook.core.Models.Type;
 
 namespace Pokebook.api.Controllers
 {
@@ -27,6 +28,13 @@ namespace Pokebook.api.Controllers
         public override IActionResult Get()
         {
             return Ok(unitOfWork.Moves.ListAll());
+        }
+
+        [HttpGet]
+        [Route("GetByType/{typeId}")]
+        public async Task<IActionResult> GetByType(Guid typeId)
+        {
+            return Ok(await unitOfWork.Moves.GetByType(typeId));
         }
     }
 }
