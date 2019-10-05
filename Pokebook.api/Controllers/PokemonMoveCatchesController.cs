@@ -22,5 +22,14 @@ namespace Pokebook.api.Controllers
         }
 
         private IHostingEnvironment _hostingEnvironment;
+
+        [HttpPost]
+        [Route("Add")]
+        public IActionResult Add(PokemonMoveCatch moveCatch)
+        {
+            moveCatch.Move = null;
+            moveCatch.Pokemon = null;
+            return Ok(Post(moveCatch));
+        }
     }
 }
