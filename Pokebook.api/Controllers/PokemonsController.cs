@@ -56,5 +56,12 @@ namespace Pokebook.api.Controllers
             var pokemon = await unitOfWork.Pokemons.GetByNdex(ndex);
             return Ok(pokemon);
         }
+
+        [HttpGet]
+        [Route("GetFullPokemon/{id}")]
+        public async Task<IActionResult> GetFullPokemon(Guid id)
+        {
+            return Ok(await unitOfWork.Pokemons.GetFullPokemon(id));
+        }
     }
 }

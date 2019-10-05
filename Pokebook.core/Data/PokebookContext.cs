@@ -133,13 +133,13 @@ namespace Pokebook.core.Data
             modelBuilder.Entity<PokemonEvolution>()
                 .HasOne(pe => pe.Evolution)
                 .WithMany(e => e.PokemonEvolutions)
-                .HasForeignKey(pe => pe.EvolutionId)
+                .HasForeignKey(pe => pe.BasePokemonId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PokemonEvolution>()
                 .HasOne(pe => pe.BasePokemon)
                 .WithMany(e => e.PokemonPreEvolutions)
-                .HasForeignKey(pe => pe.BasePokemonId)
+                .HasForeignKey(pe => pe.EvolutionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PokemonEvolution>()
