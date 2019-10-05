@@ -55,18 +55,22 @@ namespace Pokebook.core.Repositories.Specific
         private ICollection<PokemonMoveCatch> GetRandomMoveFromList(ICollection<PokemonMove> pokemonMoves)
         {
             int listItem = random.Next(0, pokemonMoves.Count);
-            PokemonMove pokemonMove = pokemonMoves.ElementAt(listItem);
-            PokemonMoveCatch moveCatch = new PokemonMoveCatch
+            List<PokemonMoveCatch> list;
+            if (pokemonMoves.Count > 0)
             {
-                Move = pokemonMove.Move,
-                MoveId = pokemonMove.MoveId,
-                //PokemonId = pokemonMove.PokemonId
-            };
-
-            List<PokemonMoveCatch> list = new List<PokemonMoveCatch>
-            {
-                moveCatch
-            };
+                PokemonMove pokemonMove = pokemonMoves.ElementAt(listItem);
+                PokemonMoveCatch moveCatch = new PokemonMoveCatch
+                {
+                    Move = pokemonMove.Move,
+                    MoveId = pokemonMove.MoveId,
+                    //PokemonId = pokemonMove.PokemonId
+                };
+                list = new List<PokemonMoveCatch>
+                {
+                    moveCatch
+                };
+            }
+            else list = new List<PokemonMoveCatch>();
             return list;
         }
 
