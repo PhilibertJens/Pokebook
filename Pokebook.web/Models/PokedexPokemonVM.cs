@@ -13,5 +13,6 @@ namespace Pokebook.web.Models
         public short Catches { get; set; }
         public StringBuilder Sb { get; set; }
         public string[] Colors { get; set; }
+        public string BaseUri { get; set; }//is nodig voor partial views
     }
 }

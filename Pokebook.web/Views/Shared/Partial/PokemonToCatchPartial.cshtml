@@ -1,16 +1,19 @@
-﻿
+﻿@model ExploreCatchVm
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
 <div class="row generatePokemon">
     <div class="col-md-12">
-        <img src="~/images/PokeImages/@(Model.AppearedPokemon.Pokemon.ImgUrl)" class="pokemon" alt="@(Model.AppearedPokemon.Pokemon.Name)" title="It's @(Model.AppearedPokemon.Pokemon.Name)" />
+        <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(Model.AppearedPokemon.Pokemon.ImgUrl)/normal" class="pokemon"
+             alt="@(Model.AppearedPokemon.Pokemon.Name)" title="It's @(Model.AppearedPokemon.Pokemon.Name)" /><br />
+
         <button type="submit" class="pokeball" title="Go Pokeball!">
             <img src="~/images/Backgrounds/Pokeball.png" alt="Pokeball" />
         </button>
     </div>
-    <!--<div class="col-md-12"> //geeft nog problemen als er code moet uitgevoerd worden
+    <!--<div class="col-md-12"> //geeft nog problemen als er code moet uitgevoerd worden -> 
+                                  Er kunnen meer properties meegegeven worden aan de Partial. Of we maken geen gebruik van een partial.
         <ul>
             <li></li>
         </ul>

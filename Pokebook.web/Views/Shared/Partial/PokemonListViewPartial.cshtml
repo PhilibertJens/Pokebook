@@ -1,15 +1,16 @@
-﻿@model IEnumerable<Pokebook.core.Models.Pokemon>
+﻿@model PokedexIndexVM
 
 <div class="pokelist">
     @{
-        foreach (var pokemon in Model)
+        foreach (var pokemon in Model.AllPokemonWithTypeInfo.OrderBy(p => p.NDex).Distinct())
         {
             var colors = new string[2];
             colors[0] = pokemon.PokemonTypes.FirstOrDefault().Type.Colour;
             colors[1] = (pokemon.PokemonTypes.Count < 2) ? colors[0] : pokemon.PokemonTypes.ElementAtOrDefault(1).Type.Colour;
             <div class="pokecell" style="background: linear-gradient(90deg, @colors[0] 50%, @colors[1] 50%);">
                 <a title="@pokemon.Name" asp-controller="Pokedex" asp-action="Pokemon" asp-route-ndex="@pokemon.NDex">
-                    <img src="~/images/PokeImages/@pokemon.ImgUrl" alt="@pokemon.Name" />
+                    <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(pokemon.ImgUrl)/normal"
+                         alt="@(pokemon.Name)" title="@(pokemon.Name)" />
                 </a>
             </div>
         }
