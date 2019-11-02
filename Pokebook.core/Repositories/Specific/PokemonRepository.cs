@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Type = Pokebook.core.Models.Type;
 
 namespace Pokebook.core.Repositories.Specific
 {
@@ -83,12 +84,36 @@ namespace Pokebook.core.Repositories.Specific
 
             Pokemon pokemon = await PokebookContext.Pokemons.Where(p => p.Id == id)
                                         .Include(p => p.PokemonMoves).ThenInclude(pm => pm.Move)
-                                        .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type)
+                                        .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type).ThenInclude(t => t.AdvantagesOver)
+                                        .Include(p => p.PokemonTypes).ThenInclude(pt => pt.Type).ThenInclude(t => t.DisadvantagesOver)
                                         .Include(p => p.PokemonEvolutions).ThenInclude(pe => pe.Evolution)
                                         .Include(p => p.PokemonPreEvolutions).ThenInclude(pre => pre.BasePokemon)
                                         .FirstOrDefaultAsync();
 
             pokemon = AvoidSerializeError(pokemon);
+            pokemon = AvoidSerializeErrorAdvantages(pokemon);
+            return pokemon;
+        }
+
+        private Pokemon AvoidSerializeErrorAdvantages(Pokemon pokemon)
+        {
+            List<PokemonType> types = pokemon.PokemonTypes.ToList();
+            foreach(PokemonType pt in types)
+            {
+                Type type = pt.Type;
+
+                var advantages = type.AdvantagesOver;
+                foreach(var adv in advantages)
+                {
+                    adv.AdvantageType = null; adv.DisadvantageType = null;
+                }
+
+                var disadvantages = type.DisadvantagesOver;
+                foreach (var disadv in disadvantages)
+                {
+                    disadv.AdvantageType = null; disadv.DisadvantageType = null;
+                }
+            }
             return pokemon;
         }
 
