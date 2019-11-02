@@ -11,5 +11,6 @@ namespace Pokebook.web.Models
         public PokemonCatch AppearedPokemon { get; set; }
         public string CheatingWarning { get; set; }
         public string UserName { get; set; }
+        public string BaseUri { get; set; }//is nodig voor partial views
     }
 }

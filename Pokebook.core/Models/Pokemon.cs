@@ -8,8 +8,11 @@ namespace Pokebook.core.Models
     {
         public short NDex { get; set; } //National Index N°
         public string Name { get; set; }
-        public bool HasAllolanForm { get; set; }
+        public bool HasAlolanForm { get; set; }
         public string ImgUrl { get; set; }
+        public string ImgUrlShiny { get; set; }
+        public string ImgUrlAlolan { get; set; }
+        public string ImgUrlShiny_Alolan { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
         public ICollection<PokemonEvolution> PokemonEvolutions { get; set; }

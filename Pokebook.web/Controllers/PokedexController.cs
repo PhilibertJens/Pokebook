@@ -21,10 +21,12 @@ namespace Pokebook.web.Controllers
         {
             Constants constants = new Constants();
             baseuri = $"{constants.ApiServerSideAddress}/api";
+            baseuriClient = $"{constants.ApiClientSideAddress}/api";
             pokemonContext = context;
         }
 
         readonly string baseuri;
+        readonly string baseuriClient;
         private PokebookContext pokemonContext;
 
         public Guid? CheckSession()
@@ -51,7 +53,8 @@ namespace Pokebook.web.Controllers
 
             var vm = new PokedexIndexVM
             {
-                Username = user.UserName
+                Username = user.UserName,
+                BaseUri = baseuriClient
             };
 
             string uri = $"{baseuri}/Pokemons/GetAll";
@@ -93,7 +96,8 @@ namespace Pokebook.web.Controllers
                 SelectedPokemon = thisPoke,
                 Catches = numberOfCatches,
                 Colors = colors,
-                Sb = sb
+                Sb = sb,
+                BaseUri = baseuriClient
             };
 
             return View(vm);

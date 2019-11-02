@@ -25,10 +25,12 @@ namespace Pokebook.web.Controllers
             Constants constants = new Constants();
             //baseuri = $"https://localhost:{constants.Portnumber}/api";
             baseuri = $"{constants.ApiServerSideAddress}/api";
+            baseuriClient = $"{constants.ApiClientSideAddress}/api";
             random = new Random();
         }
         
         readonly string baseuri;
+        readonly string baseuriClient;
         private Random random;
 
         public Guid? CheckSession()
@@ -111,7 +113,8 @@ namespace Pokebook.web.Controllers
             if (pokemonData.Name == null)//er is nog geen pokemon gegenereerd. Is dit wel zo zal de bovenstaande terug getoond worden
                 appearedPokemon = await LetPokemonAppear(getType, user.Id);
             else appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, 
-                                                         pokemonData.Height, pokemonData.Weight, pokemonData.MoveCatches);
+                                                         pokemonData.Height, pokemonData.Weight, pokemonData.Gender, 
+                                                         pokemonData.IsShiny, pokemonData.IsAlolan, pokemonData.MoveCatches);
 
             uri = $"{baseuri}/Pokemons/GetById/{appearedPokemon.PokemonId}";
             template = await WebApiHelper.GetApiResult<Pokemon>(uri);
@@ -121,6 +124,7 @@ namespace Pokebook.web.Controllers
             vm.AppearedPokemon = appearedPokemon;
             vm.CheatingWarning = pokemonData.CheatingWarning;
             vm.UserName = user.UserName;
+            vm.BaseUri = baseuriClient;
             return View(vm);
         }
 
@@ -141,7 +145,8 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
             PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, 
-                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.MoveCatches);
+                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.Gender,
+                                                                 pokemonData.IsShiny, pokemonData.IsAlolan, pokemonData.MoveCatches);
             appearedPokemon.Pokemon = template;
 
             int luckyNumber = random.Next(0, 2);
@@ -213,12 +218,14 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
             PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, 
-                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.MoveCatches);
+                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.Gender,
+                                                                 pokemonData.IsShiny, pokemonData.IsAlolan, pokemonData.MoveCatches);
             appearedPokemon.Pokemon = template;
 
             ExploreCatchVm vm = new ExploreCatchVm();
             vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
+            vm.BaseUri = baseuriClient;
             return View(vm);
         }
 
@@ -246,18 +253,20 @@ namespace Pokebook.web.Controllers
             string uri = $"{baseuri}/Pokemons/GetById/{pokemonData.Id}";
             Pokemon template = await WebApiHelper.GetApiResult<Pokemon>(uri);
             PokemonCatch appearedPokemon = GetPokemonCatchObject(pokemonData.Id, userId, pokemonData.HP, pokemonData.CP, 
-                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.MoveCatches);
+                                                                 pokemonData.Height, pokemonData.Weight, pokemonData.Gender,
+                                                                 pokemonData.IsShiny, pokemonData.IsAlolan, pokemonData.MoveCatches);
             appearedPokemon.Pokemon = template;
 
             ExploreCatchVm vm = new ExploreCatchVm();
             vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
+            vm.BaseUri = baseuriClient;
             HttpContext.Session.Remove("PokemonData");//om minder geheugen in te nemen op de server.
                                                       //Ook om een Redirect te forceren bij terugkeer naar de vorige pagina
             return View(vm);
         }
 
-        public PokemonCatch GetPokemonCatchObject(Guid pokemonId, Guid userId, int HP, int CP, float height, float weight, ICollection<PokemonMoveCatch> moveCatches)
+        public PokemonCatch GetPokemonCatchObject(Guid pokemonId, Guid userId, int HP, int CP, float height, float weight, bool gender, bool isShiny, bool isAlolan, ICollection<PokemonMoveCatch> moveCatches)
         {
             return new PokemonCatch
             {
@@ -267,6 +276,9 @@ namespace Pokebook.web.Controllers
                 CP = CP,
                 Height = height,
                 Weight = weight,
+                Gender = gender,
+                IsShiny = isShiny,
+                IsAlolan = isAlolan,
                 PokemonMoveCatches = moveCatches
             };
         }
@@ -310,6 +322,9 @@ namespace Pokebook.web.Controllers
                 pokemonData.Height = generatedPokemon.Height;
                 pokemonData.Weight = generatedPokemon.Weight;
                 pokemonData.MoveCatches = generatedPokemon.PokemonMoveCatches;
+                pokemonData.Gender = generatedPokemon.Gender;
+                pokemonData.IsShiny = generatedPokemon.IsShiny;
+                pokemonData.IsAlolan = generatedPokemon.IsAlolan;
                 string serializedPokemonData = JsonConvert.SerializeObject(pokemonData);
                 HttpContext.Session.SetString("PokemonData", serializedPokemonData);
 

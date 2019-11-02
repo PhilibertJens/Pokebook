@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -62,6 +63,15 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetFullPokemon(Guid id)
         {
             return Ok(await unitOfWork.Pokemons.GetFullPokemon(id));
+        }
+
+        // GET: api/Users/CoverPicture/name
+        [HttpGet]
+        [Route("PokemonPicture/{filename}/{type}")]
+        public IActionResult PokemonPicture(string filename, string type)
+        {
+            var image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/PokemonPictures/{type}", filename);
+            return PhysicalFile(image, "image/jpeg");
         }
     }
 }

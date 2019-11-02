@@ -11,5 +11,6 @@ namespace Pokebook.web.Models
         public IEnumerable<Pokemon> AllPokemonWithTypeInfo { get; set; }
         public string Username { get; set; }
         public IEnumerable<PokemonCatch> AllCaughtPokemon { get; set; }
+        public string BaseUri { get; set; }//is nodig voor partial views
     }
 }

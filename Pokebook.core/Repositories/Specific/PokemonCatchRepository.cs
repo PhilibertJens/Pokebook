@@ -45,8 +45,12 @@ namespace Pokebook.core.Repositories.Specific
                     CP = GetRandomValue(template.MinCP, template.MaxCP),
                     Height = GetRandomValue(template.MinHeight, template.MaxHeight),
                     Weight = GetRandomValue(template.MinWeight, template.MaxWeight),
-                    PokemonMoveCatches = GetRandomMoveFromList(template.PokemonMoves)
+                    PokemonMoveCatches = GetRandomMoveFromList(template.PokemonMoves),
+                    Gender = GetRandomTrueOrFalse(1),//50% kans
+                    IsShiny = GetRandomTrueOrFalse(99),//1% kans
                 };
+                if (template.HasAlolanForm) pokemon.IsAlolan = GetRandomTrueOrFalse(4);//20% kans
+
                 pokemonCatch = pokemon;
             }
             return pokemonCatch;
@@ -85,6 +89,13 @@ namespace Pokebook.core.Repositories.Specific
             Random rand = new Random();
             double value = min + rand.NextDouble() * (max - min);
             return (float)value;
+        }
+
+        public bool GetRandomTrueOrFalse(int chance)
+        {
+            Random rand = new Random();
+            int getal = random.Next(0, chance);
+            return getal == 0;
         }
 
         public Guid AddPokemonCatch(PokemonCatch pokemon)

@@ -21,6 +21,9 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\ChatPictures\" />
+    <Folder Include="wwwroot\images\PokemonPictures\Alolan\" />
+    <Folder Include="wwwroot\images\PokemonPictures\Normal\" />
+    <Folder Include="wwwroot\images\PokemonPictures\Shiny\" />
   </ItemGroup>
 
 </Project>

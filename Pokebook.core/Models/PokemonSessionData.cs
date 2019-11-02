@@ -15,6 +15,9 @@ namespace Pokebook.core.Models
         public int CP { get; set; }
         public float Height { get; set; }
         public float Weight { get; set; }
+        public bool Gender { get; set; }
+        public bool IsShiny { get; set; }
+        public bool IsAlolan { get; set; }
         public ICollection<PokemonMoveCatch> MoveCatches { get; set; }
         //Er kunnen nog specifieke pokemon kenmerken worden toegevoegd
     }
