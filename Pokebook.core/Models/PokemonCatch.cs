@@ -13,6 +13,9 @@ namespace Pokebook.core.Models
         public int CP { get; set; }
         public float Weight { get; set; }
         public float Height { get; set; }
+        public bool Gender { get; set; }
+        public bool IsShiny { get; set; }
+        public bool IsAlolan { get; set; }
         
 
         /*Navigation properties*/
