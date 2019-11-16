@@ -70,8 +70,16 @@ namespace Pokebook.api.Controllers
         [Route("PokemonPicture/{filename}/{type}")]
         public IActionResult PokemonPicture(string filename, string type)
         {
+            string extension = filename.Substring(filename.Length - 3);
+            if (!extension.Equals("png")) filename+=".png";
+
             var image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/PokemonPictures/{type}", filename);
-            return PhysicalFile(image, "image/jpeg");
+            if (System.IO.File.Exists($"images/PokemonPictures/{type}/{filename}")) return PhysicalFile(image, "image/jpeg");
+            else
+            {
+                image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/GeneralPictures/", "notFound.png");
+                return PhysicalFile(image, "image/jpeg");
+            }
         }
     }
 }
