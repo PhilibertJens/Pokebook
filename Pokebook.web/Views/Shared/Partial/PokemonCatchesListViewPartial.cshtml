@@ -2,7 +2,7 @@
 
 <div class="pokelist">
     @{
-        <div class="pokecell" v-for="pokemon in listAllPokemonCatches">
+        <div class="pokecell" v-for="pokemon in listPokemonCatchesToEdit">
             <p>cp {{pokemon.cp}}</p>
             <a :href="'/Pokemon/' + pokemon.pokemon.nDex">
                 <img v-bind:src="'@(Model.BaseUri)/pokemons/PokemonPicture/' + pokemon.pokemon.imgUrl + '/' + pokemon.folderType"
