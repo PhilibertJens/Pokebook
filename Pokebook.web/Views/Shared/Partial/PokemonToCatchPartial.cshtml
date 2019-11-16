@@ -5,7 +5,7 @@
 
 <div class="row generatePokemon">
     <div class="col-md-12">
-        <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(Model.AppearedPokemon.Pokemon.ImgUrl)/normal" class="pokemon"
+        <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(Model.AppearedPokemon.Pokemon.ImgUrl)/@(Model.FolderType)" class="pokemon"
              alt="@(Model.AppearedPokemon.Pokemon.Name)" title="It's @(Model.AppearedPokemon.Pokemon.Name)" /><br />
 
         <button type="submit" class="pokeball" title="Go Pokeball!">

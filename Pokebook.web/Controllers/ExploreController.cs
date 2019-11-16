@@ -125,6 +125,7 @@ namespace Pokebook.web.Controllers
             vm.CheatingWarning = pokemonData.CheatingWarning;
             vm.UserName = user.UserName;
             vm.BaseUri = baseuriClient;
+            vm.FolderType = GeneralFunctions.EvaluateFolderType(appearedPokemon.IsShiny, appearedPokemon.IsAlolan);//FolderType is ook property van PokemonCatch
             return View(vm);
         }
 
@@ -226,6 +227,7 @@ namespace Pokebook.web.Controllers
             vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
             vm.BaseUri = baseuriClient;
+            vm.FolderType = GeneralFunctions.EvaluateFolderType(appearedPokemon.IsShiny, appearedPokemon.IsAlolan);
             return View(vm);
         }
 
@@ -261,6 +263,7 @@ namespace Pokebook.web.Controllers
             vm.AppearedPokemon = appearedPokemon;
             vm.UserName = user.UserName;
             vm.BaseUri = baseuriClient;
+            vm.FolderType = GeneralFunctions.EvaluateFolderType(appearedPokemon.IsShiny, appearedPokemon.IsAlolan);
             HttpContext.Session.Remove("PokemonData");//om minder geheugen in te nemen op de server.
                                                       //Ook om een Redirect te forceren bij terugkeer naar de vorige pagina
             return View(vm);
@@ -279,6 +282,7 @@ namespace Pokebook.web.Controllers
                 Gender = gender,
                 IsShiny = isShiny,
                 IsAlolan = isAlolan,
+                FolderType = GeneralFunctions.EvaluateFolderType(isShiny, isAlolan),
                 PokemonMoveCatches = moveCatches
             };
         }
