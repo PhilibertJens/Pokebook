@@ -74,12 +74,8 @@ namespace Pokebook.api.Controllers
             if (!extension.Equals("png")) filename+=".png";
 
             var image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/PokemonPictures/{type}", filename);
-            if (System.IO.File.Exists($"images/PokemonPictures/{type}/{filename}")) return PhysicalFile(image, "image/jpeg");
-            else
-            {
-                image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/GeneralPictures/", "notFound.png");
-                return PhysicalFile(image, "image/jpeg");
-            }
+            if (!System.IO.File.Exists(image)) image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/GeneralPictures/", "notFound.png");
+            return PhysicalFile(image, "image/jpeg");
         }
     }
 }
