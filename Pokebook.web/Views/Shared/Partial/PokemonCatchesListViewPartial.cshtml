@@ -2,6 +2,21 @@
 
 <div class="pokelist">
     @{
+        <div class="pokecell" v-for="pokemon in listAllPokemonCatches">
+            <p>cp {{pokemon.cp}}</p>
+            <a :href="'/Pokemon/' + pokemon.pokemon.nDex">
+                <img v-bind:src="'@(Model.BaseUri)/pokemons/PokemonPicture/' + pokemon.pokemon.imgUrl + '/' + pokemon.folderType"
+                     v-bind:alt="'pokemon.pokemon.name'" onerror="this.src='/images/default.png'" />
+            </a>
+            <p>{{pokemon.pokemon.name}}</p>
+        </div>
+    }
+</div>
+
+
+@{
+    /*<div class="pokelist">
+    @{
         foreach (var pokemon in Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex))
         {
             var colors = new string[2];
@@ -16,4 +31,5 @@
             </div>
         }
     }
-</div>
+</div>*/
+}
