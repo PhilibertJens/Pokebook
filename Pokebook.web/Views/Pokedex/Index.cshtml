@@ -6,6 +6,7 @@
 <h2>Pokédex of @Model.Username</h2>
 <p>Hey trainer. Here you can see your progress</p>
 <div class="poke-grid">
+    <h1>{{loadingMessage}}</h1>
     <div class="pokeview">
         <h3>Your caught Pokémon: @Model.AllCaughtPokemon.Count()</h3>
         <!--<partial name="Partial/PokemonCatchesListViewPartial" model="Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex)" />-->
@@ -17,3 +18,8 @@
         <partial name="Partial/PokemonListViewPartial" model="@Model" />
     </div>
 </div>
+
+@section scripts{
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/vuePokedex.js"></script>
+}
