@@ -16,7 +16,8 @@ namespace Pokebook.core.Models
         public bool Gender { get; set; }
         public bool IsShiny { get; set; }
         public bool IsAlolan { get; set; }
-        
+        public string FolderType { get; set; }
+
 
         /*Navigation properties*/
         public Pokemon Pokemon { get; set; }
