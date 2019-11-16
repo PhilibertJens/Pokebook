@@ -12,5 +12,6 @@ namespace Pokebook.web.Models
         public string CheatingWarning { get; set; }
         public string UserName { get; set; }
         public string BaseUri { get; set; }//is nodig voor partial views
+        public string FolderType { get; set; }//is nodig voor partial views
     }
 }

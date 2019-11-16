@@ -3,17 +3,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Pokédex of @Model.Username</h2>
-<p>Hey trainer. Here you can see your progress</p>
-<div class="poke-grid">
-    <div class="pokeview">
-        <h3>Your caught Pokémon: @Model.AllCaughtPokemon.Count()</h3>
-        <!--<partial name="Partial/PokemonCatchesListViewPartial" model="Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex)" />-->
-        <partial name="Partial/PokemonCatchesListViewPartial" model="@Model" />
-    </div>
-    <div class="pokeview">
-        <h3>Number of Pokemon: @Model.AllPokemonWithTypeInfo.Distinct().Count()</h3>
-        <!--<partial name="Partial/PokemonListViewPartial" model="Model.AllPokemonWithTypeInfo.OrderBy(p => p.NDex).Distinct()" />-->
-        <partial name="Partial/PokemonListViewPartial" model="@Model" />
+<div id="pokedex">
+    <h2>Pokédex of @Model.Username</h2>
+    <p>Hey trainer. Here you can see your progress</p>
+    <input type="text" id="pokeCatchValue" v-on:change="updatePokemonCatchesList" v-model="userValue"/>
+    <div class="poke-grid">
+        <div class="pokeview">
+            <h3>Your caught Pokémon: @Model.AllCaughtPokemon.Count()</h3>
+            <!--<partial name="Partial/PokemonCatchesListViewPartial" model="Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex)" />-->
+            <partial name="Partial/PokemonCatchesListViewPartial" model="@Model" />
+        </div>
+        <div class="pokeview">
+            <h3>Number of Pokemon: @Model.AllPokemonWithTypeInfo.Distinct().Count()</h3>
+            <!--<partial name="Partial/PokemonListViewPartial" model="Model.AllPokemonWithTypeInfo.OrderBy(p => p.NDex).Distinct()" />-->
+            <partial name="Partial/PokemonListViewPartial" model="@Model" />
+        </div>
     </div>
 </div>
+
+@section scripts{
+    <script src="~/js/vue.js"></script>
+    <script src="~/js/vuePokedex.js"></script>
+}

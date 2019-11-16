@@ -2,17 +2,34 @@
 
 <div class="pokelist">
     @{
+        <div class="pokecell" v-for="pokemon in listPokemonCatchesToEdit">
+            <p>cp {{pokemon.cp}}</p>
+            <a :href="'/Pokemon/' + pokemon.pokemon.nDex">
+                <img v-bind:src="'@(Model.BaseUri)/pokemons/PokemonPicture/' + pokemon.pokemon.imgUrl + '/' + pokemon.folderType"
+                     v-bind:alt="'pokemon.pokemon.name'" onerror="this.src='/images/default.png'" />
+            </a>
+            <p>{{pokemon.pokemon.name}}</p>
+        </div>
+    }
+</div>
+
+
+@{
+    /*<div class="pokelist">
+    @{
         foreach (var pokemon in Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex))
         {
             var colors = new string[2];
             colors[0] = pokemon.Pokemon.PokemonTypes.FirstOrDefault().Type.Colour;
             colors[1] = (pokemon.Pokemon.PokemonTypes.Count < 2) ? colors[0] : pokemon.Pokemon.PokemonTypes.ElementAtOrDefault(1).Type.Colour;
+
             <div class="pokecell" style="background: linear-gradient(90deg, @colors[0] 50%, @colors[1] 50%);">
                 <a title="@pokemon.Pokemon.Name" asp-controller="Pokedex" asp-action="Pokemon" asp-route-ndex="@pokemon.Pokemon.NDex">
-                    <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(pokemon.Pokemon.ImgUrl)/normal"
+                    <img src="@(Model.BaseUri)/pokemons/PokemonPicture/@(pokemon.Pokemon.ImgUrl)/@(pokemon.FolderType)"
                          alt="@(pokemon.Pokemon.Name)" title="@(pokemon.Pokemon.Name)" />
                 </a>
             </div>
         }
     }
-</div>
+</div>*/
+}

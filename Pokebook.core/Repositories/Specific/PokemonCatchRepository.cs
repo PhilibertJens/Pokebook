@@ -50,10 +50,19 @@ namespace Pokebook.core.Repositories.Specific
                     IsShiny = GetRandomTrueOrFalse(99),//1% kans
                 };
                 if (template.HasAlolanForm) pokemon.IsAlolan = GetRandomTrueOrFalse(4);//20% kans
+                pokemon.FolderType = EvaluateFolderType(pokemon.IsShiny, pokemon.IsAlolan);
 
                 pokemonCatch = pokemon;
             }
             return pokemonCatch;
+        }
+
+        private string EvaluateFolderType(bool isShiny, bool isAlolan)
+        {
+            if (isShiny && isAlolan) return "Shiny_alolan";
+            else if (isShiny) return "Shiny";
+            else if (isAlolan) return "Alolan";
+            return "Normal";
         }
 
         private ICollection<PokemonMoveCatch> GetRandomMoveFromList(ICollection<PokemonMove> pokemonMoves)
