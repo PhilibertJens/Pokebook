@@ -7,8 +7,8 @@ var app = new Vue(
             loadingMessage: 'Loading pokédex...',
             userId: '',
             userValue: '',
-            listAllPokemonCatches: [],
-            listPokemonCatchesToEdit: []
+            listPokemonCatchesToEdit: [],
+            listDeletedPokemonCatches: []
         },
         created: function () {
             var self = this;
@@ -17,14 +17,12 @@ var app = new Vue(
         },
         methods: {
             getAllPokemonCatches: function (e) {
-                self = this;
+                var self = this;
                 fetch(`${apiURL}PokemonCatches/GetMyPokemon/${self.userId}`)
                     .then(res => res.json())
                     .then(function (pokemonList) {
-                        self.listAllPokemonCatches = pokemonList;
                         self.listPokemonCatchesToEdit = pokemonList;
-                        self.temp = pokemonList;
-                        console.log(pokemonList);
+                        localStorage.setItem("myPokemon", JSON.stringify(pokemonList));
                     })
                     .catch(err => console.error('Fout: ' + err));
             },
@@ -34,14 +32,21 @@ var app = new Vue(
                 - bij het weghalen van letters uit de input list wordt de volledige list terug opnieuw opgehaald en gefilterd --> veel dataverbruik maar eenvoudig
                 - de volledige list opslaan in local storage en ophalen wanneer er letters verwijderd worden --> minder dataverbruik maar moeilijker
                 eerst de eerste methode testen en nadien de tweede eens proberen.*/
-                self = this;
+                var self = this;
+                self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
+
                 for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
                     var name = self.listPokemonCatchesToEdit[i].pokemon.name.toLowerCase();
                     name = name.substring(0, self.userValue.length);
                     if (name !== self.userValue) {
-                        self.listPokemonCatchesToEdit.splice(i, 1);
+                        self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
                         i--;
                     }
+                }
+            },
+            getFromLocalStorage: function (storageItem) {
+                if (typeof (Storage) !== "undefined") {
+                    return JSON.parse(localStorage.getItem(storageItem));
                 }
             }
         }
