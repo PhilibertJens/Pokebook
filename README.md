@@ -15,7 +15,7 @@ $ git clone https://github.com/PhilibertJens/Pokebook.git
 - Execute the migrations in Pokebook.core project
 
 ## Host website in LAN
-To host the Pokebook in the LAN you can to download the Conveyor extension via Tools --> Extensions and Updates
+To host the Pokebook in the LAN you can download the Conveyor extension via Tools --> Extensions and Updates
 
 ## Using the repository pattern
 
@@ -67,13 +67,13 @@ To access a method from a repository:
 
 - [Visual Studio Community 2017](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?ch=pre&sku=Community&rel=15#) - The development IDE used
 - [Visual Studio Code](https://code.visualstudio.com/download) - README editing & styling
-- [.NET Core 2.1](https://dotnet.microsoft.com/download/thank-you/dotnet-sdk-2.2.202-windows-x64-installer) - .NET platform
+- [.NET Core 2.2](https://dotnet.microsoft.com/download/thank-you/dotnet-sdk-2.2.202-windows-x64-installer) - .NET platform
 - [Bootstrap 4.1.3](https://getbootstrap.com/) - Some styling was done using Bootstrap
 
 ## Authors
 
 - **Sven Bouree** - *Developer* - [SvenBourree](https://github.com/SvenBourree)
-- **Jens Philibert** - *Developer* - [Jens Philibert](https://github.com/PhilibertJens)
+- **Jens Philibert** - *Developer* - [PhilibertJens](https://github.com/PhilibertJens)
 - **Jonathan Boydens** - *Developer - Repository logic* - [Testosternus](https://github.com/Testosternus)
 
 ## Acknowledgments
