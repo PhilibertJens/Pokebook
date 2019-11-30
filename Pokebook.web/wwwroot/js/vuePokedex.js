@@ -27,11 +27,6 @@ var app = new Vue(
                     .catch(err => console.error('Fout: ' + err));
             },
             updatePokemonCatchesList: function (e) {
-                /*als er items uit de list gewist worden gebeurt dit ook bij alle variabelen die naar deze list verwijzen vb. listAllPokemonCatches.
-                2 oplossingen:
-                - bij het weghalen van letters uit de input list wordt de volledige list terug opnieuw opgehaald en gefilterd --> veel dataverbruik maar eenvoudig
-                - de volledige list opslaan in local storage en ophalen wanneer er letters verwijderd worden --> minder dataverbruik maar moeilijker
-                eerst de eerste methode testen en nadien de tweede eens proberen.*/
                 var self = this;
                 self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
 
@@ -43,10 +38,21 @@ var app = new Vue(
                         i--;
                     }
                 }
+                self.parameterCheck();
             },
             getFromLocalStorage: function (storageItem) {
                 if (typeof (Storage) !== "undefined") {
                     return JSON.parse(localStorage.getItem(storageItem));
+                }
+            },
+            parameterCheck: function () {
+                var self = this;
+                var term = self.userValue;
+                var re = new RegExp(/^(\w+)([|])(\w+)$/);
+                if (re.test(term)) {
+                    console.log("paramter na |");
+                    var param = self.userValue.substring(self.userValue.indexOf('|') + 1);
+                    console.log(param);
                 }
             }
         }
