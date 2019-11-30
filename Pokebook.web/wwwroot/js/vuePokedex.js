@@ -47,10 +47,10 @@ var app = new Vue(
                     return JSON.parse(localStorage.getItem(storageItem));
                 }
             },
-            parameterCheck: function (term) {
+            parameterCheck: function (userValue) {
                 var self = this;
                 var re = new RegExp(/^(\w+)([|])(\w+)$/);
-                if (re.test(term)) return term.substring(term.indexOf('|') + 1);
+                if (re.test(userValue)) return userValue.substring(userValue.indexOf('|') + 1);
                 return -1;
             },
             filterList: function (userValue) {
@@ -67,14 +67,21 @@ var app = new Vue(
             filterListParam: function (param) {
                 var self = this;
                 for (i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
-                    //momenteel wordt enkel het eerste type gecheckt
-                    var type = self.listPokemonCatchesToEdit[i].pokemon.pokemonTypes[0].type.name;//vb. Normal
-                    type = type.substring(0, param.length).toLowerCase();
-                    if (type !== param.toLowerCase()) {
+                    var types = self.listPokemonCatchesToEdit[i].pokemon.pokemonTypes;
+                    var ok = self.pokemonHasOneOfTypes(types, param);
+                    if (!ok) {
                         self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
                         i--;
                     }
                 }
+            },
+            pokemonHasOneOfTypes: function (types, param) {
+                for (var i = 0; i < types.length; i++) {
+                    var type = types[i].type.name;//vb. Normal
+                    type = type.substring(0, param.length).toLowerCase();
+                    if (type === param.toLowerCase()) return true;//pokemon heeft opgegeven type
+                }
+                return false;
             }
         }
     });
