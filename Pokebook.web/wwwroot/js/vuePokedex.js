@@ -30,13 +30,14 @@ var app = new Vue(
             updatePokemonCatchesList: function (e) {
                 var self = this;
                 self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
-                var param = self.parameterCheck();
+                var valueNoSpaces = self.userValue.replace(/\s/g, '');
+                var param = self.parameterCheck(valueNoSpaces);
                 if (param === -1) {
-                    var test = self.userValue.replace("|", "");
+                    var test = valueNoSpaces.replace("|", "");
                     self.filterList(test);
                 }
                 else {
-                    var valueArray = self.userValue.split("|");
+                    var valueArray = valueNoSpaces.split("|");
                     self.filterList(valueArray[0]);//filter op naam vb. pidgey
                     self.filterListParam(param);//filter op parameter vb. normal
                 }
@@ -46,11 +47,10 @@ var app = new Vue(
                     return JSON.parse(localStorage.getItem(storageItem));
                 }
             },
-            parameterCheck: function () {
+            parameterCheck: function (term) {
                 var self = this;
-                var term = self.userValue;
                 var re = new RegExp(/^(\w+)([|])(\w+)$/);
-                if (re.test(term)) return self.userValue.substring(self.userValue.indexOf('|') + 1);
+                if (re.test(term)) return term.substring(term.indexOf('|') + 1);
                 return -1;
             },
             filterList: function (userValue) {
