@@ -30,14 +30,15 @@ var app = new Vue(
             updatePokemonCatchesList: function (e) {
                 var self = this;
                 self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
-                var valueNoSpaces = self.userValue.replace(/\s/g, '');
-                var param = self.parameterCheck(valueNoSpaces);
+                var inputValue = self.userValue.replace(/\s/g, '').toLowerCase();
+                var param = self.parameterCheck(inputValue).toLowerCase();
+
                 if (param === -1) {
-                    var test = valueNoSpaces.replace("|", "");
+                    var test = inputValue.replace("|", "");
                     self.filterList(test);
                 }
                 else {
-                    var valueArray = valueNoSpaces.split("|");
+                    var valueArray = inputValue.split("|");
                     self.filterList(valueArray[0]);//filter op naam vb. pidgey
                     self.filterListParam(param);//filter op parameter vb. normal
                 }
@@ -49,7 +50,7 @@ var app = new Vue(
             },
             parameterCheck: function (userValue) {
                 var self = this;
-                var re = new RegExp(/^(\w+)([|])(\w+)$/);
+                var re = new RegExp(/^(\w+)([|])(\w+)$/);//start met string, gevolgd door | en eindigt op string
                 if (re.test(userValue)) return userValue.substring(userValue.indexOf('|') + 1);
                 return -1;
             },
@@ -79,7 +80,7 @@ var app = new Vue(
                 for (var i = 0; i < types.length; i++) {
                     var type = types[i].type.name;//vb. Normal
                     type = type.substring(0, param.length).toLowerCase();
-                    if (type === param.toLowerCase()) return true;//pokemon heeft opgegeven type
+                    if (type === param) return true;//pokemon heeft opgegeven type
                 }
                 return false;
             }
