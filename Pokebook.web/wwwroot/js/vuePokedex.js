@@ -106,7 +106,9 @@ var app = new Vue(
             keywordParameterCheck: function (userValue) {
                 var self = this;
                 var keywords = ["legendary", "mythical", "shiny", "alolan", "shiny-alolan",
-                                "normal"];
+                                "normal", "fighting", "flying", "poison", "ground", "rock",
+                                "bug", "ghost", "steel", "fire", "water", "grass", "electric",
+                                "psychic", "ice", "dragon", "dark", "fairy"];
                 for (var i = 0; i < keywords.length; i++) {
                     if (userValue === keywords[i]) return true;
                 }
@@ -114,6 +116,7 @@ var app = new Vue(
             },
             switchKeyword: function (property, poke) {
                 var self = this;
+                var types = poke.pokemon.pokemonTypes;
                 switch (property) {
                     case "legendary":
                         return poke.pokemon.isLegendary;
@@ -125,20 +128,9 @@ var app = new Vue(
                         return poke.isAlolan;
                     case "shiny-alolan":
                         return poke.isShiny && poke.isAlolan;
-                    case "normal":
-                        var types = poke.pokemon.pokemonTypes;
-                        return self.pokemonHasOneOfTypes(types, property);
                     default:
-                        break;
+                        return self.pokemonHasOneOfTypes(types, property);
                 }
-            },
-            typeValueCheck: function (userValue) {
-                var self = this;
-                var types = ["normal", "water", "fire", "grass", "bug"];
-                for (var i = 0; i < keywords.length; i++) {
-                    if (userValue === keywords[i]) return true;
-                }
-                return false;
             }
         }
     });
