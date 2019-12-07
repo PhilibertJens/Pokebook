@@ -35,16 +35,19 @@ var app = new Vue(
                 
                 if (param === '-1') {
                     var test = inputValue.replace("|", "");
-                    if (self.keywordParameterCheck(test)) self.filterListKeywordParam(test);//filter op keyword
+                    if (!isNaN(test) && test > 0) self.filterNdex(parseInt(test));
+                    else if (self.keywordParameterCheck(test)) self.filterListKeywordParam(test);//filter op keyword
                     else self.filterList(test);//filter op naam vb. pidgey
                 }
                 else {
                     var valueArray = inputValue.split("|");
                     //check woord vóór paramater
-                    if (self.keywordParameterCheck(valueArray[0])) self.filterListKeywordParam(valueArray[0]);//filter op keyword
+                    if (!isNaN(valueArray[0]) && valueArray[0] > 0) self.filterNdex(parseInt(valueArray[0]));
+                    else if (self.keywordParameterCheck(valueArray[0])) self.filterListKeywordParam(valueArray[0]);//filter op keyword
                     else self.filterList(valueArray[0]);//filter op naam vb. pidgey
                     //check paramater
-                    if (self.keywordParameterCheck(param)) self.filterListKeywordParam(param);//filter op keyword
+                    if (!isNaN(param) && param > 0) self.filterNdex(parseInt(param));
+                    else if (self.keywordParameterCheck(param)) self.filterListKeywordParam(param);//filter op keyword
                     else self.filterListParam(param);//filter op parameter vb. normal, flyi, b u g
                 }
             },
@@ -90,6 +93,16 @@ var app = new Vue(
                 for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
                     var poke = self.listPokemonCatchesToEdit[i];
                     if (!self.switchKeyword(param, poke)) {
+                        self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
+                        i--;
+                    }
+                }
+            },
+            filterNdex: function (ndex) {
+                var self = this;
+                for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
+                    var index = self.listPokemonCatchesToEdit[i].pokemon.nDex;
+                    if (ndex !== index) {
                         self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
                         i--;
                     }
