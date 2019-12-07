@@ -15,6 +15,8 @@ namespace Pokebook.core.Models
         public string ImgUrlShiny_Alolan { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
+        public bool IsLegendary { get; set; }
+        public bool IsMythical { get; set; }
         public ICollection<PokemonEvolution> PokemonEvolutions { get; set; }
         public ICollection<PokemonEvolution> PokemonPreEvolutions { get; set; }
         public ICollection<PokemonType> PokemonTypes { get; set; }
