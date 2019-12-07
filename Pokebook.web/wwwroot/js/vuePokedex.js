@@ -32,15 +32,23 @@ var app = new Vue(
                 self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
                 var inputValue = self.userValue.replace(/\s/g, '').toLowerCase();
                 var param = self.parameterCheck(inputValue).toLowerCase();
-
-                if (param === -1) {
-                    var test = inputValue.replace("|", "");
-                    self.filterList(test);
+                if (param === '-1') {
+                    var value = inputValue.replace("|", "");
+                    self.execute3Filters(value, false);
                 }
                 else {
-                    var valueArray = inputValue.split("|");
-                    self.filterList(valueArray[0]);//filter op naam vb. pidgey
-                    self.filterListParam(param);//filter op parameter vb. normal
+                    value = inputValue.split("|")[0];
+                    self.execute3Filters(value, false);//check woord vóór paramater
+                    self.execute3Filters(param, true);//check paramater
+                }
+            },
+            execute3Filters: function (value, isParam) {
+                var self = this;
+                if (!isNaN(value) && value > 0) self.filterListNdex(parseInt(value));
+                else if (self.keywordParameterCheck(value)) self.filterListKeywordParam(value);//filter op keyword
+                else {
+                    if (isParam) self.filterListParam(value);//filter op parameter vb. normal, flyi, b u g
+                    else self.filterList(value);//filter op naam vb. pidgey
                 }
             },
             getFromLocalStorage: function (storageItem) {
@@ -50,9 +58,13 @@ var app = new Vue(
             },
             parameterCheck: function (userValue) {
                 var self = this;
+
                 var re = new RegExp(/^(\w+)([|])(\w+)$/);//start met string, gevolgd door | en eindigt op string
                 if (re.test(userValue)) return userValue.substring(userValue.indexOf('|') + 1);
-                return -1;
+                var reShinyAlolan = new RegExp(/^(\w+)([|])(\w+)([-])(\w+)$/);//start met string, gevolgd door | , gevolgd door string, gevolgd door - en eindigt op string
+                if (reShinyAlolan.test(userValue)) return userValue.substring(userValue.indexOf('|') + 1);
+                
+                return '-1';
             },
             filterList: function (userValue) {
                 var self = this;
@@ -76,6 +88,26 @@ var app = new Vue(
                     }
                 }
             },
+            filterListKeywordParam: function (param) {
+                var self = this;
+                for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
+                    var poke = self.listPokemonCatchesToEdit[i];
+                    if (!self.switchKeyword(param, poke)) {
+                        self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
+                        i--;
+                    }
+                }
+            },
+            filterListNdex: function (ndex) {
+                var self = this;
+                for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
+                    var index = self.listPokemonCatchesToEdit[i].pokemon.nDex;
+                    if (ndex !== index) {
+                        self.listDeletedPokemonCatches.push(self.listPokemonCatchesToEdit.splice(i, 1));
+                        i--;
+                    }
+                }
+            },
             pokemonHasOneOfTypes: function (types, param) {
                 for (var i = 0; i < types.length; i++) {
                     var type = types[i].type.name;//vb. Normal
@@ -83,6 +115,40 @@ var app = new Vue(
                     if (type === param) return true;//pokemon heeft opgegeven type
                 }
                 return false;
+            },
+            keywordParameterCheck: function (userValue) {
+                var self = this;
+                var keywords = ["legendary", "mythical", "shiny", "alolan", "shiny-alolan",
+                                "male", "female",
+                                "normal", "fighting", "flying", "poison", "ground", "rock",
+                                "bug", "ghost", "steel", "fire", "water", "grass", "electric",
+                                "psychic", "ice", "dragon", "dark", "fairy"];
+                for (var i = 0; i < keywords.length; i++) {
+                    if (userValue === keywords[i]) return true;
+                }
+                return false;
+            },
+            switchKeyword: function (property, poke) {
+                var self = this;
+                var types = poke.pokemon.pokemonTypes;
+                switch (property) {
+                    case "legendary":
+                        return poke.pokemon.isLegendary;
+                    case "mythical":
+                        return poke.pokemon.isMythical;
+                    case "shiny":
+                        return poke.isShiny;
+                    case "alolan":
+                        return poke.isAlolan;
+                    case "shiny-alolan":
+                        return poke.isShiny && poke.isAlolan;
+                    case "male":
+                        return poke.gender === true;//1 is male
+                    case "female":
+                        return poke.gender === false;//0 is female
+                    default:
+                        return self.pokemonHasOneOfTypes(types, property);
+                }
             }
         }
     });
