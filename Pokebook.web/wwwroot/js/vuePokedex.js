@@ -32,23 +32,23 @@ var app = new Vue(
                 self.listPokemonCatchesToEdit = self.getFromLocalStorage("myPokemon");
                 var inputValue = self.userValue.replace(/\s/g, '').toLowerCase();
                 var param = self.parameterCheck(inputValue).toLowerCase();
-                
                 if (param === '-1') {
-                    var test = inputValue.replace("|", "");
-                    if (!isNaN(test) && test > 0) self.filterNdex(parseInt(test));
-                    else if (self.keywordParameterCheck(test)) self.filterListKeywordParam(test);//filter op keyword
-                    else self.filterList(test);//filter op naam vb. pidgey
+                    var value = inputValue.replace("|", "");
+                    self.execute3Filters(value, false);
                 }
                 else {
-                    var valueArray = inputValue.split("|");
-                    //check woord vóór paramater
-                    if (!isNaN(valueArray[0]) && valueArray[0] > 0) self.filterNdex(parseInt(valueArray[0]));
-                    else if (self.keywordParameterCheck(valueArray[0])) self.filterListKeywordParam(valueArray[0]);//filter op keyword
-                    else self.filterList(valueArray[0]);//filter op naam vb. pidgey
-                    //check paramater
-                    if (!isNaN(param) && param > 0) self.filterNdex(parseInt(param));
-                    else if (self.keywordParameterCheck(param)) self.filterListKeywordParam(param);//filter op keyword
-                    else self.filterListParam(param);//filter op parameter vb. normal, flyi, b u g
+                    value = inputValue.split("|")[0];
+                    self.execute3Filters(value, false);//check woord vóór paramater
+                    self.execute3Filters(param, true);//check paramater
+                }
+            },
+            execute3Filters: function (value, isParam) {
+                var self = this;
+                if (!isNaN(value) && value > 0) self.filterListNdex(parseInt(value));
+                else if (self.keywordParameterCheck(value)) self.filterListKeywordParam(value);//filter op keyword
+                else {
+                    if (isParam) self.filterListParam(value);//filter op parameter vb. normal, flyi, b u g
+                    else self.filterList(value);//filter op naam vb. pidgey
                 }
             },
             getFromLocalStorage: function (storageItem) {
@@ -98,7 +98,7 @@ var app = new Vue(
                     }
                 }
             },
-            filterNdex: function (ndex) {
+            filterListNdex: function (ndex) {
                 var self = this;
                 for (var i = 0; i < self.listPokemonCatchesToEdit.length; i++) {
                     var index = self.listPokemonCatchesToEdit[i].pokemon.nDex;
