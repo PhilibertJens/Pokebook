@@ -151,7 +151,6 @@ namespace Pokebook.web.Controllers
             appearedPokemon.Pokemon = template;
 
             int luckyNumber = random.Next(0, 2);
-            luckyNumber = 1;
             if (luckyNumber == 1)//50% dat de pokemon is gevangen.
             {
                 pokemonData.Caught = true;/*om cheaten te vermijden*/

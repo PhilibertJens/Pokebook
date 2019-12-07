@@ -106,6 +106,7 @@ var app = new Vue(
             keywordParameterCheck: function (userValue) {
                 var self = this;
                 var keywords = ["legendary", "mythical", "shiny", "alolan", "shiny-alolan",
+                                "male", "female",
                                 "normal", "fighting", "flying", "poison", "ground", "rock",
                                 "bug", "ghost", "steel", "fire", "water", "grass", "electric",
                                 "psychic", "ice", "dragon", "dark", "fairy"];
@@ -128,6 +129,10 @@ var app = new Vue(
                         return poke.isAlolan;
                     case "shiny-alolan":
                         return poke.isShiny && poke.isAlolan;
+                    case "male":
+                        return poke.gender === true;//1 is male
+                    case "female":
+                        return poke.gender === false;//0 is female
                     default:
                         return self.pokemonHasOneOfTypes(types, property);
                 }

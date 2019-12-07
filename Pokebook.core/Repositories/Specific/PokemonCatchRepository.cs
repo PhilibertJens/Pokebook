@@ -46,7 +46,7 @@ namespace Pokebook.core.Repositories.Specific
                     Height = GetRandomValue(template.MinHeight, template.MaxHeight),
                     Weight = GetRandomValue(template.MinWeight, template.MaxWeight),
                     PokemonMoveCatches = GetRandomMoveFromList(template.PokemonMoves),
-                    Gender = GetRandomTrueOrFalse(1),//50% kans
+                    Gender = GetRandomTrueOrFalse(2),//50% kans, true is male (1 in db)
                     IsShiny = GetRandomTrueOrFalse(99),//1% kans
                 };
                 if (template.HasAlolanForm) pokemon.IsAlolan = GetRandomTrueOrFalse(4);//20% kans
