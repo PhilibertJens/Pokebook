@@ -35,13 +35,17 @@ var app = new Vue(
                 
                 if (param === '-1') {
                     var test = inputValue.replace("|", "");
-                    self.filterList(test);
+                    if (self.keywordParameterCheck(test)) self.filterListKeywordParam(test);//filter op keyword
+                    else self.filterList(test);//filter op naam vb. pidgey
                 }
                 else {
                     var valueArray = inputValue.split("|");
-                    self.filterList(valueArray[0]);//filter op naam vb. pidgey
-                    if (self.keywordParameterCheck(param)) self.filterListKeywordParam(param);
-                    else self.filterListParam(param);//filter op parameter vb. normal
+                    //check woord vóór paramater
+                    if (self.keywordParameterCheck(valueArray[0])) self.filterListKeywordParam(valueArray[0]);//filter op keyword
+                    else self.filterList(valueArray[0]);//filter op naam vb. pidgey
+                    //check paramater
+                    if (self.keywordParameterCheck(param)) self.filterListKeywordParam(param);//filter op keyword
+                    else self.filterListParam(param);//filter op parameter vb. normal, flyi, b u g
                 }
             },
             getFromLocalStorage: function (storageItem) {
@@ -101,13 +105,15 @@ var app = new Vue(
             },
             keywordParameterCheck: function (userValue) {
                 var self = this;
-                var keywords = ["legendary", "mythical", "shiny", "alolan", "shiny-alolan"];
+                var keywords = ["legendary", "mythical", "shiny", "alolan", "shiny-alolan",
+                                "normal"];
                 for (var i = 0; i < keywords.length; i++) {
                     if (userValue === keywords[i]) return true;
                 }
                 return false;
             },
             switchKeyword: function (property, poke) {
+                var self = this;
                 switch (property) {
                     case "legendary":
                         return poke.pokemon.isLegendary;
@@ -119,9 +125,20 @@ var app = new Vue(
                         return poke.isAlolan;
                     case "shiny-alolan":
                         return poke.isShiny && poke.isAlolan;
+                    case "normal":
+                        var types = poke.pokemon.pokemonTypes;
+                        return self.pokemonHasOneOfTypes(types, property);
                     default:
                         break;
                 }
+            },
+            typeValueCheck: function (userValue) {
+                var self = this;
+                var types = ["normal", "water", "fire", "grass", "bug"];
+                for (var i = 0; i < keywords.length; i++) {
+                    if (userValue === keywords[i]) return true;
+                }
+                return false;
             }
         }
     });
