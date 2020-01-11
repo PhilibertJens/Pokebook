@@ -9,7 +9,12 @@
     <input type="text" id="pokeCatchValue" @@input="updatePokemonCatchesList" v-model="userValue" />
     <div class="poke-grid">
         <div class="pokeview">
-            <h3>Your caught Pokémon: @Model.AllCaughtPokemon.Count()</h3>
+            <div>
+                <h3 class="h3Caught">Your caught Pokémon: @Model.AllCaughtPokemon.Count()</h3>
+                <div id="sortingDiv">
+                    <button data-toggle="modal" data-target="#myModal">{{sortingTerm}}</button>
+                </div>
+            </div>
             <!--<partial name="Partial/PokemonCatchesListViewPartial" model="Model.AllCaughtPokemon.OrderBy(m => m.Pokemon.NDex)" />-->
             <partial name="Partial/PokemonCatchesListViewPartial" model="@Model" />
         </div>

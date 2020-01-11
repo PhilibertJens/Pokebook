@@ -1,6 +1,27 @@
 ﻿@model PokedexIndexVM
 
 <div class="pokelist">
+    <aside id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sort pokemon</h4>
+                </div>
+                <div class="modal-body">
+                        <div v-for="sortTerm in sortTerms" id="sortTerms">
+                            <div v-on:click="getSelectedSortTerm">
+                                <img v-bind:src="'/images/' + sortTerm + '.png'" width="20" v-bind:data-sortTerm="sortTerm"/>
+                                <span v-bind:data-sortTerm="sortTerm">{{sortTerm}}</span>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </aside>
     @{
         <div class="pokecell" v-for="pokemon in listPokemonCatchesToEdit">
             <p>cp {{pokemon.cp}}</p>
@@ -11,9 +32,6 @@
             <p>{{pokemon.pokemon.name}}</p>
         </div>
     }
-        <div id="sortingDiv">
-            <button v-on:click="sortList">{{sortingTerm}}</button>
-        </div>
 </div>
 
 
