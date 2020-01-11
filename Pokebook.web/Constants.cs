@@ -13,7 +13,7 @@ namespace Pokebook.web
             portnumberServer = 44321;
             portnumberClient = 45456;
             hostnameServer = "localhost";
-            hostnameClient = "192.168.0.215";
+            hostnameClient = "192.168.0.213";
 
             ApiServerSideAddress = $"https://{hostnameServer}:{portnumberServer}";
             ApiClientSideAddress = $"https://{hostnameClient}:{portnumberClient}";
