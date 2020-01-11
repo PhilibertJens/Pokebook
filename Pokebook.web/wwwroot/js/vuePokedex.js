@@ -9,12 +9,15 @@ var app = new Vue(
             userValue: '',
             listPokemonCatchesToEdit: [],
             listDeletedPokemonCatches: [],
-            sortingTerm: 'recent'
+            sortingTerm: 'recent',
+            sortingDirection: 'desc',
+            sortTerms: []
         },
         created: function () {
             var self = this;
             self.userId = document.querySelector('[data-userId]').getAttribute('data-userId');
             self.getAllPokemonCatches();
+            self.sortTerms = ["recent","Number","HP","Name","CP"];
         },
         methods: {
             getAllPokemonCatches: function (e) {
@@ -23,7 +26,8 @@ var app = new Vue(
                     .then(res => res.json())
                     .then(function (pokemonList) {
                         self.listPokemonCatchesToEdit = pokemonList;
-                        localStorage.setItem("myPokemon", JSON.stringify(pokemonList));
+                        self.sortList(e);
+                        localStorage.setItem("myPokemon", JSON.stringify(self.listPokemonCatchesToEdit));
                         console.log(self.listPokemonCatchesToEdit);
                     })
                     .catch(err => console.error('Fout: ' + err));
@@ -42,6 +46,7 @@ var app = new Vue(
                     self.execute3Filters(value, false);//check woord vóór paramater
                     self.execute3Filters(param, true);//check paramater
                 }
+                self.sortList(e);
             },
             execute3Filters: function (value, isParam) {
                 var self = this;
@@ -151,9 +156,18 @@ var app = new Vue(
                         return self.pokemonHasOneOfTypes(types, property);
                 }
             },
-            sortList: function () {
+            sortList: function (e) {
                 var self = this;
-                console.log(self.sortingTerm);
+                console.log("Sorting: " + self.sortingDirection);
+                if (self.sortingDirection === 'desc')
+                    self.listPokemonCatchesToEdit.sort((a, b) => (a.cp < b.cp) ? 1 : -1);
+                else self.listPokemonCatchesToEdit.sort((a, b) => (a.cp > b.cp) ? 1 : -1);
+                //console.log(self.sortingTerm);
+                //console.log(e.srcElement.innerHTML);
+            },
+            GetSelectedSortTerm: function (e) {
+                var self = this;
+                console.log(e);
             }
         }
     });
