@@ -8,7 +8,8 @@ var app = new Vue(
             userId: '',
             userValue: '',
             listPokemonCatchesToEdit: [],
-            listDeletedPokemonCatches: []
+            listDeletedPokemonCatches: [],
+            sortingTerm: 'recent'
         },
         created: function () {
             var self = this;
@@ -149,6 +150,10 @@ var app = new Vue(
                     default:
                         return self.pokemonHasOneOfTypes(types, property);
                 }
+            },
+            sortList: function () {
+                var self = this;
+                console.log(self.sortingTerm);
             }
         }
     });

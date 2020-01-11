@@ -129,3 +129,12 @@ body{
 .pokeview .return:hover{
     color: black;
 }
+
+#sortingDiv {
+    background: purple;
+    margin-right: -188%;
+}
+
+#sortingDiv button {
+    float: right;
+}
