@@ -200,9 +200,12 @@ var app = new Vue(
             },
             getSelectedSortTerm: function (e) {
                 var self = this;
-                self.sortingTermPrev = self.sortingTerm;
-                self.sortingTerm = e.target.getAttribute('data-sortterm');
-                self.sortList(e);
+                var value = e.target.getAttribute('data-sortterm');
+                if (value !== null) {
+                    self.sortingTermPrev = self.sortingTerm;
+                    self.sortingTerm = value;
+                    self.sortList(e);
+                }
             }
         }
     });
