@@ -1,4 +1,5 @@
 ﻿using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,9 @@ namespace Pokebook.core.Repositories.Specific
         Task<Pokemon> GetByNdex(int ndex);
         Task<Pokemon> GetWithType(Guid id);
         Task<List<Pokemon>> GetAllWithType();
+        Task<List<string>> GetAllNames();
         Task<Pokemon> GetFullPokemon(Guid id);
+        Task<PokemonSimpleDTO> GetPokemonSimple(Guid id);
+        Task<PokemonSimpleDTO> GetPokemonSimple(string name);
     }
 }

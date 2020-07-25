@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.core.Repositories.Specific;
 
 namespace Pokebook.api.Controllers
@@ -30,6 +31,15 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var list = await unitOfWork.Pokemons.GetAllWithType();
+            return Ok(list);
+        }
+
+        // GET: api/Pokemons/GetAllNames
+        [HttpGet]
+        [Route("GetAllNames")]
+        public async Task<IActionResult> GetAllNames()
+        {
+            var list = await unitOfWork.Pokemons.GetAllNames();
             return Ok(list);
         }
 
@@ -63,6 +73,14 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetFullPokemon(Guid id)
         {
             return Ok(await unitOfWork.Pokemons.GetFullPokemon(id));
+        }
+
+        [HttpGet]
+        [Route("GetFullPokemonByName/{name}")]
+        public async Task<IActionResult> GetFullPokemon(string name)
+        {
+            PokemonSimpleDTO pokemonSimple = await unitOfWork.Pokemons.GetPokemonSimple(name);
+            return Ok(await unitOfWork.Pokemons.GetFullPokemon(pokemonSimple.Id));
         }
 
         // GET: api/Users/CoverPicture/name
