@@ -95,5 +95,12 @@ namespace Pokebook.api.Controllers
             if (!System.IO.File.Exists(image)) image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/GeneralPictures/", "notFound.png");
             return PhysicalFile(image, "image/jpeg");
         }
+
+        [HttpPost]
+        [Route("GetPokemonWithProperty")]
+        public async Task<IActionResult> GetPokemonWithProperty(SearchObject obj)
+        {
+            return Ok(await unitOfWork.Pokemons.GetPokemonWithProperty(obj));
+        }
     }
 }

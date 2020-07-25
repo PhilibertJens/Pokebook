@@ -17,5 +17,6 @@ namespace Pokebook.core.Repositories.Specific
         Task<Pokemon> GetFullPokemon(Guid id);
         Task<PokemonSimpleDTO> GetPokemonSimple(Guid id);
         Task<PokemonSimpleDTO> GetPokemonSimple(string name);
+        Task<List<Pokemon>> GetPokemonWithProperty(SearchObject obj);
     }
 }
