@@ -17,6 +17,12 @@ namespace Pokebook.core.Models
         public bool IsShiny { get; set; }
         public bool IsAlolan { get; set; }
         public string FolderType { get; set; }
+        public string Nickname { get; set; }
+        public string AppType { get; set; }
+        public int CurrentCP { get; set; }
+        public int CurrentHP { get; set; }
+        public string HPColor { get; set; }
+        public string CatchLocation { get; set; }
 
 
         /*Navigation properties*/
