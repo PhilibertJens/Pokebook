@@ -32,8 +32,16 @@ namespace Pokebook.api.Controllers
             foreach (var pokemon in myCaughtPokemon)
             {
                 Guid pokemonId = pokemon.PokemonId;
-                pokemon.Pokemon = await unitOfWork.Pokemons.GetWithType(pokemon.PokemonId);
+                pokemon.Pokemon = await unitOfWork.Pokemons.GetWithType(pokemon.PokemonId);//GetAllCaughtPokemonFull kan niet gebruikt worden
             }
+            return Ok(myCaughtPokemon);
+        }
+
+        [HttpGet]
+        [Route("GetMyPokemonCatches/{userId}")]
+        public async Task<IActionResult> GetMyPokemonCaches(Guid userId)
+        {
+            var myCaughtPokemon = await unitOfWork.PokemonCatches.GetAllCaughtPokemon(userId);
             return Ok(myCaughtPokemon);
         }
 
@@ -57,6 +65,13 @@ namespace Pokebook.api.Controllers
             Guid id = unitOfWork.PokemonCatches.AddPokemonCatch(pokemon);
             //return Ok(Post(pokemon)); --> returned een empty PokemonCatch, we hebben de id echter nodig
             return Ok(id);
+        }
+
+        [HttpPost]
+        [Route("GetPokemonCatchesWithProperty")]
+        public async Task<IActionResult> GetPokemonCatchesWithProperty(SearchObject obj)
+        {
+            return Ok(await unitOfWork.PokemonCatches.GetPokemonCatchesWithProperty(obj));
         }
     }
 }

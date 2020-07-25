@@ -12,5 +12,6 @@ namespace Pokebook.core.Repositories.Specific
         Task<PokemonCatch> CreateByName(string name);
         PokemonCatch CreateFromTemplate(Pokemon template, Guid userId);
         Guid AddPokemonCatch(PokemonCatch pokemon);
+        Task<List<PokemonCatch>> GetPokemonCatchesWithProperty(SearchObject obj);
     }
 }
