@@ -31,6 +31,8 @@ namespace Pokebook.core.Data
         public DbSet<PokemonMove> PokemonMoves { get; set; }
         public DbSet<PokemonEvolution> PokemonEvolutions { get; set; }
         public DbSet<PokemonMoveCatch> PokemonMoveCatches { get; set; }
+        public DbSet<PokemonCatchDeleted> PokemonCatchesDeleted { get; set; }
+        public DbSet<PokemonMoveCatchDeleted> PokemonMoveCatchesDeleted { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
