@@ -65,6 +65,14 @@ namespace Pokebook.api.Controllers
         }
 
         [HttpPost]
+        [Route("GetAllByGuidRange")]
+        public async Task<IActionResult> GetAllPokemonCatchesByGuidRange([FromBody]GuidSyncDTO pokemon)
+        {
+            List<PokemonCatch> pokemonCatches = await unitOfWork.PokemonCatches.GetAllByGuidRange(pokemon.PokemonCatches);
+            return Ok(pokemonCatches);
+        }
+
+        [HttpPost]
         [Route("Add")]
         public IActionResult AddPokemonCatch(PokemonCatch pokemon)
         {

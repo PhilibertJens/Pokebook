@@ -10,6 +10,7 @@ namespace Pokebook.core.Repositories.Specific
     {
         Task<List<PokemonCatch>> GetAllCaughtPokemon(Guid userId);
         Task<List<Guid>> GetAllGuids(Guid userId);
+        Task<List<PokemonCatch>> GetAllByGuidRange(List<Guid> guids);
         Task<PokemonCatch> CreateByName(string name);
         PokemonCatch CreateFromTemplate(Pokemon template, Guid userId);
         Guid AddPokemonCatch(PokemonCatch pokemon);

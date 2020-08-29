@@ -43,6 +43,19 @@ namespace Pokebook.core.Repositories.Specific
             return pokemonCatchGuids;
         }
 
+        public async Task<List<PokemonCatch>> GetAllByGuidRange(List<Guid> guids)
+        {
+            List<PokemonCatch> pokemonCatches = new List<PokemonCatch>();
+
+            foreach(var guid in guids)
+            {
+                var poke = await PokebookContext.PokemonCatches.Where(pc => pc.Id == guid).FirstOrDefaultAsync();
+                pokemonCatches.Add(poke);
+            }
+
+            return pokemonCatches;
+        }
+
         public Task<PokemonCatch> CreateByName(string name)
         {
             throw new NotImplementedException();
