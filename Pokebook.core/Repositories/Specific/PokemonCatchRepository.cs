@@ -27,13 +27,20 @@ namespace Pokebook.core.Repositories.Specific
             return pokemonList;//de Pokemon property is null doordat er geen include gebeurt
         }
 
-        public async Task<List<PokemonCatch>> GetAllCaughtPokemonFull(Guid userId)
+        private async Task<List<PokemonCatch>> GetAllCaughtPokemonFull(Guid userId)
         {//pokemontype en move wordt niet opgehaald
             var pokemonList = await PokebookContext.PokemonCatches
                         .Include(pc => pc.Pokemon)
                         .Where(pc => pc.UserId == userId).ToListAsync();
 
             return pokemonList;
+        }
+
+        public async Task<List<Guid>> GetAllGuids(Guid userId)
+        {
+            List<Guid> pokemonCatchGuids = await PokebookContext.PokemonCatches.Where(pc => pc.UserId == userId)
+                                                                               .Select(pc => pc.Id).ToListAsync();
+            return pokemonCatchGuids;
         }
 
         public Task<PokemonCatch> CreateByName(string name)

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.core.Repositories.Specific;
 
 namespace Pokebook.api.Controllers
@@ -45,6 +46,14 @@ namespace Pokebook.api.Controllers
             return Ok(myCaughtPokemon);
         }
 
+        [HttpGet]
+        [Route("GetMyPokemonCatchGuids/{userId}")]
+        public async Task<IActionResult> GetMyPokemonCatchGuids(Guid userId)
+        {
+            List<Guid> allGuids = await unitOfWork.PokemonCatches.GetAllGuids(userId);
+            return Ok(allGuids);
+        }
+
         // GET: api/PokemonCatches/CreateFromTemplate/pokemonId/userId
         [HttpGet]
         [Route("CreateFromTemplate/{pokemonId}/{userId}")]
@@ -65,6 +74,21 @@ namespace Pokebook.api.Controllers
             Guid id = unitOfWork.PokemonCatches.AddPokemonCatch(pokemon);
             //return Ok(Post(pokemon)); --> returned een empty PokemonCatch, we hebben de id echter nodig
             return Ok(id);
+        }
+
+        [HttpPost]
+        [Route("AddRange")]
+        public async Task<IActionResult> AddRangePokemonCatches([FromBody]PokemonCatchSyncDTO pokemon)
+        {
+            try
+            {
+                // do whatever you want to do with the yourDto object
+                return Ok(Guid.Parse("00000000-0000-0000-0000-000000000001"));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]
