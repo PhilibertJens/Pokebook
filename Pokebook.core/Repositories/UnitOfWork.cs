@@ -29,6 +29,7 @@ namespace Pokebook.core.Repositories
             PokemonTypes = new PokemonTypeRepository(context, mapper);
             PokemonMoveCatches = new PokemonMoveCatchRepository(context, mapper);
             PokemonMoves = new PokemonMoveRepository(context, mapper);
+            PokemonCatchDeleted = new PokemonCatchDeletedRepository(context, mapper);
         }
 
         public IChatRepository Chats { get; }
@@ -44,6 +45,7 @@ namespace Pokebook.core.Repositories
         public IPokemonTypeRepository PokemonTypes { get; }
         public IPokemonMoveCatchRepository PokemonMoveCatches { get; }
         public IPokemonMoveRepository PokemonMoves { get; }
+        public IPokemonCatchDeletedRepository PokemonCatchDeleted { get; }
 
         public int Complete()
         {
