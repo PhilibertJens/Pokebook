@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Pokebook.core.Repositories.Specific
 {
@@ -12,6 +15,21 @@ namespace Pokebook.core.Repositories.Specific
         public PokemonCatchDeletedRepository(PokebookContext context, IMapper mapper) : base(context, mapper)
         {
             
+        }
+
+        public async Task<List<Guid>> GetAllGuids(Guid userId)
+        {
+            List<Guid> pokemonCatchGuids = await PokebookContext.PokemonCatchesDeleted.Where(pc => pc.UserId == userId)
+                                                                               .Select(pc => pc.Id).ToListAsync();
+            return pokemonCatchGuids;
+        }
+
+        public async Task<List<PokemonCatchDeleted>> GetAllPokemonCatchDeleted(Guid userId)
+        {
+            var pokemonList = await PokebookContext.PokemonCatchesDeleted
+                        .Where(pc => pc.UserId == userId).ToListAsync();
+
+            return pokemonList;
         }
 
         public Guid AddPokemonCatchDeleted(PokemonCatch toDelete)
