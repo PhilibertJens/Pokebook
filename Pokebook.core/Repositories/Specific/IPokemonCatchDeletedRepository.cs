@@ -7,5 +7,7 @@ namespace Pokebook.core.Repositories.Specific
 {
     public interface IPokemonCatchDeletedRepository : IRepository<PokemonCatchDeleted>
     {
+
+        Guid AddPokemonCatchDeleted(PokemonCatch toDelete);
     }
 }

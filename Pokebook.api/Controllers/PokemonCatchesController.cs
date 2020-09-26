@@ -99,6 +99,18 @@ namespace Pokebook.api.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> DeletePokemonCatch(Guid id)
+        {
+            PokemonCatch toDelete = unitOfWork.PokemonCatches.FindById(id);
+            unitOfWork.PokemonCatchDeleted.AddPokemonCatchDeleted(toDelete);
+
+            PokemonCatchDeleted deleted = unitOfWork.PokemonCatchDeleted.FindById(id);
+            if (deleted != null) unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
+            return Ok(deleted.Id);
+        }
+
         [HttpPost]
         [Route("GetPokemonCatchesWithProperty")]
         public async Task<IActionResult> GetPokemonCatchesWithProperty(SearchObject obj)

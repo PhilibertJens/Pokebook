@@ -165,6 +165,13 @@ namespace Pokebook.core.Repositories.Specific
             return toReturn;
         }
 
+        public Guid DeletePokemonCatch(PokemonCatch pokemonCatch)
+        {
+            PokebookContext.PokemonCatches.Remove(pokemonCatch);
+            PokebookContext.SaveChanges();
+            return pokemonCatch.Id;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
