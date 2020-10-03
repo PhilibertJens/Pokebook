@@ -12,5 +12,7 @@ namespace Pokebook.core.Repositories.Specific
         Task<List<Guid>> GetAllGuids(Guid userId);
 
         Guid AddPokemonCatchDeleted(PokemonCatch toDelete);
+
+        Task<bool> DeletePokemonCatchDeletedFromUser(Guid userId);
     }
 }

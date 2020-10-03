@@ -55,6 +55,14 @@ namespace Pokebook.api.Controllers
             return Ok(allGuids);
         }
 
+        [HttpDelete]
+        [Route("DeleteMyPokemonCatchDeleted/{userId}")]
+        public async Task<IActionResult> DeleteMyPokemonCatchDeletedGuids(Guid userId)
+        {
+            await unitOfWork.PokemonCatchDeleted.DeletePokemonCatchDeletedFromUser(userId);
+            return Ok(userId);//de DelCallAPI function in Xamarin verwacht een Guid
+        }
+
         //[HttpPost] --> Dit gebeurt nooit rechtstreeks, enkel na het verwijderen van een pokemonCatch
         //[Route("Add")]
         //public async Task<IActionResult> AddPokemonCatchDeleted(PokemonCatch toDelete)

@@ -63,6 +63,15 @@ namespace Pokebook.core.Repositories.Specific
             return toDelete.Id;
         }
 
+        public async Task<bool> DeletePokemonCatchDeletedFromUser(Guid userId)//deze functie kan opgeroepen worden na het ophalen van de deletes
+        {
+            List<PokemonCatchDeleted> myDeletes = await GetAllPokemonCatchDeleted(userId);
+            //PokebookContext.PokemonCatchesDeleted.Remove(myDeletes.ElementAt(0));
+            PokebookContext.PokemonCatchesDeleted.RemoveRange(myDeletes);
+            PokebookContext.SaveChanges();
+            return true;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
