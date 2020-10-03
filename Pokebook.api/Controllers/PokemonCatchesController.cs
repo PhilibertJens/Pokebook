@@ -100,15 +100,31 @@ namespace Pokebook.api.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete/{id}")]
-        public async Task<IActionResult> DeletePokemonCatch(Guid id)
+        [Route("Delete/{id}/{save}")]
+        public async Task<IActionResult> DeletePokemonCatch(Guid id, bool save)
         {
             PokemonCatch toDelete = unitOfWork.PokemonCatches.FindById(id);
-            unitOfWork.PokemonCatchDeleted.AddPokemonCatchDeleted(toDelete);
+            if(toDelete != null)
+            {
+                if (save)
+                {
+                    unitOfWork.PokemonCatchDeleted.AddPokemonCatchDeleted(toDelete);
+                    PokemonCatchDeleted deleted = unitOfWork.PokemonCatchDeleted.FindById(id);
+                    if (deleted != null) unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
+                    return Ok(deleted.Id);
+                }
+                else unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
+                return Ok(toDelete.Id);
+            }
+            return Ok(new Guid());
+        }
 
-            PokemonCatchDeleted deleted = unitOfWork.PokemonCatchDeleted.FindById(id);
-            if (deleted != null) unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
-            return Ok(deleted.Id);
+        [HttpPost]
+        [Route("DeleteRange")]
+        public async Task<IActionResult> DeletePokemonCatchRange([FromBody]GuidSyncDTO toDelete)
+        {
+            foreach (Guid id in toDelete.PokemonCatches) await DeletePokemonCatch(id, false);
+            return Ok(new List<PokemonCatch>());//de DelCallAPI function in Xamarin verwacht een List van PokemonCatches
         }
 
         [HttpPost]
