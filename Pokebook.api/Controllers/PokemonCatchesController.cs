@@ -69,7 +69,15 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetAllPokemonCatchesByGuidRange([FromBody]GuidSyncDTO pokemon)
         {
             List<PokemonCatch> pokemonCatches = await unitOfWork.PokemonCatches.GetAllByGuidRange(pokemon.PokemonCatches);
-            return Ok(pokemonCatches);
+            
+            PokemonCatchSyncDTO syncDTO = new PokemonCatchSyncDTO
+            {
+                UserId = pokemon.UserId,
+                PokemonCatches = pokemonCatches,
+                PokemonMoveCatches = new List<PokemonMoveCatch>()
+            };
+
+            return Ok(syncDTO);
         }
 
         [HttpPost]
@@ -88,8 +96,11 @@ namespace Pokebook.api.Controllers
         [Route("AddRange")]
         public async Task<IActionResult> AddRangePokemonCatches([FromBody]PokemonCatchSyncDTO pokemon)
         {
+            await Task.Delay(0);
             try
             {
+                foreach (var poke in pokemon.PokemonCatches) AddPokemonCatch(poke);//moet gerefactored worden
+                //foreach (var move in pokemon.PokemonMoveCatches) unitOfWork.PokemonMoveCatches.Add(move);-->functie bestaat nog niet
                 // do whatever you want to do with the yourDto object
                 return Ok(Guid.Parse("00000000-0000-0000-0000-000000000001"));
             }
