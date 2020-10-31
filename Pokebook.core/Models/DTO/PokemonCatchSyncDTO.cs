@@ -9,5 +9,7 @@ namespace Pokebook.core.Models.DTO
         public Guid UserId { get; set; }
 
         public List<PokemonCatch> PokemonCatches { get; set; }
+
+        public List<PokemonMoveCatch> PokemonMoveCatches { get; set; }
     }
 }
