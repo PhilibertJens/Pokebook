@@ -6,6 +6,7 @@ namespace Pokebook.core.Repositories.Specific
 {
     public interface IPokemonMoveCatchRepository
     {
-
+        Task<List<PokemonMoveCatch>> GetAllByPokemonCatchId(Guid id);
+        Task<List<PokemonMoveCatch>> GetAllByPokemonCatchId_Full(Guid id);
     }
 }

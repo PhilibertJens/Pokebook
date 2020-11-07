@@ -69,12 +69,19 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetAllPokemonCatchesByGuidRange([FromBody]GuidSyncDTO pokemon)
         {
             List<PokemonCatch> pokemonCatches = await unitOfWork.PokemonCatches.GetAllByGuidRange(pokemon.PokemonCatches);
-            
+            List<PokemonMoveCatch> pokemonMoveCatches = new List<PokemonMoveCatch>();
+
+            foreach(var pokemonCatch in pokemonCatches)
+            {
+                List<PokemonMoveCatch> foundMoveCatches = await unitOfWork.PokemonMoveCatches.GetAllByPokemonCatchId(pokemonCatch.Id);
+                pokemonMoveCatches.AddRange(foundMoveCatches);
+            }
+
             PokemonCatchSyncDTO syncDTO = new PokemonCatchSyncDTO
             {
                 UserId = pokemon.UserId,
                 PokemonCatches = pokemonCatches,
-                PokemonMoveCatches = new List<PokemonMoveCatch>()
+                PokemonMoveCatches = pokemonMoveCatches
             };
 
             return Ok(syncDTO);
