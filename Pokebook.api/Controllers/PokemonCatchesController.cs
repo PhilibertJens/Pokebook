@@ -20,9 +20,13 @@ namespace Pokebook.api.Controllers
         public PokemonCatchesController(PokebookContext dbc, IMapper m, PokemonCatchRepository repo, IHostingEnvironment hostingEnvironment) : base(dbc, m, repo)
         {
             _hostingEnvironment = hostingEnvironment;
+            _dbc = dbc;
+            _m = m;
         }
-
+        
         private IHostingEnvironment _hostingEnvironment;
+        private PokebookContext _dbc;
+        private IMapper _m;
 
         // GET: api/PokemonCatches/GetMyPokemon/userId
         [HttpGet]
@@ -107,8 +111,10 @@ namespace Pokebook.api.Controllers
             try
             {
                 foreach (var poke in pokemon.PokemonCatches) AddPokemonCatch(poke);//moet gerefactored worden
-                //foreach (var move in pokemon.PokemonMoveCatches) unitOfWork.PokemonMoveCatches.Add(move);-->functie bestaat nog niet
-                // do whatever you want to do with the yourDto object
+                //foreach (var move in pokemon.PokemonMoveCatches) unitOfWork.PokemonMoveCatches.AddPokemonMoveCatch(move);//alternatief op aanspreken van andere controller
+
+                var moveCatchesController = new PokemonMoveCatchesController(_dbc, _m, new PokemonMoveCatchRepository(_dbc, _m), _hostingEnvironment);
+                foreach (var move in pokemon.PokemonMoveCatches) moveCatchesController.Add(move);
                 return Ok(Guid.Parse("00000000-0000-0000-0000-000000000001"));
             }
             catch (Exception ex)

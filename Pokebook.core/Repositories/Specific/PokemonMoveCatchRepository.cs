@@ -32,6 +32,13 @@ namespace Pokebook.core.Repositories.Specific
             return pokemonMoveCatches;
         }
 
+        public Guid AddPokemonMoveCatch(PokemonMoveCatch moveCatch)
+        {//wordt momenteel niet gebruikt
+            PokebookContext.PokemonMoveCatches.Add(moveCatch);
+            PokebookContext.SaveChanges();
+            return moveCatch.Id;
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }
