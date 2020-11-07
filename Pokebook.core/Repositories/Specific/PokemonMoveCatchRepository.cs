@@ -39,6 +39,19 @@ namespace Pokebook.core.Repositories.Specific
             return moveCatch.Id;
         }
 
+        public Guid DeletePokemonMoveCatch(PokemonMoveCatch pokemonMoveCatch)
+        {
+            PokebookContext.PokemonMoveCatches.Remove(pokemonMoveCatch);
+            PokebookContext.SaveChanges();
+            return pokemonMoveCatch.Id;
+        }
+
+        public Guid DeleteRangePokemonMoveCatches(List<PokemonMoveCatch> pokemonMoveCatches)
+        {
+            foreach (PokemonMoveCatch moveCatch in pokemonMoveCatches) DeletePokemonMoveCatch(moveCatch);
+            return Guid.Parse("00000000-0000-0000-0000-000000000001");//voorlopig
+        }
+
         public PokebookContext PokebookContext
         {
             get { return db as PokebookContext; }

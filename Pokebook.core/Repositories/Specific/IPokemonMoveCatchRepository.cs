@@ -11,5 +11,7 @@ namespace Pokebook.core.Repositories.Specific
         Task<List<PokemonMoveCatch>> GetAllByPokemonCatchId(Guid id);
         Task<List<PokemonMoveCatch>> GetAllByPokemonCatchId_Full(Guid id);
         Guid AddPokemonMoveCatch(PokemonMoveCatch moveCatch);
+        Guid DeletePokemonMoveCatch(PokemonMoveCatch pokemonMoveCatch);
+        Guid DeleteRangePokemonMoveCatches(List<PokemonMoveCatch> pokemonMoveCatches);
     }
 }

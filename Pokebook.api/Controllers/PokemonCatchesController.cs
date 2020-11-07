@@ -127,27 +127,38 @@ namespace Pokebook.api.Controllers
         [Route("Delete/{id}/{save}")]
         public async Task<IActionResult> DeletePokemonCatch(Guid id, bool save)
         {
-            PokemonCatch toDelete = unitOfWork.PokemonCatches.FindById(id);
-            if(toDelete != null)
+            await Task.Delay(0);
+            try
             {
-                if (save)
+                PokemonCatch toDelete = unitOfWork.PokemonCatches.FindById(id);
+                if (toDelete != null)
                 {
-                    unitOfWork.PokemonCatchDeleted.AddPokemonCatchDeleted(toDelete);
-                    PokemonCatchDeleted deleted = unitOfWork.PokemonCatchDeleted.FindById(id);
-                    if (deleted != null) unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
-                    return Ok(deleted.Id);
+                    if (save)
+                    {
+                        unitOfWork.PokemonCatchDeleted.AddPokemonCatchDeleted(toDelete);
+                        PokemonCatchDeleted deleted = unitOfWork.PokemonCatchDeleted.FindById(id);
+                        if (deleted != null) unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
+                        return Ok(deleted.Id);
+                    }
+                    else {
+                        List<PokemonMoveCatch> pokemonMoveCatches = await unitOfWork.PokemonMoveCatches.GetAllByPokemonCatchId(id);
+                        unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
+                        unitOfWork.PokemonMoveCatches.DeleteRangePokemonMoveCatches(pokemonMoveCatches);
+                    }
                 }
-                else unitOfWork.PokemonCatches.DeletePokemonCatch(toDelete);
-                return Ok(toDelete.Id);
+                return Ok(new PokemonCatchSyncDTO());//de mobile app verwacht dit terug
             }
-            return Ok(new Guid());
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         [HttpPost]
         [Route("DeleteRange")]
         public async Task<IActionResult> DeletePokemonCatchRange([FromBody]GuidSyncDTO toDelete)
-        {
-            foreach (Guid id in toDelete.PokemonCatches) await DeletePokemonCatch(id, false);
+        {//de save parameter wordt niet meegegeven
+            foreach (Guid id in toDelete.PokemonCatches) await DeletePokemonCatch(id, false);//hier worden ook de moveCatches verwijderd
             return Ok(new List<PokemonCatch>());//de DelCallAPI function in Xamarin verwacht een List van PokemonCatches
         }
 
