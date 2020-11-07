@@ -29,6 +29,7 @@ namespace Pokebook.api.Controllers
         {
             moveCatch.Move = null;
             moveCatch.Pokemon = null;
+            //Guid id = unitOfWork.PokemonMoveCatches.AddPokemonMoveCatch(moveCatch);--> kan ook gebruikt worden
             return Ok(Post(moveCatch));
         }
     }

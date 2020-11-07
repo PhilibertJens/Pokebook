@@ -149,6 +149,7 @@ namespace Pokebook.web.Controllers
                                                                  pokemonData.Height, pokemonData.Weight, pokemonData.Gender,
                                                                  pokemonData.IsShiny, pokemonData.IsAlolan, pokemonData.MoveCatches);
             appearedPokemon.Pokemon = template;
+            appearedPokemon.AppType = "Webbrowser";
 
             int luckyNumber = random.Next(0, 2);
             if (luckyNumber == 1)//50% dat de pokemon is gevangen.

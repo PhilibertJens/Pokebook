@@ -27,6 +27,35 @@ namespace Pokebook.core.Repositories.Specific
             return pokemonList;//de Pokemon property is null doordat er geen include gebeurt
         }
 
+        private async Task<List<PokemonCatch>> GetAllCaughtPokemonFull(Guid userId)
+        {//pokemontype en move wordt niet opgehaald
+            var pokemonList = await PokebookContext.PokemonCatches
+                        .Include(pc => pc.Pokemon)
+                        .Where(pc => pc.UserId == userId).ToListAsync();
+
+            return pokemonList;
+        }
+
+        public async Task<List<Guid>> GetAllGuids(Guid userId)
+        {
+            List<Guid> pokemonCatchGuids = await PokebookContext.PokemonCatches.Where(pc => pc.UserId == userId)
+                                                                               .Select(pc => pc.Id).ToListAsync();
+            return pokemonCatchGuids;
+        }
+
+        public async Task<List<PokemonCatch>> GetAllByGuidRange(List<Guid> guids)
+        {
+            List<PokemonCatch> pokemonCatches = new List<PokemonCatch>();
+
+            foreach(var guid in guids)
+            {
+                var poke = await PokebookContext.PokemonCatches.Where(pc => pc.Id == guid).FirstOrDefaultAsync();
+                pokemonCatches.Add(poke);
+            }
+
+            return pokemonCatches;
+        }
+
         public Task<PokemonCatch> CreateByName(string name)
         {
             throw new NotImplementedException();
@@ -37,17 +66,22 @@ namespace Pokebook.core.Repositories.Specific
             PokemonCatch pokemonCatch = null;
             if(template != null)
             {
+                var hp = GetRandomValue(template.MinHP, template.MaxHP);
+                var cp = GetRandomValue(template.MinCP, template.MaxCP);
                 PokemonCatch pokemon = new PokemonCatch
                 {
                     PokemonId = template.Id,
                     UserId = userId,
-                    HP = GetRandomValue(template.MinHP, template.MaxHP),
-                    CP = GetRandomValue(template.MinCP, template.MaxCP),
+                    HP = hp,
+                    CurrentHP = hp,
+                    CP = cp,
+                    CurrentCP = cp,
                     Height = GetRandomValue(template.MinHeight, template.MaxHeight),
                     Weight = GetRandomValue(template.MinWeight, template.MaxWeight),
                     PokemonMoveCatches = GetRandomMoveFromList(template.PokemonMoves),
                     Gender = GetRandomTrueOrFalse(2),//50% kans, true is male (1 in db)
                     IsShiny = GetRandomTrueOrFalse(99),//1% kans
+                    HPColor = "#1dbf84"
                 };
                 if (template.HasAlolanForm) pokemon.IsAlolan = GetRandomTrueOrFalse(4);//20% kans
                 pokemon.FolderType = EvaluateFolderType(pokemon.IsShiny, pokemon.IsAlolan);
@@ -112,6 +146,30 @@ namespace Pokebook.core.Repositories.Specific
             PokebookContext.PokemonCatches.Add(pokemon);
             PokebookContext.SaveChanges();
             return pokemon.Id;
+        }
+
+        public async Task<List<PokemonCatch>> GetPokemonCatchesWithProperty(SearchObject obj)
+        {
+            string value = obj.Values.ElementAt(0);
+
+            value = value.ToLower();
+            List<PokemonCatch> pokemonCatches = await GetAllCaughtPokemonFull(obj.UserId);
+            List<PokemonCatch> toReturn = new List<PokemonCatch>();
+            foreach (var poke in pokemonCatches)
+            {
+                if (poke.Pokemon.Name.ToLower().Contains(value))
+                {
+                    toReturn.Add(poke);
+                }
+            }
+            return toReturn;
+        }
+
+        public Guid DeletePokemonCatch(PokemonCatch pokemonCatch)
+        {
+            PokebookContext.PokemonCatches.Remove(pokemonCatch);
+            PokebookContext.SaveChanges();
+            return pokemonCatch.Id;
         }
 
         public PokebookContext PokebookContext

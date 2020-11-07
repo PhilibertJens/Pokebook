@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using Pokebook.core.Repositories.Specific;
 
 namespace Pokebook.api.Controllers
@@ -30,6 +31,15 @@ namespace Pokebook.api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var list = await unitOfWork.Pokemons.GetAllWithType();
+            return Ok(list);
+        }
+
+        // GET: api/Pokemons/GetAllNames
+        [HttpGet]
+        [Route("GetAllNames")]
+        public async Task<IActionResult> GetAllNames()
+        {
+            var list = await unitOfWork.Pokemons.GetAllNames();
             return Ok(list);
         }
 
@@ -65,6 +75,14 @@ namespace Pokebook.api.Controllers
             return Ok(await unitOfWork.Pokemons.GetFullPokemon(id));
         }
 
+        [HttpGet]
+        [Route("GetFullPokemonByName/{name}")]
+        public async Task<IActionResult> GetFullPokemon(string name)
+        {
+            PokemonSimpleDTO pokemonSimple = await unitOfWork.Pokemons.GetPokemonSimple(name);
+            return Ok(await unitOfWork.Pokemons.GetFullPokemon(pokemonSimple.Id));
+        }
+
         // GET: api/Users/CoverPicture/name
         [HttpGet]
         [Route("PokemonPicture/{filename}/{type}")]
@@ -76,6 +94,13 @@ namespace Pokebook.api.Controllers
             var image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/PokemonPictures/{type}", filename);
             if (!System.IO.File.Exists(image)) image = Path.Combine(_hostingEnvironment.WebRootPath, $"images/GeneralPictures/", "notFound.png");
             return PhysicalFile(image, "image/jpeg");
+        }
+
+        [HttpPost]
+        [Route("GetPokemonWithProperty")]
+        public async Task<IActionResult> GetPokemonWithProperty(SearchObject obj)
+        {
+            return Ok(await unitOfWork.Pokemons.GetPokemonWithProperty(obj));
         }
     }
 }

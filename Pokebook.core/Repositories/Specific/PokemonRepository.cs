@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Pokebook.core.Data;
 using Pokebook.core.Models;
+using Pokebook.core.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +51,12 @@ namespace Pokebook.core.Repositories.Specific
             }
 
             return allPokemon;
+        }
+
+        public async Task<List<string>> GetAllNames()
+        {
+            return await PokebookContext.Pokemons
+                                .Select(p => p.Name).ToListAsync();
         }
 
         public async Task<Pokemon> GetByNdex(int ndex)
@@ -132,6 +140,35 @@ namespace Pokebook.core.Repositories.Specific
                 pm.Pokemon = null;
             }
             return pokemon;
+        }
+
+        public async Task<PokemonSimpleDTO> GetPokemonSimple(Guid id)
+        {
+            return await PokebookContext.Pokemons.Where(p => p.Id == id)
+                                  .ProjectTo<PokemonSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
+        public async Task<PokemonSimpleDTO> GetPokemonSimple(string name)
+        {
+            return await PokebookContext.Pokemons.Where(p => p.Name == name)
+                                  .ProjectTo<PokemonSimpleDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Pokemon>> GetPokemonWithProperty(SearchObject obj)
+        {
+            string value = obj.Values.ElementAt(0);
+
+            value = value.ToLower();
+            List<Pokemon> pokemon = await GetAllWithType();
+            List<Pokemon> toReturn = new List<Pokemon>();
+            foreach (var poke in pokemon)
+            {
+                if (poke.Name.ToLower().Contains(value))
+                {
+                    toReturn.Add(poke);
+                }
+            }
+            return toReturn;
         }
 
         public PokebookContext PokebookContext

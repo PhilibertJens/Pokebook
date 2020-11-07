@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Pokebook.core.Models
 {
-    public class PokemonCatch: EntityBase
+    public class PokemonCatchDeleted: EntityBase
     {
         public Guid PokemonId { get; set; }
         public Guid UserId { get; set; }
@@ -24,12 +24,11 @@ namespace Pokebook.core.Models
         public string HPColor { get; set; }
         public string CatchLocation { get; set; }
 
-        public bool IsUpdated { get; set; }
-        public DateTime Updated { get; set; }
+        public DateTime Deleted { get; set; }
 
         /*Navigation properties*/
         public Pokemon Pokemon { get; set; }
         public User User { get; set; }
-        public ICollection<PokemonMoveCatch> PokemonMoveCatches { get; set; }
+        //public ICollection<PokemonMoveCatch> PokemonMoveCatches { get; set; }
     }
 }
